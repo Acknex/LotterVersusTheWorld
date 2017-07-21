@@ -3,11 +3,13 @@
 #define PRAGMA_PATH "src"
 #define PRAGMA_PATH "shaders"
 
+#include "bloom.h"
 #include "player.h"
 #include "camera.h"
 #include "level.h"
 
 #define DEBUG
+
 #ifdef DEBUG
 	#include <default.c>
 #endif
