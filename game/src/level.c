@@ -1,15 +1,16 @@
 #include "camera.h"
+#include "player.h"
 
 void LEVEL_start()
 {
-	level_load("prototype.mdl");
-	me = ent_create("cube.mdl",nullvector, NULL);
-	my->z+=50;
+	//level_load("prototype.mdl");
+	level_load("test_level_small.wmb");
+	player_init();
 	//setup camera	
-	focus_camera(me);
+	focus_camera(player);
 	show_camera();
 	
-	player = me;
+	//player = me;
 }
 
 void LEVEL_end()
@@ -21,6 +22,7 @@ void LEVEL_loop()
 {
 	while(1)
 	{
+		player_move();
 		update_camera();
 		wait(1);
 	}

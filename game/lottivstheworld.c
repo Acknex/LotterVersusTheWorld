@@ -7,8 +7,6 @@
 #include "camera.h"
 #include "level.h"
 
-#include "player.c"
-
 #define DEBUG
 #ifdef DEBUG
 	#include <default.c>
@@ -18,8 +16,8 @@ void main()
 {
 	d3d_antialias = 9;
 	wait(1);
-	
-	create_camera();	
+	create_camera();
+
 	LEVEL_start();
 	LEVEL_loop();
 }
