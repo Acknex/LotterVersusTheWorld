@@ -57,14 +57,14 @@ void update_camera()
 {
 	VECTOR vecPos;
 	
-	if (camera_focus_ent != NULL)
+	if ((camera_focus_ent != NULL) && (cam != NULL))
 	{
 		vec_set(vecPos, vector(-CAMERA_DIST, 0, 0));
 		vec_rotate(vecPos, cam->pan);
-		vec_add(vecPos, vector(camera_focus_ent->x, camera_focus_ent->y, 0));
+		vec_add(vecPos, camera_focus_ent->x);
 		vec_set(cam->x, vecPos);
 
-		//)vDistanceFactor += ((is_kart_accelerating(camera_focus_ent) > 0) * 0.05 - 0.02) * time_step;
+		//vDistanceFactor += ((is_kart_accelerating(camera_focus_ent) > 0) * 0.05 - 0.02) * time_step;
 		vDistanceFactor = clamp(abs(vDistanceFactor), 0.28, 0.6);
 
 		/* view.arc = 2*atan(width/(view.size_x * 2)); - from manual (view.arc) */
@@ -92,12 +92,12 @@ void hide_camera()
 	}
 }
 
-void focus_camera()
+void focus_camera(ENTITY* ent)
 {
 	camera_focus_ent = NULL;
 	do
 	{
- 		camera_focus_ent = player;
+ 		camera_focus_ent = ent;
 		wait(1);
 	} while (camera_focus_ent == NULL);
 }
