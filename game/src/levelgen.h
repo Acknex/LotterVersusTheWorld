@@ -1,6 +1,7 @@
 
 int levelgenOffset2D[8] = { -1,0, 0,1, 1,0, 0,-1 };
 
+
 #define TILE_EMPTY 0
 
 LEVELGENSTACK* levelgenStackCreate(int size)
@@ -15,6 +16,8 @@ LEVELGENSTACK* levelgenStackCreate(int size)
 	
 	return newStack;
 }
+
+ENTITY * stageRenderEntity(STAGE * stage);
 
 STAGE* stageCreate(int sizeX, int sizeY, var seed)
 {
