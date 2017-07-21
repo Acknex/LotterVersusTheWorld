@@ -1,0 +1,47 @@
+Log of A8 Engine 8.47.1 run at Fri Jul 21 23:49:43 2017
+Hendrik on Windows NT/2000/XP version 6.2 Build 9200
+Options levelgen_test.c -eq -diag -nwnd -nx 70 -te
+App: C:\GStudio8\acknex.exe in C:\GStudio8\AckCon2017\
+
+MM mixer opened
+DSOUND device opened
+DI interface opened
+Start Window opened(c) Conitec - www.3dgamestudio.com
+A8 Engine - Pro Edition V8.47.1 - Mar  9 2016
+Development version
+Registered to: Felix Pohl
+
+Mouse found
+Lautsprecher (Intel® Smart Sound Technologie) opened
+Intel(R) HD Graphics 5500 pure T&L device 1ff9 detected
+D3D device Intel(R) HD Graphics 5500 1ff9 selected.
+ackAR.dll opened
+acknet.dll opened
+ackoal.dll opened
+ackphysX.dll opened
+ackwii.dll opened
+ackXinput.dll opened
+irrKu.dll opened
+ports.dll opened
+Compiling LEVELGEN_TEST.C - [Esc] to abort........... 0.096 sec
+Running LEVELGEN_TEST.C.
+2 objects
+Main started at 0.165
+D3D_Init Window: 800x600 -> Window: 1x800x600x32
+Video memory found: 3836 MB
+LevelInit at 0.188 0 lmaps 0 textures...ok
+LevelReady at 0.190
+def_startup started
+Main loop at 0.191....
+1st frame with 3836 MB. at 0.191
+Normal exit at 2.228
+Close level,DLL,objects
+Free input,funcs,panels,defs,syns,views,strings,vars..ok
+Free sounds,bmaps,fonts,hash,defs1,script..ok
+Close dx,multimedia,D3D,engine,nexus..ok
+A8 Engine - Pro Edition V8.47.1 - Mar  9 2016
+(c) Conitec - www.3dgamestudio.com
+Registered to: Felix Pohl
+Unfreed: 1078,    , 40 bytes
+Unfreed: 1079,    , 17412 bytes
+Close window at 2.244
