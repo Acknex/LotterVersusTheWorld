@@ -1,7 +1,8 @@
 ///////////////////////////////
 #include <acknex.h>
 #include <default.c>
-#include "levelgen.h"
+#include "..\\src\\datatypes.h"
+#include "..\\src\\levelgen.h"
 ///////////////////////////////
 
 
@@ -13,6 +14,7 @@ void main()
 	
 	STAGE* stage = stageCreate(32,32,137.1);
 	stageFill(stage);
+	stageConnect(stage);
 	
 	while(1)
 	{
