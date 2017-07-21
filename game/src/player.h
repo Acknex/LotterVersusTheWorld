@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include "player.c"
 
