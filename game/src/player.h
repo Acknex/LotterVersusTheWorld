@@ -1,5 +1,8 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef PLAYER_H
+#define PLAYER_H
+
+void player_move();
+void player_init();
 
 #include "player.c"
 
