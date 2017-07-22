@@ -16,6 +16,25 @@ void player_move() {
 	
 	VIEW* view = get_camera();
 	vec_set(playerpos, player->x);
+	
+	VECTOR vTarget;
+	VECTOR to;
+	ANGLE tAngle;
+  	vec_set(to,mouse_dir3d);
+  	vec_scale(to,5000); // set a range
+  	vec_add(to, mouse_pos3d);
+  	you = player;
+  	c_trace(mouse_pos3d, to, IGNORE_YOU);
+  	
+  	draw_point3d(to, COLOR_WHITE, 100, 20);
+  	
+  	vec_set(vTarget, hit.x);
+  	vec_sub(vTarget, player.x);
+  	vec_to_angle(tAngle, vTarget);
+  	player.pan = tAngle.pan;
+	
+	
+	/*
 	if (vec_to_screen(playerpos, view) != NULL)
 	{
 	
@@ -24,7 +43,7 @@ void player_move() {
 		
 	}
 	player.pan = 180-dir.pan - view->pan;
-	
+	*/
 	draw_textmode("Arial", 1, 20, 100);
 	
 	#ifdef DEBUG
