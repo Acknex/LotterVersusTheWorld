@@ -5,8 +5,10 @@
 #include <fog>
 #include <normal>
 
+Texture entSkin1;
 float4 vecTime;
-float ColorVariation_flt;
+
+sampler sTexture = sampler_state { Texture = <entSkin1>; MipFilter = Linear; };
 
 Texture ColorLUT_bmap;
 sampler sLUT = sampler_state
@@ -16,6 +18,8 @@ sampler sLUT = sampler_state
 	AddressV = Clamp; 
 	MipFilter = Linear;
 };
+
+float ColorVariation_flt;
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -28,6 +32,7 @@ out_ps vs(
 	float2 inTexCoord0 : TEXCOORD0)
 {
 	out_ps Out;
+	
 	Out.Pos = DoTransform(inPos);
 	Out.uv = inTexCoord0;
 	return Out;
@@ -35,9 +40,12 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	float lutPosition = ColorVariation_flt * 0.5;
-	float3 color = tex2D(sLUT, float2(lutPosition, 20.5/64.0));
-	return float4(color, 1.0);
+	float3 blendmap = tex2D(sTexture, In.uv).rgb;
+	
+	float4 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, 25.5/64.0));
+	float4 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, 26.5/64.0));
+	float4 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, 27.5/64.0));
+	return a * blendmap.r + b * blendmap.g + c * blendmap.b;
 }
 
 

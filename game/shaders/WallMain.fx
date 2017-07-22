@@ -9,9 +9,20 @@ Texture mtlSkin1;
 Texture mtlSkin2;
 float4 vecTime;
 
+
 sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 
 sampler sWallTest = sampler_state { Texture = <mtlSkin2>; MipFilter = Linear; };
+
+Texture ColorLUT_bmap;
+float ColorVariation_flt;
+sampler sLUT = sampler_state
+{
+	Texture = <ColorLUT_bmap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -36,35 +47,26 @@ float4 ps(out_ps In): COLOR
 {
 	float2 patternUV = float2(0.001, 0.004) * float2(In.WorldPos.x - In.WorldPos.z, -In.WorldPos.y);
 	
-	float3 attributes = tex2D(sTexture, In.uv).rgb;
+	float4 attributes = tex2D(sTexture, In.uv);
 	
-	//float ioffset = 7 * floor((In.WorldPos.x - 100) / 200) + floor((In.WorldPos.z - 100) / 200);
-	//float toff = 0.03 * vecTime.w;
-	//
- //   toff *= 2.3;
- //  	toff -= 0.3;
-	//toff -= frac(toff);
-	//
-	//ioffset += toff;
-	
-	float2 textcoord = patternUV;// + float2(0, 0.111 * ioffset);
+	float2 textcoord = patternUV;
 	
 	textcoord.x -= 0.0005 * vecTime.w;
 	
 	textcoord.x -= 0.0009 * (1.2 + sin(0.3 * floor(textcoord.y * 17))) * vecTime.w;
 	
-	// return float4(frac(0.1 * ioffset), 0, 0, 1);
+	float4 text = tex2D(sWallTest, textcoord);
 	
-	float3 text = tex2D(sWallTest, textcoord);
+	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 21.5/64.0));
+	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 22.5/64.0));
+	float4 col3 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 23.5/64.0));
 	
-	//return float4(text, 1);
+	float4 color = 
+		col1 * attributes.r +
+		col2 * attributes.g +
+		text.r * col3 * attributes.b;
 	
-	float3 color = lerp(
-		0.0,
-		text,
-		pow(attributes.b, 0.5));
-	
-	return float4(color, 0.0);
+	return color;
 }
 
 

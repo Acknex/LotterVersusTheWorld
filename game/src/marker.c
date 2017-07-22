@@ -22,14 +22,14 @@ void MARKER_update(ENTITY* ent)
 	{
 		return;
 	}
-	if(vec_dist(ent->x, player->x) < 500)
+	if(vec_dist(ent->x, player->x) < 1000)
 	{
 		VIEW* view = get_camera();
 		VECTOR vecTemp;
 		vec_set(&vecTemp, ent->x);
 		if (vec_to_screen(vecTemp, get_camera()) != NULL)
 		{
-			draw_text("0xC0FFEE\n.jetpack", vecTemp.x, vecTemp.y, vector(255,255,255));
+			draw_text(".jetpack\n 0xC0FFEE", vecTemp.x, vecTemp.y, vector(255,255,255));
 		}
 	}	
 }

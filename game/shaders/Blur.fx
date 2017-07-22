@@ -1,5 +1,11 @@
 Texture TargetMap;
-sampler2D g_samSrcColor = sampler_state { texture = <TargetMap>; MipFilter = Linear;	};
+sampler g_samSrcColor = sampler_state
+{
+	Texture = <TargetMap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
 
 float4 vecViewPort;
 float4 vecSkill1;
@@ -16,7 +22,7 @@ float4 blur(float2 Tex : TEXCOORD0) : COLOR0
 		color += tex2D(g_samSrcColor, Tex.xy + vecSkill1.xy * i * vecViewPort.zw) * kernel[i + 8];
 	}
 	
-	return color;// / 21.0;
+	return color;
 }
 
 technique PostProcess 

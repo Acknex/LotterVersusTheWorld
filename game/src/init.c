@@ -3,13 +3,14 @@
 #include "levelgen.h"
 #include "font.h"
 #include "sky.h"
+#include "music_player.h"
 
 #include "items.h" //temp
+#include "turret.h" //temp
 
 var INIT__levelRunning = 0;
 
 STAGE* LEVEL__stage = NULL;
-var music_handle = 0;
 
 void INIT_levelStart()
 {
@@ -22,20 +23,29 @@ void INIT_levelStart()
 	stageFill(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
 	
+	sky_color.red = 0;
+	sky_color.green = 0;
+	sky_color.blue = 0.1;
+	
 	player_init();
 	//setup camera	
 	focus_camera(player);
 	show_camera();
 	
 	ground_reflections();
-	pp_bloom(0.3, 2.0);
+	pp_bloom(2.5);
 	//skychange(); //because.
 	
+
+	startMusic("media\\in_game1.mp3", 4);
+
 	//this is debug hack for items
-	VECTOR* vecTemp = vector(175,175, 50);
+	VECTOR* vecTemp;
+	vecTemp = vector(175,175, 25);
 	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
-	
-	music_handle = media_loop("media\\in_game1.mp3", NULL, 100);
+	vecTemp = vector(725,900, 50);
+	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
+	you.material = ObjectMaterial;
 }
 
 void INIT_levelEnd()
@@ -46,7 +56,7 @@ void INIT_levelEnd()
 
 	INIT__levelRunning = 0;
 	
-	media_stop(music_handle);
+	stopMusic();
 	
 	wait(1);
 	
@@ -58,6 +68,7 @@ void INIT_levelLoop()
 {
 	while(INIT__levelRunning != 0)
 	{
+		updateMusic();
 		player_move();
 		update_camera();
 		wait(1);
