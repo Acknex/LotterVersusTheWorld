@@ -1,4 +1,8 @@
 #include "camera.h"
+#include "datatypes.h"
+#include "levelgen.h"
+
+STAGE* LEVEL__stage = NULL;
 
 var anim_percentage = 0;
 var dist_ahead = 0;
@@ -71,8 +75,11 @@ void player_move() {
 	}
 }
 
+
+VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
+
 void player_init() {
-	player = ent_create("cbabe.MDL", vector(0,0,0), NULL);
+	player = ent_create("cbabe.MDL", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2);
