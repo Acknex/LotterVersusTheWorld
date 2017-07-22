@@ -10,6 +10,7 @@ var dist_ahead = 0;
 var dist_strafe = 0;
 VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
+var playerVelY = 0;
 
 void player_move_old() {
 	
@@ -37,7 +38,7 @@ void player_move_old() {
 	vec_sub(vTarget, player.x);
 	vec_to_angle(tAngle, vTarget);
 	player.pan = tAngle.pan;
-	
+
 	dist_ahead = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_w + key_cuu, 0, 1) - clamp(key_s + key_cud, 0, 1));
 	dist_strafe = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_a + key_cul, 0, 1) - clamp(key_d + key_cur, 0, 1));
 	if (dist_ahead != 0 && dist_strafe != 0)
@@ -126,36 +127,53 @@ void player_move() {
 	draw_point3d(target, COLOR_WHITE, 100, 16);
 	
 	vec_diff(temp,target,player.x);
-	if(vec_to_angle(temp2,temp) > 8)
+	if(!player.near_teleport && vec_to_angle(temp2,temp) > 8)
 	{
 		var diff = ang(temp2.x-player.pan);
 		static var diffAlignSpeed = 0;
 		diffAlignSpeed = minv(diffAlignSpeed+2*time_step,minv(abs(diff),25));
 		player.pan += clamp(diff*0.35,-diffAlignSpeed,diffAlignSpeed)*time_step;
 	}
-	static VECTOR vPlayerSpeed;
-	vec_set(temp,vector(key_w-key_s,key_a-key_d,0));
-	VIEW* view = get_camera();
-	vec_rotate(temp,vector(view->pan,0,0));
-	if(temp.x || temp.y) vec_normalize(temp,45);
-	vec_diff(temp2,temp,vPlayerSpeed);
-	vec_normalize(temp2,minv(10,vec_length(temp2))*0.3*time_step);
-	//vec_lerp(vPlayerSpeed,vPlayerSpeed,temp,0.2*time_step);
-	vec_add(vPlayerSpeed,temp2);
 	
-	c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
-	player.z = 190;
-	if(HIT_TARGET)
-	{
-		bounce.z = 0;
-		vec_normalize(bounce,vec_length(vPlayerSpeed)*0.45);
-		vPlayerSpeed.x = bounce.x;
-		vPlayerSpeed.y = bounce.y;
+	if(mouse_middle) {
+		vec_set(player.x, target);
 	}
-	ent_animate(player,"attack",0,0);
-	ent_bonerotate(player,"Bone1",vector(0,sinv(total_ticks*8)*10,0));
-	ent_bonerotate(player,"Bone4",vector(0,sinv(total_ticks*8)*10,0));
 	
+	if(player.pause_control == 0)
+	{
+		static VECTOR vPlayerSpeed;
+		vec_set(temp,vector(key_w-key_s,key_a-key_d,0));
+		VIEW* view = get_camera();
+		vec_rotate(temp,vector(view->pan,0,0));
+		if(temp.x || temp.y) vec_normalize(temp,45);
+		vec_diff(temp2,temp,vPlayerSpeed);
+		vec_normalize(temp2,minv(10,vec_length(temp2))*0.3*time_step);
+		//vec_lerp(vPlayerSpeed,vPlayerSpeed,temp,0.2*time_step);
+		vec_add(vPlayerSpeed,temp2);
+		
+		c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+		
+		if(player.near_teleport == 0) {
+			// Fancy mini-gravity
+			playerVelY -= 1.5 * time_step;
+			player.z += playerVelY * time_step;
+			if(player.z <= 190) {
+				playerVelY *= -0.3;
+				player.z = 190;
+			}
+		}
+		var len = vec_length(vPlayerSpeed);
+		if(HIT_TARGET && len > 15)
+		{
+			bounce.z = 0;
+			vec_normalize(bounce,len*0.45);
+			vPlayerSpeed.x = bounce.x;
+			vPlayerSpeed.y = bounce.y;
+		}
+		ent_animate(player,"attack",0,0);
+		ent_bonerotate(player,"Bone1",vector(0,sinv(total_ticks*8)*10,0));
+		ent_bonerotate(player,"Bone4",vector(0,sinv(total_ticks*8)*10,0));
+	}
 	
 	MARKER_update(player);
 	if(LEVEL__stage) 
@@ -197,7 +215,7 @@ void player_init() {
 	
 	player.damage = 1;
 	
-	player.emask |= EVENT_SHOOT;
+	player.emask |= ENABLE_SHOOT | ENABLE_SCAN;
 	player.event = player_event;
 	player->type = TypePlayer;
 }
@@ -205,10 +223,13 @@ void player_init() {
 void player_event() {
 	switch(event_type) {
 		case EVENT_SHOOT:
+		case EVENT_SCAN:
 		my.health -=your.damage;
 		if (my.health <= 0) {
 			printf("You are DEAD!");
 		}
+		
 		break;
+		
 	}
 }

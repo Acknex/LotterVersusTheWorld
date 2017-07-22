@@ -3,11 +3,15 @@
 #define type skill1
 #define health skill10
 #define damage skill11
+#define pause_control skill12
+#define near_teleport skill13
+#define animCounter skill14
+#define delayCounter skill15
 
-#define weapon_type skill45
-#define weapon_cooldown skill43
-#define weapon_bouncing skill44
-#define weapon_granade_cooldown skill46
+#define weapon_cooldown skill16
+#define weapon_bouncing skill17
+#define weapon_granade_cooldown skill18
+
 
 //skill20-40: for individual use, do not define here
 
