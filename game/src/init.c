@@ -7,6 +7,7 @@
 
 #include "items.h" //temp
 #include "turret.h" //temp
+#include "quest.h" //temp
 
 var INIT__levelRunning = 0;
 
@@ -43,6 +44,9 @@ void INIT_levelStart()
 	startMusic("media\\in_game1.mp3", 4);
 
 	//this is debug hack for items
+	VECTOR* vecTemp;
+	vecTemp = vector(0,0, 25);
+	ent_create("warghost.mdl", vecTemp, questmaster);
 //	VECTOR* vecTemp;
 //	vecTemp = vector(175,175, 25);
 //	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);

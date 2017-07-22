@@ -8,8 +8,14 @@ var QUEST__started = 0;
 var QUEST__count = 5;
 var QUEST__id = 0;
 
+void QUEST__masterEvent();
+void QUEST__itemEvent();
+
 #include "entity_defs.h"
 #include "materials.h"
+#include "itembase.h"
+#include "teleporter.h"
+#include "camera.h"
 
 TEXT* txtQuestTasks = 
 {
@@ -39,28 +45,29 @@ TEXT* txtQuestModels =
 
 action questmaster()
 {
+	vec_scale(my->scale_x, 3);
 	my->event = QUEST__masterEvent;
 	my->material = HologramMaterial;
-	while(!is(me, collected))
+	while(1)
 	{
-		if (is(me, collected)
+		if (is(me, is_collected))
 		{
-			if (textTimer < TEXTDURATION)
+			if (my->textTimer < TEXTDURATION)
 			{
 				VIEW* view = get_camera();
-				textTimer += time_step;
+				my->textTimer += time_step;
 				VECTOR vecTemp;
-				vec_set(&vecTemp, ent->x);
-				if ((vec_to_screen(vecTemp, get_camera()) != NULL) && (ent->type < txtMarkers->strings))
+				vec_set(&vecTemp, my->x);
+				if ((vec_to_screen(vecTemp, get_camera()) != NULL))
 				{
-					STRING* str = (txtMarkers->pstring)[ent->type];
+					STRING* str = (txtQuestTasks->pstring)[QUEST__id];
 					draw_text(str, vecTemp.x, vecTemp.y, vector(255,255,255));
 				}
 			}
 		}
 		wait(1);
-		my->animSpeed = cycle(my->animSpeed += 5 * time_step,0,100);
-		ent_animate(me, "attack", my->animSpeed, ANM_CYCLE);
+		my->animCounter = cycle(my->animCounter += 5 * time_step,0,100);
+		ent_animate(me, "idle", my->animCounter, ANM_CYCLE);
 	}
 }
 
@@ -68,6 +75,7 @@ action questitem()
 {
 	set(my, TRANSLUCENT);
 	my->alpha = 0;
+	my->material = HologramMaterial;
 	while (QUEST__started == 0)
 	{
 		wait(1);
@@ -81,20 +89,28 @@ action questitem()
 	reset(my, TRANSLUCENT);
 	my->event = QUEST__itemEvent;
 	
-	while(!is(me, collected))
+	while(!is(me, is_collected))
 	{
 		wait(1);
 	}
 	QUEST__solved = 1;
 	ITEM_fade();
+	teleporter_enable();
 }
 
-QUEST_init()
+void questspawn()
+{
+	ent_create("warlock.mdl", player.x, questmaster);
+}
+void my_startup(){on_x= questspawn;}
+
+
+void QUEST_init()
 {
 	QUEST__id = integer(random(5));
 }
 
-QUEST_reset()
+void QUEST_reset()
 {
 	QUEST__solved = 0;
 	QUEST__started = 0;
