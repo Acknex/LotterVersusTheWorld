@@ -3,7 +3,8 @@
 
 // starts new music, cross fades with old one over crossFadeTime (in seconds)
 // if file is NULL, the current music is faded out
-void startMusic(STRING* file, var crossFadeTime);
+// set loop to 1 to loop music
+void startMusic(STRING* file, var crossFadeTime, var loop);
 
 // stops all music immediately
 void stopMusic();
