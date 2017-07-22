@@ -88,7 +88,8 @@ void projectile()
 	vec_scale(my.scale_x, weapon_projectile_scale);
 	c_setminmax(me);
 	
-	
+	var length = 0;
+	var orig_height = my.z;
 	
 	my.skill50 = 0; // How many time a projectile has bounced already
 	
@@ -137,7 +138,7 @@ void projectile()
 			vec_add(v.x, hit.x);
 			ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
 			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			vec_set(dir, bounce);
+			vec_set(dir, vector(bounce.x, bounce.y, 0));
 			vec_scale(dir, weapon_speed);
 			vec_to_angle(my.pan, dir);
 			my.tilt = 90;
@@ -146,11 +147,22 @@ void projectile()
 		} 
 		else if (dist != 0 || t > weapon_lifetime)
 		{
+			if(dist != 0)
+			{
+				
+				VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+				vec_normalize(v, 1);
+				vec_add(v.x, hit.x);
+				ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+				vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+			}
 			break;
 		}
 		else
 		{
-			vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, dir.z * time_step) );
+			
+			if(abs(orig_height - my.z) < 80) { length = -18 * time_step; } else { length = 0; }
+			vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, length) );
 		}
 		wait(1);
 	}
