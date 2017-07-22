@@ -17,7 +17,7 @@
 
 struct _TILE
 {
-	char value; // separate from flags for easier levelgen coding
+	int value; // separate from flags for easier levelgen coding - @Felix: char type not compatible with code ~~
 	int flags;
 	int tmp; // used for various levelgen algorithms
 	int prev[2];

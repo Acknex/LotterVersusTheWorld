@@ -27,6 +27,7 @@ MATERIAL * stageMtlLava =
 
 BOOL stageTileHasNoGround(TILE * tile)
 {
+	if(!tile) return FALSE;
 	return (tile->flags & TILE_FLAG_TRAP_SPIKES)
 		&& (tile->flags & TILE_FLAG_TRAP_HOLE)
 		&& (tile->flags & TILE_FLAG_TRAP_TURRET);
@@ -85,7 +86,7 @@ void stage_loadGround(DynamicModel * model, STAGE * stage)
 				continue;
 			}
 			
-			if(!stageTileHasNoGround(tile->value))
+			if(!stageTileHasNoGround(tile))
 			{
 				VECTOR center;
 				center.x = i * 200;
