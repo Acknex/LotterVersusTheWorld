@@ -46,12 +46,12 @@ float4 ps(out_ps In): COLOR
 	float3 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, 26.5/64.0)).rgb;
 	float3 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, 27.5/64.0)).rgb;
 	
-	if(blendmap.a < 0.01)
+	if(blendmap.a < 0.01 || blendmap.a > 0.99)
 	{
 		return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b, blendmap.r+blendmap.g+blendmap.b);
 	}
 	
-	float blinking = sin(vecTime.x / blendmap.a);
+	float blinking = sin(vecTime.w / blendmap.a / 16.0);
 	float3 color = float3(a * blendmap.r + b * blendmap.g + c * blendmap.b);
 	
 	return float4(color * 0.75 + color * blinking * 0.5, blinking);

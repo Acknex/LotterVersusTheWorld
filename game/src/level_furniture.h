@@ -16,7 +16,7 @@ action rack_buildup()
 	wait(1);
 	my->pan = my->skill1;
 	set(my, PASSABLE);
-	my->material = ObjectMaterial;
+	my->material = BlinkingObjectMaterial;
 	random_seed(timer());
 	var z = 5;
 	while (z < 125)
@@ -29,15 +29,15 @@ action rack_buildup()
 			{
 				model = ent_create("rack_taperec.mdl", _vec(my->x, my->y, my->z + z), 0);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				model = ent_create("rack_taperec_wheel.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(50, 14, z + 20), _vec(my->skill1, 0, 0))), rack_tapewheel);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				model = ent_create("rack_taperec_wheel.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(50, -14, z + 20), _vec(my->skill1, 0, 0))), rack_tapewheel);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				z += 40;
 				continue;
@@ -46,11 +46,11 @@ action rack_buildup()
 			{
 				model = ent_create("rack_console.mdl", _vec(my->x, my->y, my->z + z), 0);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				model = ent_create("rack_console_keyboard.mdl", _vec(my->x, my->y, my->z + z), 0);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				z += 40;
 				continue;
@@ -62,7 +62,7 @@ action rack_buildup()
 			{
 				model = ent_create("rack_hdd.mdl", _vec(my->x, my->y, my->z + z), 0);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				z += 20;
 				continue;
@@ -71,7 +71,7 @@ action rack_buildup()
 			{
 				model = ent_create("rack_memory.mdl", _vec(my->x, my->y, my->z + z), 0);
 				model->pan = my->skill1;
-				model->material = ObjectMaterial;
+				model->material = BlinkingObjectMaterial;
 				set(model, PASSABLE);
 				z += 20;
 			}
@@ -83,31 +83,31 @@ action desk_buildup()
 {
 	wait(1);
 	my->pan = my->skill1;
-	my->material = ObjectMaterial;
+	my->material = BlinkingObjectMaterial;
 	set(my, PASSABLE);
 	ENTITY* keyboard = ent_create("rack_console_keyboard.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(-11, -3, 68), _vec(my->skill1, 0, 0))), 0);
 	keyboard->pan = -5 + my->skill1;
-	keyboard->material = ObjectMaterial;
+	keyboard->material = BlinkingObjectMaterial;
 	set(keyboard, PASSABLE);
 
 	ENTITY* screen = ent_create("desk_screen.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(20, 10, 84), _vec(my->skill1, 0, 0))), 0);
 	screen->pan = -15 + my->skill1;
-	screen->material = ObjectMaterial;
+	screen->material = BlinkingObjectMaterial;
 	set(screen, PASSABLE);
 
 	ENTITY* lamp = ent_create("desk_lamp.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(20, -50, 70), _vec(my->skill1, 0, 0))), 0);
 	lamp->pan = 50 + my->skill1;
-	lamp->material = ObjectMaterial;
+	lamp->material = BlinkingObjectMaterial;
 	set(lamp, PASSABLE);
 
 	ENTITY* phone = ent_create("desk_phone.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(20, -80, 80), _vec(my->skill1, 0, 0))), 0);
 	phone->pan = 20+ my->skill1;
-	phone->material = ObjectMaterial;
+	phone->material = BlinkingObjectMaterial;
 	set(phone, PASSABLE);
 
 	ENTITY* rack = ent_create("rack_case.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(0, 65, 0), _vec(my->skill1, 0, 0))), rack_buildup);
 	rack->skill1 = my->skill1;
-	rack->material = ObjectMaterial;
+	rack->material = BlinkingObjectMaterial;
 	set(rack, PASSABLE);
 }
 
