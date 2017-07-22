@@ -23,6 +23,7 @@
 
 #include <mtlfx.c>
 #include <particles.c>
+#include "marker.c"
 
 #define PARTICLECNT skill42
 
@@ -70,8 +71,9 @@ void ITEM_collect()
 	ent_playsound(me, sndCollect, 1000);
 }
 
-void ITEM_particleTrigger()
+void ITEM_update()
 {
+	MARKER_update(me);
 	my->PARTICLECNT += time_step;
 	if (my->PARTICLECNT > 10)
 	{
