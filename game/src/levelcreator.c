@@ -253,7 +253,7 @@ void stage_load(STAGE * stage)
 	stageRenderInit();
 	
 	{
-		TILE * tile = stageGetTile(stage, 2, 4);
+		TILE * tile = stageGetTile(stage, 1, 4);
 		tile->value = 2;
 	}
 	
@@ -297,12 +297,17 @@ void stage_load(STAGE * stage)
 						ent = ent_create("tile-floor-turret.mdl", &center, NULL);
 						ent->material = GroundMaterial;
 						set(ent, POLYGON);
+						set(ent, FLAG1);
+						ent_animate(ent, "closed", 0, 0);
 						break;
 					}
 				}
 			}
 		}
 	}
+	
+	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ent_create(SPHERE_MDL, stageGetEntrancePos(stage, NULL, NULL, NULL), NULL);
 	
 	//while(!player) { wait(1); }
 	//
