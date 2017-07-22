@@ -147,6 +147,15 @@ void projectile()
 		} 
 		else if (dist != 0 || t > weapon_lifetime)
 		{
+			if(dist != 0)
+			{
+				
+				VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+				vec_normalize(v, 1);
+				vec_add(v.x, hit.x);
+				ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+				vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+			}
 			break;
 		}
 		else

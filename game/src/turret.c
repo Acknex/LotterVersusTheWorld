@@ -127,7 +127,8 @@ void TURRET__turnOn()
 		reset(my, PASSABLE);	
 	}
 	my->animCounter = minv(100, my->animCounter);
-	ent_animate(me, "open", my->animCounter, 0);	
+	ent_animate(me, "open", my->animCounter, 0);
+	my->skill41 = floatv(0.01 * my->animCounter);
 }
 
 void TURRET__turnOff()
@@ -146,6 +147,7 @@ void TURRET__turnOff()
 		snd_play(sndTurretUp, 100, 0);
 		my->animCounter = 100 - my->animCounter;
 	}
+	my->skill41 = floatv(0.01 * (100 - my->animCounter));
 }
 
 void TURRET__active()
@@ -234,6 +236,12 @@ void TURRET__die()
 	set(my, PASSABLE);
 	while (1)
 	{
+		if(random(100) < 30) {
+		
+			my->skill41 = floatv(0.0);
+		} else {
+			my->skill41 = floatv(1.0);
+		}
 		MARKER_update(me);
 		wait(1);
 	}
@@ -249,6 +257,8 @@ void TURRET__sleep()
 		snd_play(sndTurretUp, 100, 0);
 		my->animCounter = 0;
 	}
+	
+	my->skill41 = floatv(clamp(0.5 * sinv(10 * total_ticks), 0, 1));
 }
 
 void TURRET__shoot()
