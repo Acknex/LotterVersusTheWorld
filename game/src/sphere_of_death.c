@@ -35,7 +35,7 @@ void sphere_stomp_effect()
 	my.roll = random(360);
 	while(t < 0.3) {
 		var f = t / 0.3;
-		var scale = 0.01+f*5;
+		var scale = 0.01+f*10;
 		vec_set(my.scale_x, vector(scale,scale,scale));
 		my.alpha = (1-f)*100;
 		t += time_step/16;
