@@ -4,8 +4,7 @@
 #include "font.h"
 #include "sky.h"
 #include "music_player.h"
-#include "hud.h"
-
+#include "hud.h"#include "quest.h"
 #include "items.h" //temp
 #include "turret.h" //temp
 
@@ -24,6 +23,13 @@ void INIT_levelStart()
 	stageAddExitAndEntrance(LEVEL__stage);
 	stageCreateEnemyData(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
+
+	QUEST_init();	
+	VECTOR* vecTemp;
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.85, 0.1);
+	ent_create("warlock.mdl", vecTemp, questmaster);
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.9, 0.1);
+	ent_create(CUBE_MDL, vecTemp, questitem);
 	
 	sky_color.red = 0;
 	sky_color.green = 0;
@@ -51,6 +57,8 @@ void INIT_levelStart()
 //	vecTemp = vector(725,900, 50);
 //	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
 //	you.material = ObjectMaterial;
+
+	enemy_spawn_hex();
 }
 
 void INIT_levelEnd()
@@ -101,4 +109,5 @@ void INIT_resize()
 {
 	pp_bloom_resize();
 	FONT_scale();
+	hud_ingame_align();
 }
