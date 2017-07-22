@@ -70,13 +70,14 @@ float4 ps(out_ps In): COLOR
 	
 	//return float4(text, 1);
 	
-	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 21.0/64.0));
-	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 22.0/64.0));
+	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 21.5/64.0));
+	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 22.5/64.0));
+	float4 col3 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 23.5/64.0));
 	
 	float4 color = 
 		col1 * attributes.r +
 		col2 * attributes.g +
-		text * attributes.b;
+		text.r * col3 * attributes.b;
 	
 	return color;
 }

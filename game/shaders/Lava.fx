@@ -53,12 +53,19 @@ out_ps vs(
 float4 ps(out_ps In): COLOR
 {
 	float3 blendmap = pow(tex2D(sTexture, 10 * In.uv).rgb * tex2D(sTexture, In.uv).rgb, 0.5);
-	float fac = 0.3333 + (blendmap.r + blendmap.g + blendmap.b);
+	float fac = blendmap.r;
 	
-	float3 a = tex2D(sLUT, float2(0.49 * frac(0.01 * vecTime.w + 0.001 * In.WorldPos.x), 1.0/64.0));
-	float3 b = tex2D(sLUT, float2(0.49 * frac(0.01 * vecTime.w + 0.012 * In.WorldPos.y), 2.0/64.0));
+	float hl0 = 1-pow(tex2D(sTexture, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0002 * vecTime.w)).r, 3);
+	float hl1 = 1-pow(tex2D(sTexture, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).r, 3);
+	float highlight = hl0 * hl1;
+	
+	float4 b = tex2D(sLUT, float2(0.5 * saturate(highlight), 2.5/64.0));
+	float4 a = tex2D(sLUT, float2(0.5 * blendmap.r, 1.5/64.0));
+	return a+b;
 
-	return float4(pow(blendmap * blendmap * lerp(a, b, fac), 0.5), 0.0);
+	// return float4(fac,fac,fac, 0);
+
+	// return float4(lerp(a, b, fac), 0.0);
 }
 
 

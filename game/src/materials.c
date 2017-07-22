@@ -39,9 +39,8 @@ void pp_bloom_resize()
 	}
 }
 
-void pp_bloom(float threshold, float strength)
+void pp_bloom(float strength)
 {
-	PPThresholdLuminanceMaterial.skill1 = floatv(threshold);
 	PPBloomMixMaterial.skill1 = floatv(strength);
 	
 	if(!pp_isBloomEnabled)
@@ -181,10 +180,10 @@ void ground_reflections()
 	ReflectionView.size_y = 512;
 	set(ReflectionView, NOFLAG1);
 	
-	pp_view = cam;
+/*	pp_view = cam;
 	pp_stage = cam;
 		
-	pp_add(PPThresholdLuminanceMaterial);
+	pp_add(PPThresholdLuminanceMaterial);*/
 	
 	ReflectionView.bmap = bmap_createblack(512, 512, 8888);
 	
