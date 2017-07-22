@@ -62,7 +62,7 @@ float4 ps(out_ps In): COLOR
 	float4 reflection = tex2D(sReflection, texcoords);
 	float fresnel = abs(normalize(vecViewPos.xyz - In.worldPos).y);
 	fresnel = max(pow(fresnel, 0.5), 0.5);
-	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 1.0)
+	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 0.0)
 		+ float4(1,0,1,1) * attributes.b;
 }
 
