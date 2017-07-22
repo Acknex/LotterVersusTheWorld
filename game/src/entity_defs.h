@@ -4,10 +4,9 @@
 #define health skill10
 #define damage skill11
 
-#define weapon_type skill45
-#define weapon_cooldown skill43
-#define weapon_bouncing skill44
-#define weapon_granade_cooldown skill46
+#define weapon_cooldown skill16
+#define weapon_bouncing skill17
+#define weapon_granade_cooldown skill18
 
 //skill20-40: for individual use, do not define here
 
