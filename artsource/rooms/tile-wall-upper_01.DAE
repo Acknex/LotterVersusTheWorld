@@ -6,8 +6,8 @@
       <authoring_tool>FBX COLLADA exporter</authoring_tool>
       <comments></comments>
     </contributor>
-    <created>2017-07-22T06:42:54Z</created>
-    <modified>2017-07-22T06:42:54Z</modified>
+    <created>2017-07-22T06:58:33Z</created>
+    <modified>2017-07-22T06:58:33Z</modified>
     <revision></revision>
     <title></title>
     <subject></subject>
@@ -51,9 +51,9 @@
         <source id="Plane001-lib-UV0">
           <float_array id="Plane001-lib-UV0-array" count="8">
 0.000000 0.000000
-0.333300 0.000000
+0.250000 0.000000
 0.000000 1.000000
-0.333300 1.000000
+0.250000 1.000000
 </float_array>
           <technique_common>
             <accessor source="#Plane001-lib-UV0-array" count="4" stride="2">
