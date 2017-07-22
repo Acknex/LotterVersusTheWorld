@@ -111,6 +111,12 @@ MATERIAL *ObjectMaterial =
 	flags = PASS_SOLID;
 }
 
+MATERIAL *HologramMaterial =
+{
+	effect = "Hologram.fx";
+	flags = PASS_SOLID;
+}
+
 function WallMainText_startup()
 {
 	// WallMainText.size_x = bmap_width(WallMainTextImage);
