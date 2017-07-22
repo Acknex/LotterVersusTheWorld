@@ -109,8 +109,15 @@ void ENEMY__projectileLoop()
 
 STAGE* LEVEL__stage = NULL;
 
+void enemy_bat_fade()
+{
+	var vDamageDealt = ENEMY_hit(event_type);
+}
+
 action enemy_bat()
 {
+	ENEMY_init();
+	my.event = enemy_bat_fade;
 	my->material = LotterMaterial;
 	VECTOR myTarget,curTarget;
 	vec_set(myTarget,my.x);
@@ -125,7 +132,7 @@ action enemy_bat()
 	batId++;
 	my.group = 9;
 	
-	while(1)
+	while(my.health > 0)
 	{
 		if(!(my.eflags&CLIPPED))
 		{
@@ -206,4 +213,6 @@ action enemy_bat()
 		
 		wait(1);
 	}
+	effect(p_bat_explode,100,my.x,nullvector);
+	ptr_remove(me);
 }
