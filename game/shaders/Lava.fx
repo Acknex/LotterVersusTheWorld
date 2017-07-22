@@ -6,10 +6,11 @@
 #include <normal>
 
 Texture entSkin1;
-Texture ColorLUT_bmap;
 float4 vecTime;
 
 sampler sTexture = sampler_state { Texture = <entSkin1>; MipFilter = Linear; };
+
+Texture ColorLUT_bmap;
 sampler sLUT = sampler_state
 {
 	Texture = <ColorLUT_bmap>; 

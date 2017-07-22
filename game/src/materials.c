@@ -73,7 +73,7 @@ BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
 BMAP * WallMainTextImage = "tile-wall-text.png";
 FONT * WallMainTextFont = "Courier#15b";
 BMAP *ColorLUT = "color-lut_01.dds";
-float ColorVariation = 0.5;
+float ColorVariation = 0.0;
 
 TEXT * WallMainText = 
 {
@@ -86,6 +86,15 @@ TEXT * WallMainText =
 	strings = 20;
 }
 
+function ColorLUT_Bounce()
+{
+	while(key_p)
+	{
+		ColorVariation = 0.5 + 0.5 * sinv(4 * total_ticks);
+		wait(1);
+	}
+}
+
 function WallMainText_startup()
 {
 	// WallMainText.size_x = bmap_width(WallMainTextImage);
@@ -95,6 +104,8 @@ function WallMainText_startup()
 	
 	wait(1);
 	bmap_to_mipmap(WallMainTextImage);
+	
+	on_p = ColorLUT_Bounce;
 	
 	while(1)
 	{
