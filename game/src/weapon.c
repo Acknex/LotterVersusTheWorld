@@ -1,14 +1,26 @@
+SOUND* sndPlayerShot = "sounds\\player_shot.wav";
+
 void weapon_startup()
 {
+	var shootingHandle = 0;
 	while(1)
 	{
 		if((player != NULL) && mouse_left) 
 		{
+			if(shootingHandle == 0)
+			{
+				shootingHandle = snd_loop(sndPlayerShot, 50, 0);
+			}
 			player.skill44 = 2;
 			player.group = 3;
 			shoot(1);
 		}
-		else if((player != NULL) && mouse_right)
+		if(!mouse_left && shootingHandle != 0) 
+		{
+			snd_stop(shootingHandle);
+			shootingHandle = 0;
+		}
+		if((player != NULL) && mouse_right)
 		{
 			shoot(2);
 		}
