@@ -25,8 +25,13 @@ void stageRenderInit()
 	ent_remove(ent);
 }
 
-ENTITY * stageRenderEntity(STAGE * stage)
+ENTITY * stage_load(STAGE * stage)
 {
+	level_load(NULL);
+	
+	// Initialize models
+	stageRenderInit();
+	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	DynamicModel * model = dmdl_create();
 	
