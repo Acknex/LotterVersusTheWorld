@@ -136,18 +136,33 @@ void projectile()
 		}
 		else if ( (you || !dist) && (my.skill21 < player.weapon_bouncing) )
 		{
-			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
-			vec_normalize(v, 1);
-			vec_add(v.x, hit.x);
-			ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
-			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			vec_set(vTarget, bounce);
-			vec_to_angle(my.pan, vTarget);
-			my.tilt = 90;
-			my.pan += 90;
-			my.skill21 += 1;
-			my.z += 10;
-			t = weapon_lifetime - 0.5;
+			if(you)
+			{
+				if(you.type == TypeDefault || you.type == TypeWall)
+				{
+					VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+					vec_normalize(v, 1);
+					vec_add(v.x, hit.x);
+					ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+					vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+					vec_set(vTarget, bounce);
+					vec_to_angle(my.pan, vTarget);
+					my.tilt = 90;
+					my.pan += 90;
+					my.skill21 += 1;
+					my.z += 10;
+					t = weapon_lifetime - 0.5;
+				} 
+				else 
+				{
+					VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+					vec_normalize(v, 1);
+					vec_add(v.x, hit.x);
+					ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+					vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+					break;
+				}
+			}
 		}
 		wait(1);
 	}
