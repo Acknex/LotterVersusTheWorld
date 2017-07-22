@@ -71,8 +71,8 @@ void projectile()
 	// Calculate grenate target
 	vec_set(vTarget, mouse_dir3d);
 	vec_scale(vTarget, 1000);
-	float t = -mouse_pos3d.z / vTarget.z;
-	vec_scale( vTarget, t);
+	float l = -mouse_pos3d.z / vTarget.z;
+	vec_scale( vTarget, l);
 	vec_add(vTarget, mouse_pos3d);
 	
 	vTarget.z += 50;
@@ -120,7 +120,10 @@ void projectile()
 		c_ignore(3,4,0);
 		dist = c_move(me, nullvector, vTarget, ACTIVATE_SHOOT | USE_POLYGON);
 		
-		
+		if(t >= weapon_lifetime)
+		{
+			break;
+		}
 		
 		if((you || !dist) && (player.weapon_bouncing == 0 || my.skill21 >= player.weapon_bouncing))
 		{
@@ -144,6 +147,7 @@ void projectile()
 			my.pan += 90;
 			my.skill21 += 1;
 			my.z += 10;
+			t = weapon_lifetime - 0.5;
 		}
 		wait(1);
 	}
