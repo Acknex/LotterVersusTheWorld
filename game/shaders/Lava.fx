@@ -54,13 +54,13 @@ out_ps vs(
 float4 ps(out_ps In): COLOR
 {
 	//float fac = pow(tex2D(sTexture, 10 * In.uv).r * tex2D(sTexture, In.uv).r, 0.5);
-	float fac = tex2D(sTexture, 10 * In.uv + float2(0.004 * vecTime.w, 0.0005 * vecTime.w)).r;
-	float fac2 = tex2D(sTexture, 8 * In.uv + float2(0.0035 * vecTime.w, -0.0005 * vecTime.w)).r;
-	float fac3 = tex2D(sTexture, 1 * In.uv + float2(0.00035 * vecTime.w, 0)).r;
+	float fac = tex2D(sTexture, 10 * In.uv + float2(0.002 * vecTime.w, 0.00025 * vecTime.w)).r;
+	float fac2 = tex2D(sTexture, 8 * In.uv + float2(0.00175 * vecTime.w, -0.00025 * vecTime.w)).r;
+	float fac3 = tex2D(sTexture, 1 * In.uv + float2(0.000175 * vecTime.w, 0)).r;
 	fac = clamp(fac * (fac2 * 2) * (fac3 * 4),0,1);
 	
-	float hl0 = 1.0 - tex2D(sTexture, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0001 * vecTime.w)).r;
-	float hl1 = 1.0 - tex2D(sTexture, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).r;
+	float hl0 = 1.0 - tex2D(sTexture, 2 * In.uv + float2(0.0004 * vecTime.w, -0.0001 * vecTime.w)).r;
+	float hl1 = 1.0 - tex2D(sTexture, 2 * In.uv + float2(0.0006 * vecTime.w,  0.0003 * vecTime.w)).r;
 	
 	float highlight = hl0 * hl1;
 	

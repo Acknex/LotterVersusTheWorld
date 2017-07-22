@@ -57,6 +57,42 @@
 
 	void stageDraw(STAGE* stage, int posX, int posY, int tileSize);
 
+
+
+void draw_line3d2(VECTOR* vfrom, VECTOR* vto, COLOR* color, var alpha)
+{
+	draw_line3d(vfrom, NULL, alpha);
+	draw_line3d(vfrom, color, alpha);
+	draw_line3d(vto, color, alpha);
+}
+
+void draw_num3d(var num, VECTOR* vpos, var yOffset, COLOR* color)
+{
+	STRING* str;
+	VECTOR temp;
+	
+	vec_set(temp,vpos);
+	if(vec_to_screen(temp,get_camera()))
+	{
+		str = str_for_num(NULL,num);
+		draw_text(str,temp.x-5,temp.y-5+yOffset,COLOR_BLACK);
+		draw_text(str,temp.x-4,temp.y-4+yOffset,color);
+	}
+}
+
+void draw_str3d(STRING* str, VECTOR* vpos, var yOffset, COLOR* color)
+{
+	VECTOR temp;
+	
+	vec_set(temp,vpos);
+	if(vec_to_screen(temp,get_camera()))
+	{
+		draw_text(str,temp.x-5,temp.y-5+yOffset,COLOR_BLACK);
+		draw_text(str,temp.x-4,temp.y-4+yOffset,color);
+	}
+}
+
+
 	#include "levelgen.c"
 
 #endif

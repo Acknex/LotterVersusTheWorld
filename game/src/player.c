@@ -3,13 +3,13 @@
 #include "levelgen.h"
 #include "entity_defs.h"
 
-STAGE* LEVEL__stage = NULL;
+//STAGE* LEVEL__stage = NULL;
 
 var anim_percentage = 0;
 var dist_ahead = 0;
 var dist_strafe = 0;
-VECTOR *mousepos, playerpos;
-ANGLE dir;
+VECTOR playerpos, temp;
+ANGLE diff, mouseDir, moveDir;
 
 void player_move() {
 	
@@ -57,11 +57,6 @@ void player_move() {
 		c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 	}
 	
-	//#ifdef DEBUG
-		DEBUG_VAR(dist_ahead, 260);
-		DEBUG_VAR(dist_strafe, 280);
-	//#endif
-	
 	// animation
 	if (dist_ahead != 0 || dist_strafe != 0) {
 		if (key_shiftl) {
@@ -73,20 +68,34 @@ void player_move() {
 			anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
 			ent_animate(player,"walk",anim_percentage,ANM_CYCLE);
 		}	
-		ent_blendframe(player, player, "strafe", 0, 25);
+		
+		// If walk position and mouse position = 90° -> strafe 100%
+		// if walk position and mouse position 0 0° -> walk 100%
+		vec_to_angle(moveDir, vecDir);
+		ang_diff(diff, player.pan, moveDir.pan);
+		
+		// diff.pan = 0,180 -> walk, 90,270->strafe
+		draw_textmode("Arial", 1, 20, 100);
+		DEBUG_VAR(cycle(diff.pan, 0, 360), 10);
+
+		var percentage = (1-abs(abs(ang(diff.pan))-90.0)/90.0)*100;
+		DEBUG_VAR(percentage, 30);
+		
+		ent_blendframe(player, player, "strafe", 0, percentage);
+		
+		
 		} else {
 		anim_percentage += 5*time_step; 
 		ent_animate(player,"stand",anim_percentage,ANM_CYCLE);
 	}
-
+	
 	MARKER_update(player);
 	if(LEVEL__stage) 
 	{
 		static int playerX = 0;
 		static int playerY = 0;
 		int x,y;
-		x = floor((player.x-100)/200);
-		y = floor((player.y-100)/200);
+	stageGetIndicesFromPos(LEVEL__stage,player.x,&x,&y);
 		if(playerX != x || playerY != y)
 		{
 			playerX = x;
@@ -104,17 +113,18 @@ void player_init() {
 	player->material = LotterMaterial;
 	
 	// Adapt scale
-	vec_scale(player.scale_x, 1.2);
+	vec_scale(player.scale_x, 2.5);
 	
 	// Adapt bounding box
 	c_setminmax(player);
-	vec_mul(player.min_x, vector(0.3, 0.5, 1.0));
-	vec_mul(player.max_x, vector(0.5, 0.5, 1.0));
+	wait(1);
+	vec_set(player.min_x, vector(-30, -30, -70));
+	vec_set(player.max_x, vector(30, 30, 12));
 	
 	move_friction = 0.1;
 	
 	mouse_mode = 4;
-	player.z -= player.min_z;
+	player.z = 150;
 	player->trigger_range = 20;
 	
 	player.damage = 1;

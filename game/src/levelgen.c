@@ -108,14 +108,110 @@ TILE* stageGetTile(STAGE* stage, int i, int j)
 	return &(stage->tiles)[i*stage->size[1]+j];
 }
 
+var stageGetIndicesFromPos(STAGE* stage, VECTOR* vpos, int *px, int *py)
+{
+	int x,y;
+	
+	x = (vpos->x+100)/200;
+	y = (vpos->y+100)/200;
+	*px = x;
+	*py = y;
+	if(x >= 0 && x < stage->size[0] && y >= 0 && y < stage->size[1]) return 1;
+	return 0;
+}
+
+var stageGetFloodAtPos(STAGE* stage, VECTOR* vpos, int floodId)
+{
+	int x,y;
+	TILE* tile;
+	
+	if(floodId < 0  || floodId >= FLOOD_TYPE_MAX) error("stageGetFloodAtPos(): bad floodId!");
+	if(stageGetIndicesFromPos(stage,vpos,&x,&y))
+	{
+		tile = stageGetTile(stage,x,y);
+		return (tile->flood[floodId]);
+	}
+	return FLOOD_VALUE_MAX;
+}
+
+var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VECTOR* vNewTarget, int floodId, var border)
+{
+	VECTOR currentCenter;
+	TILE* tile, *tile2;
+	int x,y,finalX,finalY,k,i,j,minX,maxX,minY,maxY,ok;
+	
+	stageGetIndicesFromPos(stage,vpos,&x,&y);
+	stageGetIndicesFromPos(stage,vFinalTarget,&finalX,&finalY);
+	//draw_str3d(str_printf(NULL,"(%d, %d) - (%d, %d)",x,y,finalX,finalY),my.x,-80,COLOR_WHITE);
+	if(x == finalX && y == finalY)
+	{
+		vec_set(vNewTarget,vFinalTarget);
+		return 0;
+	}
+	minX = minv(x,finalX);
+	maxX = maxv(x,finalX);
+	minY = minv(y,finalY);
+	maxY = maxv(y,finalY);
+	
+	ok = 1;
+	for(i = minX; i <= maxX; i++)
+	{
+		for(j = minY; j <= maxY; j++)
+		{
+			tile = stageGetTile(stage,i,j);
+			if(!tile)
+			{
+				i = maxX+1;
+				ok = 0;
+				break;
+			}
+			if(tile->value == TILE_EMPTY)
+			{
+				i = maxX+1;
+				ok = 0;
+				break;
+			}
+		}	
+	}
+	if(ok)
+	{
+		vec_set(vNewTarget,vFinalTarget);
+		return 0;
+	}
+	
+	currentCenter.x = x*200;
+	currentCenter.y = y*200;
+	tile = stageGetTile(stage,x,y);
+	if(!tile) return FLOOD_VALUE_MAX;
+	if(abs(vpos->x-currentCenter.x) < border && abs(vpos->y-currentCenter.y) < 100-border)
+	{
+		for(k = 0; k < 4; k++)
+		{
+			i = x+levelgenOffset2D[k*2+0];
+			j = y+levelgenOffset2D[k*2+1];
+			tile2 = stageGetTile(stage,i,j);
+			if(tile2)
+			{
+				if(tile2->value != TILE_EMPTY && tile2->flood[floodId] < tile->flood[floodId])
+				{
+					vNewTarget.x = i*200;
+					vNewTarget.y = j*200;
+					return (tile2->flood[floodId]);
+				}
+			}
+		}
+	}
+	return (tile->flood[floodId]);
+}
+
 VECTOR* stageGetPosFromIndices(STAGE* stage, VECTOR* vpos, int x, int y)
 {
 	if(vpos)
 	{
-		vec_set(vpos,vector(x*200-100,y*200-100,0));
+		vec_set(vpos,vector(x*200,y*200,0));
 		return vpos;
 	}
-	return vector(x*200-100,y*200-100,0);
+	return vector(x*200,y*200,0);
 }
 
 VECTOR* stageGetExitPos(STAGE* stage, VECTOR* vpos, int *px, int *py)
@@ -525,7 +621,6 @@ void stageCreateEnemyData(STAGE* stage)
 		//cprintf4("\n%d): (%d,%d,%d)",enemyCur,(int)(stage->enemyData)[enemyCur].x,(int)(stage->enemyData)[enemyCur].y,(int)(stage->enemyData)[enemyCur].z);
 		tile = stageGetTile(stage,i2,j2);
 		enemyType = 0+random(4);
-		if(random(2) > 1) enemyType = 2;
 		if(enemyType == 0) tile->flags |= TILE_FLAG_TRAP_SPIKES;
 		if(enemyType == 1) tile->flags |= TILE_FLAG_TRAP_HOLE;
 		if(enemyType == 2) tile->flags |= TILE_FLAG_TRAP_TURRET;

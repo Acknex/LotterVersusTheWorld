@@ -3,6 +3,8 @@
 
 #include "materials.h"
 #include "turret.h"
+#include "spikes.h"
+#include "hole.h"
 #include "entity_defs.h"
 #include "marker.h"
 
@@ -273,11 +275,10 @@ VECTOR * stage_load(STAGE * stage)
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	
-	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
+	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
-	
 	
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
@@ -330,23 +331,21 @@ VECTOR * stage_load(STAGE * stage)
 					}
 					
 					//ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
-					ent->material = GroundMaterial;
+					ent->material = TurretMaterial;
 				//moved to turret
 				/*	set(ent, POLYGON);
 					set(ent, FLAG1);
 					ent_animate(ent, "closed", 0, 0);
 					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = TypeHole;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-hole.mdl", &center, enemy_hole);
+					ent->material = TurretMaterial;
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
-					ent->material = GroundMaterial;
-					set(ent, POLYGON);
-					set(ent, FLAG1);
-					ent->type = TypeSpikes;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
+					ent->material = TurretMaterial;
+				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
+
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 					ent->type = TypeEnemy;

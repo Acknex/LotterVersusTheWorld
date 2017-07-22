@@ -1,15 +1,17 @@
 
+// flood types
 #define FLOOD_EXIT 0
 #define FLOOD_ENTRANCE 1
 #define FLOOD_PLAYER 2
 #define FLOOD_TMP1 3
+#define FLOOD_TYPE_MAX 4
 #define FLOOD_VALUE_MAX 999999
 
 #define TILE_EMPTY 0
 
 #define TILE_FLAG_EXIT (1<<0)
 #define TILE_FLAG_ENTRANCE (1<<1)
-#define TILE_FLAG_ENEMYSPAWN (1<<2)
+#define TILE_FLAG_ENEMYSPAWN (1<<2) // for internal use only, don't spawn stuff in this case
 #define TILE_FLAG_TRAP_SPIKES (1<<3)
 #define TILE_FLAG_TRAP_HOLE (1<<4)
 #define TILE_FLAG_TRAP_TURRET (1<<5)
@@ -21,7 +23,7 @@ struct _TILE
 	int flags;
 	int tmp; // used for various levelgen algorithms
 	int prev[2];
-	int flood[4];
+	int flood[4]; // 4 == FLOOD_TYPE_MAX
 };
 
 typedef struct _TILE TILE;
