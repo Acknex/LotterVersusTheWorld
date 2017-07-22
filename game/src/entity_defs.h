@@ -3,6 +3,8 @@
 #define type skill1
 #define health skill10
 #define damage skill11
+#define animCounter skill12
+#define delayCounter skill13
 
 #define weapon_type skill45
 #define weapon_cooldown skill43

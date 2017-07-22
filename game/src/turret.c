@@ -6,8 +6,6 @@
 #define TURRET_ANIMDIESPEED 8
 #define TURRET_ALTERNATIONTIME 64
 
-#define delayCounter skill22
-#define animCounter skill23
 #define shootAngle skill24
 #define turretState skill25
 #define turretToggle skill26
@@ -27,6 +25,7 @@
 
 #include "enemy.h"
 #include "marker.h"
+#include "entity_defs.h"
 
 void TURRET__init();
 void TURRET__loop();
