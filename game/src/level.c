@@ -25,6 +25,7 @@ void LEVEL_start()
 void LEVEL_end()
 {
 	// TODO: @superku: stageRemove or similar!
+	stage_unload(); // destroy all meshes
 	// stage_remove(LEVEL__stage);
 
 	LEVEL__running = 0;
