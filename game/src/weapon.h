@@ -11,6 +11,23 @@
 	
 	//Player skill43 is active cooldown timer
 	//Player skill44 is possible projectile bounce count
+	
+	STRING *str_weapon_code = "var angle";
+	
+	FONT *courier = "Monoid#32b";
+	
+	TEXT *txt_fragment =
+	{
+		font = courier;
+		pos_x = 64;
+		pos_y = 16;
+		flags = CENTER_X | CENTER_Y | SHOW;
+		strings = 1;
+		string(str_weapon_code);
+		red = 255;
+		green = 128;
+		blue = 255;
+	}
 
 	#include "weapon.c"
 
