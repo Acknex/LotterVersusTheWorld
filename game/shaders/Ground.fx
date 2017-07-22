@@ -6,7 +6,9 @@
 #include <normal>
 
 Texture mtlSkin1;
-sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
+Texture mtlSkin2;
+sampler sReflection = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
+sampler sTexture = sampler_state { Texture = <mtlSkin2>; MipFilter = Linear; };
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -33,10 +35,11 @@ float4 ps(out_ps In): COLOR
 	float2 texcoords = In.projection.xy / In.projection.z;
 	texcoords.xy *= 0.5;
 	texcoords.xy += 0.5;
-	float3 color = tex2D(sTexture, texcoords);
+	float3 color = tex2D(sReflection, texcoords);
+	float3 floorcol = tex2D(sTexture, In.uv);
 	float fresnel = normalize(vecViewPos.xyz - In.worldPos).y;
 	fresnel = pow(fresnel, 3);
-	color = lerp(0.0, color, saturate(fresnel));
+	color = lerp(floorcol, color, saturate(fresnel));
 	
 	return float4(color, 1.0);
 }

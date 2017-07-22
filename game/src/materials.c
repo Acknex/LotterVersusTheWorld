@@ -90,9 +90,12 @@ MATERIAL *WallLowerMaterial =
 	skin1 = WallLower01BMAP;
 }
 
+BMAP * GroundAtlas = "tile-floor-atlas_01.dds";
+
 MATERIAL *GroundMaterial =
 {
 	effect = "Ground.fx";
+	skin2 = GroundAtlas;
 }
 
 VIEW *ReflectionView = NULL;
