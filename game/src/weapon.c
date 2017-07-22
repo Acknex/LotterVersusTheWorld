@@ -45,10 +45,12 @@ void projectile()
 	
 	BMAP *blub = ent_getskin(me, 1);
 	txt_fragment->target_map = blub;
+	txt_fragment->flags |= SHOW;
 	
 	vec_set(my.pan, vector(player.pan + weapon_angle_correction, 0, 0));
 	
-	my.flags |= (FLAG2 | PASSABLE);
+	my.flags |= (PASSABLE);
+	my.type = TypePlayerProjectile;
 	
 	VECTOR dir;
 	VECTOR offset;
@@ -73,8 +75,6 @@ void projectile()
 	{
 		t += time_step / 16; //Dead after timer if projectile is shot into the wild
 		
-		
-		
 		my.flags |= LIGHT;
 		my.red = 255;
 		my.green = 128;
@@ -85,23 +85,20 @@ void projectile()
 		vec_set(offset, to);
 		vec_scale(to, 16 * weapon_projectile_scale);
 		vec_add(to, my.x);
-		vec_scale(offset, -16);
-		vec_add(offset, my.x);
+		//vec_scale(offset, -16);
+		//vec_add(offset, my.x);
 		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
 		
-		
+		/*
 		draw_line3d(to, NULL, 100);
 		draw_line3d(offset, COLOR_GREEN, 100);
 		draw_line3d(to, COLOR_GREEN, 100);
-		
+		*/
 		if(you == player)	{ break; }
 		
 		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
 		{
-			
-			
-			 
 			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 			vec_normalize(v, 1);
 			vec_add(v.x, hit.x);
@@ -139,7 +136,49 @@ void projectile()
 
 void granate()
 {
+	VECTOR vstart,temp, vTarget, midPos1, midPos2;
 	
+	my.group = 2;
+	
+	// Calculate grenate target
+	vec_set(vTarget,mouse_dir3d);
+	vec_scale(vTarget,1000);
+	float t = -mouse_pos3d.z/vTarget.z;
+	vec_scale(vTarget,t);
+	vec_add(vTarget,mouse_pos3d);
+	
+	// Set start and two interpolated points
+	vec_set(vstart,my.x);
+	vec_lerp(midPos1,vstart,vTarget,0.4);
+	midPos1.z = 200;
+	vec_lerp(midPos2,vstart,vTarget,0.667);
+	midPos2.z = 200;
+	
+	// Bezier interpolation
+	while(my.skill1 < 16 && me)
+	{
+		my.skill1 = minv(my.skill1+time_step,16);
+		float t = my.skill1/16.0;
+		float tinv = 1-t;
+		
+		vec_set(my.x,vstart);
+		vec_scale(my.x,tinv*tinv*tinv);
+		
+		vec_set(temp,midPos1);
+		vec_scale(temp,tinv*tinv*t*3);
+		vec_add(my.x,temp);
+		
+		vec_set(temp,midPos2);
+		vec_scale(temp,tinv*t*t*3);
+		vec_add(my.x,temp);
+		
+		vec_set(temp,vTarget);
+		vec_scale(temp,t*t*t);
+		
+		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
+		wait(1);
+	}
+	ent_remove(me);
 }
 
 void shotgun()
@@ -166,9 +205,25 @@ void shoot()
 {
 	VECTOR to;
 	
-	if(player.skill43 == 0)
+	player.weapon_type = 0;//1;
+	
+	if(player.skill43 == 0 && player.weapon_type == 0)
 	{
 		ent_create("billboard.tga", player.x, projectile);
+		cooldown();
+	}
+	
+	//Test für Granate
+	
+	if(player.weapon_type == 1)
+	{
+		
+		if(mouse_left)
+		{
+			
+		}
+		
+		ent_create("cube.mdl", player.x, granate);
 		cooldown();
 	}
 }
