@@ -5,6 +5,7 @@
 #include "turret.h"
 #include "spikes.h"
 #include "hole.h"
+#include "teleporter.h"
 #include "entity_defs.h"
 #include "marker.h"
 #include "level_furniture.h"
@@ -199,9 +200,6 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == TILE_EMPTY) {
-				continue;
-			}
 			
 			VECTOR center;
 			center.x = i * 200;
@@ -217,7 +215,10 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
+				if(tile->value != TILE_EMPTY && n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
+					continue;
+				}
+				if(tile->value == TILE_EMPTY && (n->value == TILE_EMPTY || !(n->flags & TILE_FLAG_TRAP_HOLE))) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));
@@ -351,7 +352,7 @@ VECTOR * stage_load(STAGE * stage)
 					TILE* neighborn = stageGetTile(stage, i, j-1);
 					TILE* neighbors = stageGetTile(stage, i, j+1);
 					if (neighbors->value == 0)
-					ent_create("rack_case.mdl", vec_add(vector(offx, offy, 0), &center), rack_buildup);{
+					{
 						rot = -90;
 						offy = 95;
 					}
@@ -375,7 +376,7 @@ VECTOR * stage_load(STAGE * stage)
 						r = 200;
 					}
 
-					if (r < 10)
+					if (r < 7)
 					{
 						ENTITY* desk = ent_create("desk.mdl", vec_add(vector(offx, offy, 0), &center), desk_buildup);
 						desk->skill1 = rot;
@@ -385,19 +386,19 @@ VECTOR * stage_load(STAGE * stage)
 						ENTITY* rack = ent_create("rack_case.mdl", vec_add(vector(offx, offy, 0), &center), rack_buildup);
 						rack->skill1 = rot;
 					}
-					else if ((r > 80) && (r < 100))
+					else if ((r > 96) && (r < 100))
 					{
 						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
 						screen->pan = rot;
+						screen->material = ObjectMaterial;
 					}
 				}
 			}
 		}
 	}
 	
-	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	ent->material = TeleporterEffectMaterial;
-	set(ent, PASSABLE);
 	
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }
