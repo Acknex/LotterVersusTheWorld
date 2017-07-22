@@ -19,9 +19,11 @@ void INIT_levelStart()
 	//level_load("prototype_wmb.wmb");
 	//level_load("prototype.mdl");
 	//level_load("test_level_small.wmb");
-	LEVEL__stage = stageCreate(32,32,137.1);
+	LEVEL__stage = stageCreate(32,32,137.1,1);
 	stageFill(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
+	
+	error("?");
 	
 	sky_color.red = 0;
 	sky_color.green = 0;

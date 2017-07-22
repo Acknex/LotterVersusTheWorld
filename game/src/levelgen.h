@@ -554,6 +554,6 @@
 		}
 	}
 
-	//#include "levelcreator.c"
+	#include "levelcreator.c"
 
 #endif
