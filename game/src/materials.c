@@ -9,6 +9,7 @@ MATERIAL *LotterMaterial =
 {
 	effect = "Lotter.fx";
 	flags = AUTORELOAD;
+	flags = PASS_SOLID;
 }
 
 MATERIAL *PPThresholdLuminanceMaterial =
@@ -157,6 +158,15 @@ function WallMainText_startup()
 	}
 }
 
+BMAP * TeleporterEffectTexture = "teleport.png";
+
+MATERIAL *TeleporterEffectMaterial =
+{
+	effect = "Teleport.fx";
+	skin1 = TeleporterEffectTexture;
+	flags = TRANSLUCENT;
+}
+
 MATERIAL *WallMainMaterial =
 {
 	effect = "WallMain.fx";
@@ -167,6 +177,7 @@ MATERIAL *WallMainMaterial =
 MATERIAL *WallOutlineMaterial =
 {
 	effect = "WallOutline.fx";
+	flags = PASS_SOLID;
 }
 
 BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
@@ -177,11 +188,13 @@ MATERIAL *WallLowerMaterial =
 	effect = "WallLower.fx";
 	skin1 = WallLower01BMAP;
 	skin2 = WallLowerLavaBMAP;
+	flags = PASS_SOLID;
 }
 
 MATERIAL *ObjectMaterial = 
 {
 	effect = "Objects.fx";
+	flags = PASS_SOLID;
 }
 
 BMAP * GroundAtlas = "tile-floor-atlas_01.dds";
@@ -190,6 +203,14 @@ MATERIAL *GroundMaterial =
 {
 	effect = "Ground.fx";
 	skin2 = GroundAtlas;
+	flags = PASS_SOLID;
+}
+
+MATERIAL *TurretMaterial =
+{
+	effect = "Turret.fx";
+	skin2 = GroundAtlas;
+	flags = PASS_SOLID;
 }
 
 VIEW *ReflectionView = NULL;
@@ -230,6 +251,7 @@ void ground_reflections()
 	pp_add(PPReflectionBlurVMaterial);
 	pp_stage.bmap = ReflectionView.bmap;
 	GroundMaterial.skin1 = pp_stage.bmap;
+	TurretMaterial.skin1 = pp_stage.bmap;
 	
 	set(ReflectionView, SHOW);
 	proc_mode = PROC_LATE;

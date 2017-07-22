@@ -65,21 +65,24 @@ float4 ps(out_ps In): COLOR
 	
 	
 	//Lava color
-	float fac = tex2D(sLava, 10 * In.uv + float2(0.004 * vecTime.w, 0.0005 * vecTime.w)).a;
-	float fac2 = tex2D(sLava, 8 * In.uv + float2(0.0035 * vecTime.w, -0.0005 * vecTime.w)).a;
-	float fac3 = tex2D(sLava, 1 * In.uv + float2(0.00035 * vecTime.w, 0)).a;
+	float fac = tex2D(sLava, 10 * In.uv + float2(0.002 * vecTime.w, 0.000125 * vecTime.w)).r;
+	float fac2 = tex2D(sLava, 8 * In.uv + float2(0.00175 * vecTime.w, -0.000125 * vecTime.w)).r;
+	float fac3 = tex2D(sLava, 1 * In.uv + float2(0.000174 * vecTime.w, 0)).r;
 	fac = clamp(fac * (fac2 * 2) * (fac3 * 4),0,1);
 	
-	float hl0 = 1.0 - tex2D(sLava, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0001 * vecTime.w)).a;
-	float hl1 = 1.0 - tex2D(sLava, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).a;
+	float hl0 = 1.0 - tex2D(sLava, 2 * In.uv + float2(0.0004 * vecTime.w, -0.0001 * vecTime.w)).r;
+	float hl1 = 1.0 - tex2D(sLava, 2 * In.uv + float2(0.0006 * vecTime.w,  0.0003 * vecTime.w)).r;
 	
 	float highlight = hl0 * hl1;
+	float4 a = tex2D(sLUT, float2(0.5 * fac, 1.5/64.0));
+	float b = tex2D(sLUT, float2(0.5 * saturate(highlight), 2.5/64.0)).a;
+	float lava = a.a+(b*0.4) * saturate(length(a));
 	
 	float4 lightColor = tex2D(sLUT, float2(lutPosition, 3.5/64.0));
 	float brightness = stuff.g;
-	brightness += highlight * 0.1 * max(height + highlight * 0.08 - 0.4, 0.0); // 0.1 ist stärke, hinten höhe
+	brightness += lava * 0.5 * max(height + lava * 0.1 - 0.4, 0.0); // 0.1 ist stärke, hinten höhe
 	color += lightColor * brightness;
-	return float4(color, lineValue);
+	return float4(color, lineValue + brightness);
 }
 
 

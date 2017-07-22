@@ -1,14 +1,26 @@
+SOUND* sndPlayerShot = "sounds\\player_shot.wav";
+
 void weapon_startup()
 {
+	var shootingHandle = 0;
 	while(1)
 	{
 		if((player != NULL) && mouse_left) 
 		{
+			if(shootingHandle == 0)
+			{
+				shootingHandle = snd_loop(sndPlayerShot, 50, 0);
+			}
 			player.skill44 = 2;
 			player.group = 3;
 			shoot(1);
 		}
-		else if((player != NULL) && mouse_right)
+		if(!mouse_left && shootingHandle != 0) 
+		{
+			snd_stop(shootingHandle);
+			shootingHandle = 0;
+		}
+		if((player != NULL) && mouse_right)
 		{
 			shoot(2);
 		}
@@ -71,12 +83,11 @@ void projectile()
 	my.tilt = 90;
 	my.pan += 90;
 	
-	
-	
 	vec_scale(my.scale_x, weapon_projectile_scale);
 	c_setminmax(me);
 	
-	
+	var length = 0;
+	var orig_height = my.z;
 	
 	my.skill50 = 0; // How many time a projectile has bounced already
 	
@@ -95,17 +106,10 @@ void projectile()
 		vec_set(offset, to);
 		vec_scale(to, 16 * weapon_projectile_scale);
 		vec_add(to, my.x);
-		//vec_scale(offset, -16);
-		//vec_add(offset, my.x);
+		
 		c_ignore(3);
 		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
-		
-		/*
-		draw_line3d(to, NULL, 100);
-		draw_line3d(offset, COLOR_GREEN, 100);
-		draw_line3d(to, COLOR_GREEN, 100);
-		*/
 		if(you == player)	{ break; }
 		
 		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
@@ -125,7 +129,7 @@ void projectile()
 			vec_add(v.x, hit.x);
 			ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
 			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			vec_set(dir, bounce);
+			vec_set(dir, vector(bounce.x, bounce.y, 0));
 			vec_scale(dir, weapon_speed);
 			vec_to_angle(my.pan, dir);
 			my.tilt = 90;
@@ -134,36 +138,50 @@ void projectile()
 		} 
 		else if (dist != 0 || t > weapon_lifetime)
 		{
+			if(dist != 0)
+			{
+				
+				VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+				vec_normalize(v, 1);
+				vec_add(v.x, hit.x);
+				ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+				vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+			}
 			break;
 		}
 		else
 		{
-			vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, dir.z * time_step) );
+			
+			if(abs(orig_height - my.z) < 80) { length = -18 * time_step; } else { length = 0; }
+			vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, length) );
 		}
 		wait(1);
 	}
 	ptr_remove(me);
 }
 
-void granate_exp_event(PARTICLE *p)
+void granate_exp_event(PARTICLE *p) //PLATZHALTER
 {
 	
 }
 
-void granate_explosion(PARTICLE *p)
+void granate_explosion(PARTICLE *p) // PLATZHALTER
 {
 	p->flags = MOVE | BRIGHT;
 	p->size = 16;
-	p->vel_x = 10 - random(20);
-	p->vel_y = 10 - random(20);
-	p->vel_z = 10;
-	p->lifespan = 20;
+	p->vel_x = 80 - random(160);
+	p->vel_y = 80 - random(160);
+	p->vel_z = 80;
+	p->lifespan = 500;
+	p->red = 255;
+	p->green = 255;
+	p->blue = 128;
 	p->event = granate_exp_event;
 }
 
-void explosion(ENTITY *ent)
+void explosion(ENTITY *ent) // PLATZHALTER !!
 {
-	effect(granate_explosion, 80,  ent.x, nullvector);
+	effect(granate_explosion, 120,  ent.x, nullvector);
 }
 
 void granate()
@@ -171,7 +189,8 @@ void granate()
 	VECTOR vstart,temp, vTarget, midPos1, midPos2;
 	
 	my.group = 2;
-	
+	my.type = TypePlayerProjectile;
+	my.damage = 3;
 	my.flags |= (PASSABLE |FLAG2);
 	
 	// Calculate grenate target
@@ -188,13 +207,12 @@ void granate()
 	vec_lerp(midPos2,vstart,vTarget,0.667);
 	midPos2.z = 200;
 	
-	my.damage = 3;
 	
 	// Bezier interpolation
-	while(my.skill1 < 16 && me)
+	while(my.skill80 < 16 && me)
 	{
-		my.skill1 = minv(my.skill1+time_step,16);
-		float t = my.skill1/16.0;
+		my.skill80 = minv(my.skill80+time_step,16);
+		float t = my.skill80/16.0;
 		float tinv = 1-t;
 		
 		vec_set(my.x,vstart);
@@ -214,8 +232,8 @@ void granate()
 		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
-	//explosion(me);
-	c_scan(my.x, nullvector, vector(360, 0, 16), ACTIVATE_SHOOT);
+	explosion(me);
+	c_scan(my.x, nullvector, vector(360, 0, 200), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
 

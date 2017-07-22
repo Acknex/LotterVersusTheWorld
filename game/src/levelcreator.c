@@ -3,20 +3,11 @@
 
 #include "materials.h"
 #include "turret.h"
+#include "spikes.h"
+#include "hole.h"
 #include "entity_defs.h"
 #include "marker.h"
 #include "level_furniture.h"
-
-/*
-typedef struct {
-	float x,y,z;	// position in DirectX coordinates
-	float nx,ny,nz;	// normal
-	float u1,v1;    // first coordinate set, for textures
-	float u2,v2;    // second coordinate set, for shadow maps
-	float x3,y3,z3,w3; // third coordinate set, for tangent vector and handedness
-	float tu4,tv4;  // 4th coordinate set, for additional data
-} D3DVERTEX;
-*/
 
 LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 
@@ -226,7 +217,7 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != TILE_EMPTY) {
+				if(n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));
@@ -274,11 +265,10 @@ VECTOR * stage_load(STAGE * stage)
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	
-	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
+	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
-	
 	
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
@@ -331,26 +321,24 @@ VECTOR * stage_load(STAGE * stage)
 					}
 					
 					//ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
-					ent->material = GroundMaterial;
+					ent->material = TurretMaterial;
 				//moved to turret
 				/*	set(ent, POLYGON);
 					set(ent, FLAG1);
 					ent_animate(ent, "closed", 0, 0);
 					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 8;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-hole.mdl", &center, enemy_hole);
+					ent->material = TurretMaterial;
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
-					ent->material = GroundMaterial;
-					set(ent, POLYGON);
-					set(ent, FLAG1);
-					ent->type = 7;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
+					ent->material = TurretMaterial;
+				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
+
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 9;
+					ent->type = TypeEnemy;
 					MARKER_attach(ent);
                                 } else if(tile->value != 0) {
                                         var r = random(100);
@@ -406,7 +394,9 @@ VECTOR * stage_load(STAGE * stage)
 		}
 	}
 	
-	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ent->material = TeleporterEffectMaterial;
+	set(ent, PASSABLE);
 	
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }

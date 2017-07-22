@@ -12,6 +12,7 @@ sampler sReflection = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; 
 sampler sTexture = sampler_state { Texture = <mtlSkin2>; MipFilter = Linear; };
 sampler sDetails = sampler_state { Texture = <entSkin1>; MipFilter = Linear; };
 
+float4 vecSkill41;
 
 Texture ColorLUT_bmap;
 float ColorVariation_flt;
@@ -51,14 +52,17 @@ float4 ps(out_ps In): COLOR
 	
 	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 15.5/64.0));
 	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 16.5/64.0));
+	float4 col3 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 50.5/64.0));
 	float3 attributes = tex2D(sTexture, In.worldPos.xz / 200 + 0.5);
+	
+	attributes += tex2D(sDetails, In.uv);
 	
 	float4 floorcol = 
 		col1 * attributes.r +
 		col2 * attributes.g;
 	
 	float4 reflection = tex2D(sReflection, texcoords);
-	return float4(/*lerp(*/reflection.rgb * 0.6 + floorcol.rgb/*, 0.6).rgb*/, 0.0);
+	return float4(reflection.rgb * 0.6 + floorcol.rgb, 0.0) + col3 * attributes.b * vecSkill41.x;
 }
 
 
