@@ -14,11 +14,11 @@
 	
 	STRING *str_weapon_code = "var angle";
 	
-	FONT *courier = "Monoid#32b";
+	FONT *monoid = "Monoid#32b";
 	
 	TEXT *txt_fragment =
 	{
-		font = courier;
+		font = monoid;
 		pos_x = 64;
 		pos_y = 16;
 		flags = CENTER_X | CENTER_Y | SHOW;
