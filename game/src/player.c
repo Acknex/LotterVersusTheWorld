@@ -38,55 +38,58 @@ void player_move_old() {
 	vec_to_angle(tAngle, vTarget);
 	player.pan = tAngle.pan;
 	
-	dist_ahead = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_w + key_cuu, 0, 1) - clamp(key_s + key_cud, 0, 1));
-	dist_strafe = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_a + key_cul, 0, 1) - clamp(key_d + key_cur, 0, 1));
-	if (dist_ahead != 0 && dist_strafe != 0)
+	if(my.pause_control == 0)
 	{
-		dist_ahead /= sqrt(2);
-		dist_strafe /= sqrt(2);
-	}
-	VECTOR* vecDir = vector(dist_ahead, dist_strafe, 0);
-	vec_scale(vecDir, time_step);
-	
-	//transform with camera angle
-	vec_rotate(vecDir, vector(view->pan, 0, 0));
-	
-	if (move_style == 0) {
-		c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
-		} else {
-		c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
-	}
-	
-	// animation
-	if (dist_ahead != 0 || dist_strafe != 0) {
-		if (key_shiftl) {
-			// run
-			anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
-			ent_animate(player,"walk", anim_percentage, ANM_CYCLE);
+		dist_ahead = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_w + key_cuu, 0, 1) - clamp(key_s + key_cud, 0, 1));
+		dist_strafe = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_a + key_cul, 0, 1) - clamp(key_d + key_cur, 0, 1));
+		if (dist_ahead != 0 && dist_strafe != 0)
+		{
+			dist_ahead /= sqrt(2);
+			dist_strafe /= sqrt(2);
+		}
+		VECTOR* vecDir = vector(dist_ahead, dist_strafe, 0);
+		vec_scale(vecDir, time_step);
+		
+		//transform with camera angle
+		vec_rotate(vecDir, vector(view->pan, 0, 0));
+		
+		if (move_style == 0) {
+			c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 			} else {
-			//walk
-			anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
-			ent_animate(player,"walk",anim_percentage,ANM_CYCLE);
-		}	
+			c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+		}
 		
-		// If walk position and mouse position = 90° -> strafe 100%
-		// if walk position and mouse position 0 0° -> walk 100%
-		vec_to_angle(moveDir, vecDir);
-		ang_diff(diff, player.pan, moveDir.pan);
-		
-		// diff.pan = 0,180 -> walk, 90,270->strafe
-		draw_textmode("Arial", 1, 20, 100);
-		DEBUG_VAR(cycle(diff.pan, 0, 360), 10);
+		// animation
+		if (dist_ahead != 0 || dist_strafe != 0) {
+			if (key_shiftl) {
+				// run
+				anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
+				ent_animate(player,"walk", anim_percentage, ANM_CYCLE);
+				} else {
+				//walk
+				anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
+				ent_animate(player,"walk",anim_percentage,ANM_CYCLE);
+			}	
+			
+			// If walk position and mouse position = 90° -> strafe 100%
+			// if walk position and mouse position 0 0° -> walk 100%
+			vec_to_angle(moveDir, vecDir);
+			ang_diff(diff, player.pan, moveDir.pan);
+			
+			// diff.pan = 0,180 -> walk, 90,270->strafe
+			draw_textmode("Arial", 1, 20, 100);
+			DEBUG_VAR(cycle(diff.pan, 0, 360), 10);
 
-		var percentage = (1-abs(abs(ang(diff.pan))-90.0)/90.0)*100;
-		DEBUG_VAR(percentage, 30);
-		
-		ent_blendframe(player, player, "strafe", 0, percentage);
-		
-		
-		} else {
-		anim_percentage += 5*time_step; 
-		ent_animate(player,"stand",anim_percentage,ANM_CYCLE);
+			var percentage = (1-abs(abs(ang(diff.pan))-90.0)/90.0)*100;
+			DEBUG_VAR(percentage, 30);
+			
+			ent_blendframe(player, player, "strafe", 0, percentage);
+			
+			
+			} else {
+			anim_percentage += 5*time_step; 
+			ent_animate(player,"stand",anim_percentage,ANM_CYCLE);
+		}
 	}
 	
 	MARKER_update(player);

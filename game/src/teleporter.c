@@ -4,6 +4,7 @@
 action teleporter_out()
 {
 	set(me, PASSABLE);
+	set(me, FLAG2);
 	while(!player) wait(1);
 	
 	var portloader = 0;
