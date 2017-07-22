@@ -79,6 +79,7 @@ void player_move() {
 		ent_animate(player,"stand",anim_percentage,ANM_CYCLE);
 	}
 
+	MARKER_update(player);
 	if(LEVEL__stage) 
 	{
 		static int playerX = 0;
@@ -120,6 +121,7 @@ void player_init() {
 	
 	player.emask |= EVENT_SHOOT;
 	player.event = player_event;
+	player->type = TypePlayer;
 }
 
 void player_event() {
