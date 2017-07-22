@@ -17,12 +17,12 @@ float4 blur(float2 Tex : TEXCOORD0) : COLOR0
 {
 	float4 color = 0.0;
 
-	for(int i = -4; i <= 4; i++)
+	for(int i = -2; i <= 2; i++)
 	{
 		color += tex2D(g_samSrcColor, Tex.xy + vecSkill1.xy * i * vecViewPort.zw);// * kernel[i + 5];
 	}
 	
-	return color/9.0;
+	return color/5.0;
 }
 
 technique PostProcess 
