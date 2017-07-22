@@ -63,7 +63,7 @@ void projectile()
 	my.tilt = 90;
 	my.pan += 90;
 	
-	vec_scale(my.scale_x, 1.2);
+	vec_scale(my.scale_x, weapon_projectile_scale);
 	c_setminmax(me);
 	
 	my.skill50 = 0; // How many time a projectile has bounced already
@@ -83,14 +83,16 @@ void projectile()
 		vec_set(to, dir);
 		vec_normalize(to, 1);
 		vec_set(offset, to);
-		vec_scale(to, 64 * 1.2);
+		vec_scale(to, 16 * weapon_projectile_scale);
 		vec_add(to, my.x);
+		vec_scale(offset, -16);
+		vec_add(offset, my.x);
 		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
-		/*draw_line3d(to, NULL, 100);
+		draw_line3d(to, NULL, 100);
 		draw_line3d(offset, COLOR_GREEN, 100);
 		draw_line3d(to, COLOR_GREEN, 100);
-		*/
+		
 		if(you == player)	{ break; }
 		
 		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
@@ -160,8 +162,4 @@ void shoot()
 		ent_create("billboard.tga", player.x, projectile);
 		cooldown();
 	}
-	
-	//vec_for_angle(to, player.pan);
-	//vec_scale(to, 1000);
-	//vec_add(to, player.x);
 }

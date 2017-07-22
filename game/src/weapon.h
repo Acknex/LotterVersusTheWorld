@@ -9,6 +9,7 @@
 	var weapon_projectile_spawn_offset = 16;
 	var weapon_cooldown_time = 0.12;
 	var weapon_lifetime = 5;
+	var weapon_projectile_scale = 1.2;
 	
 	//Player skill43 is active cooldown timer
 	//Player skill44 is possible projectile bounce count
@@ -20,7 +21,7 @@
 	TEXT *txt_fragment =
 	{
 		font = monoid;
-		pos_x = 32;
+		pos_x = 16;
 		pos_y = 16;
 		flags = CENTER_X | CENTER_Y | SHOW;
 		strings = 1;
