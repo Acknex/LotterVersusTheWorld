@@ -4,7 +4,7 @@
 void ITEM_setup();
 void ITEM_fade();
 void ITEM_collect();
-void ITEM_particleTrigger();
+void ITEM_update();
 
 #include "itembase.c"
 

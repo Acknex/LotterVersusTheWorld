@@ -3,7 +3,7 @@
 var anim_percentage = 0;
 var dist_ahead = 0;
 var dist_strafe = 0;
-VECTOR *mousepos, *playerpos, *dist;
+VECTOR *mousepos, playerpos;
 ANGLE dir;
 
 void player_move() {
@@ -14,13 +14,16 @@ void player_move() {
     	mouse_pos.y = mouse_cursor.y;
   	}
 	
-	//fix me with vec_for_screen
-	mousepos = vector(mouse_pos.x, mouse_pos.y, 0);
-	playerpos = vector(screen_size.x * 0.5, screen_size.y * 0.5, 0);
-	dist = vec_sub(playerpos, mousepos);
-	vec_to_angle(dir, dist);	
-	player.pan = -dir.pan;
+	VIEW* view = get_camera();
+	vec_set(playerpos, player->x);
+	if (vec_to_screen(playerpos, view) != NULL)
+	{
 	
+		vec_sub(playerpos, mouse_pos);
+		vec_to_angle(dir, playerpos);	
+		
+	}
+	player.pan = 180-dir.pan - view->pan;
 	DEBUG_VAR(player.pan, 100);
 	
 	
@@ -36,7 +39,6 @@ void player_move() {
 	VECTOR* vecDir = vector(dist_ahead, dist_strafe, 0);
 	vec_scale(vecDir, time_step);
 	//transform with camera angle
-	VIEW* view = get_camera();
 	vec_rotate(vecDir, vector(view->pan, 0, 0));
 	c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 }
