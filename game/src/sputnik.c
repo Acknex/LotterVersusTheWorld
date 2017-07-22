@@ -25,16 +25,6 @@ action enemy_sputnik()
 	
 	while(my.health > 0)
 	{
-		if(!(my.eflags&CLIPPED))
-		{
-			my.skill30 += my.skill32*time_step;
-			my.skill30 %= 360;
-			ent_bonereset_all(my);
-			var fac = sinv(my.skill30)*55;
-			ent_bonerotate(my,"Bone",vector(fac,fac,fac));
-			ent_bonerotate(my,"Bone1",vector(-fac,-fac,-fac));
-		}
-		
 		my.skill37 += 10*time_step;
 		my.skill37 %= 360;
 		VECTOR temp,temp2,vspeed;
@@ -102,6 +92,12 @@ action enemy_sputnik()
 		}
 		else my.skill38 = 0;
 		MARKER_update(me);
+		
+		if(vec_length(vspeed) > 0.3) {
+			ent_animate(me, "walk", total_ticks, ANM_CYCLE);
+		} else {
+			ent_animate(me, "idle", total_ticks, ANM_CYCLE);
+		}
 		
 		wait(1);
 	}
