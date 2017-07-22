@@ -150,7 +150,8 @@ void player_move() {
 	if(player.pause_control == 0)
 	{
 		static VECTOR vPlayerSpeed;
-		vec_set(temp,vector(clamp(key_w + key_cuu, 0, 1) - clamp(key_s + key_cud, 0, 1) ,clamp(key_a + key_cul, 0, 1) - clamp(key_d + key_cur, 0, 1) ,0));
+
+		vec_set(temp,vector(sign(key_w-key_s+key_cuu-key_cud),sign(key_a-key_d+key_cul-key_cur),0));
 		VIEW* view = get_camera();
 		vec_rotate(temp,vector(view->pan,0,0));
 		if(temp.x || temp.y) vec_normalize(temp,45);
@@ -201,14 +202,17 @@ void player_move() {
 		STRING* str = str_printf(NULL,"Bone%d",(int)(22+i));
 		vec_for_bone(your.x,player,str);
 		ang_for_bone(your.pan,player,str);
-		VECTOR temp;
+		VECTOR temp,temp2;
 		vec_set(temp,vector(0,0,-1));
 		vec_rotate(temp,your.pan);
+		vec_set(temp2,temp);
+		vec_scale(temp2,10);
+		vec_add(temp2,your.x);
 		your.skill21 += time_step;
-		if(your.skill21 > 1)
+		if(your.skill21 > 0.5)
 		{
-			your.skill21 -= 2;
-			//effect(p_hoverboard_smoke,2,your.x,temp);
+			your.skill21 -= 0.5;
+			effect(p_hoverboard_smoke,3,temp2,temp);
 		}
 	}
 	
