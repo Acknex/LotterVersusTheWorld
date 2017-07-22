@@ -3,6 +3,7 @@
 	#define LEVELGEN_H
 
 	#include "datatypes.h"
+	#include "console.h"
 
 	int levelgenOffset2D[8] = { -1,0, 0,1, 1,0, 0,-1 };
 
@@ -440,6 +441,8 @@
 		j2 = (workingStack->values)[workingStack->stackCurrent*2+1];
 		tile = stageGetTile(stage,i2,j2);
 		tile->flags |= TILE_FLAG_ENTRANCE;
+		stage->entrancePos[0] = i2;
+		stage->entrancePos[1] = j2;
 		
 		stage->numWalkableTiles = 0;
 		for(i = 0; i < stage->size[0]; i++)
@@ -456,9 +459,10 @@
 	{
 		TILE* tile;
 		
-			tile = stageGetTile(stage,i2,j2);
-			if(!tile) error("stageCreateEnemyIsPositionValid: no tile !!!!!!");
-		if((tile->flags & TILE_FLAG_ENEMYSPAWN)
+		tile = stageGetTile(stage,i2,j2);
+		if(!tile) error("stageCreateEnemyIsPositionValid: no tile !!!!!!");
+		if(tile->value == TILE_EMPTY
+		|| (tile->flags & TILE_FLAG_ENEMYSPAWN)
 		|| (abs(i2-stage->exitPos[0]) <= 1 && abs(j2-stage->exitPos[1]) <= 1)
 		|| (abs(i2-stage->entrancePos[0]) <= 3 && abs(j2-stage->entrancePos[1]) <= 3)) return 0;
 		return 1;
@@ -471,13 +475,12 @@
 		TILE* tile, *tile2;
 		LEVELGENSTACK* workingStack;
 		
-		workingStack = stage->workingStack;		
 		if(stage->enemyData) error("stageCreateEnemyData(): stageNew->enemyData != NULL!");
 		//if(!stage->numWalkableTiles) error("stageCreateEnemyData(): stage->numWalkableTiles == 0!");
-		workingStack = stage->workingStack;
 		stage->numEnemies = minv(stage->numWalkableTiles*0.333,35+5*stage->level+random(5));
 		stage->enemyData = (VECTOR*)sys_malloc(sizeof(VECTOR)*stage->numEnemies);
 		
+		workingStack = stage->workingStack;		
 		stageDoFlood(stage,stage->exitPos[0],stage->exitPos[1],FLOOD_EXIT,FLOOD_VALUE_MAX,0);
 		maxDiff = workingStack->stackMax/(float)(stage->numEnemies+2); // stage->numWalkableTiles
 		for(enemyCur = 0; enemyCur < stage->numEnemies; enemyCur++)
@@ -498,11 +501,13 @@
 							j3 = j2+j;
 							if(i3 > 0 && i3 < stage->size[0]-1 && j3 > 0 && j3 < stage->size[1]-1)
 							{
-				//printf("test pos: (%d,%d) (dist %d, %d)",i2,j2,(int)abs(i2-stage->entrancePos[0]),(int)abs(j2-stage->entrancePos[1]));
+								//printf("test pos: (%d,%d) (dist %d, %d)",i2,j2,(int)abs(i2-stage->entrancePos[0]),(int)abs(j2-stage->entrancePos[1]));
 								if(stageCreateEnemyIsPositionValid(stage,i3,j3))
 								{
 									i2 = i3;
 									j2 = j3;
+									tile = stageGetTile(stage,i2,j2);
+									if(tile->flags & TILE_FLAG_ENTRANCE) error("AKJSDASDAKDKASD");
 									i = k+1;
 									k = maxv(stage->size[0],stage->size[1]);
 									found = 1;
@@ -514,7 +519,9 @@
 				}
 				if(!found) error("stageCreateEnemyData(): SUPERERROR!");
 			}
+			
 			stageGetPosFromIndices(stage, &(stage->enemyData)[enemyCur], i2, j2);
+			//cprintf4("\n%d): (%d,%d,%d)",enemyCur,(int)(stage->enemyData)[enemyCur].x,(int)(stage->enemyData)[enemyCur].y,(int)(stage->enemyData)[enemyCur].z);
 			tile = stageGetTile(stage,i2,j2);
 			tile->flags |= TILE_FLAG_ENEMYSPAWN;
 		}	
@@ -554,6 +561,6 @@
 		}
 	}
 
-	//#include "levelcreator.c"
+	#include "levelcreator.c"
 
 #endif
