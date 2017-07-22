@@ -89,7 +89,7 @@ void projectile()
 	var length = 0;
 	var orig_height = my.z;
 	
-	my.skill50 = 0; // How many time a projectile has bounced already
+	my.skill1 = 0; // How many time a projectile has bounced already
 	
 	var dist = 2;
 	while(1)
@@ -122,7 +122,7 @@ void projectile()
 			//vec_add(ricochet->x, hit.nx);
 			break; 
 		}
-		else if( dist != 0 && player.weapon_bouncing > 0 && my.skill50 < player.weapon_bouncing )
+		else if( dist != 0 && player.weapon_bouncing > 0 && my.skill1 < player.weapon_bouncing )
 		{
 			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 			vec_normalize(v, 1);
@@ -134,7 +134,7 @@ void projectile()
 			vec_to_angle(my.pan, dir);
 			my.tilt = 90;
 			my.pan += 90;
-			my.skill50 += 1;
+			my.skill1 += 1;
 		} 
 		else if (dist != 0 || t > weapon_lifetime)
 		{
@@ -209,10 +209,10 @@ void granate()
 	
 	
 	// Bezier interpolation
-	while(my.skill80 < 16 && me)
+	while(my.skill2 < 16 && me)
 	{
-		my.skill80 = minv(my.skill80+time_step,16);
-		float t = my.skill80/16.0;
+		my.skill2 = minv(my.skill2+time_step,16);
+		float t = my.skill2/16.0;
 		float tinv = 1-t;
 		
 		vec_set(my.x,vstart);
