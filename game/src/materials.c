@@ -192,6 +192,12 @@ MATERIAL *GroundMaterial =
 	skin2 = GroundAtlas;
 }
 
+MATERIAL *TurretMaterial =
+{
+	effect = "Turret.fx";
+	skin2 = GroundAtlas;
+}
+
 VIEW *ReflectionView = NULL;
 
 MATERIAL *PPReflectionBlurHMaterial =
@@ -230,6 +236,7 @@ void ground_reflections()
 	pp_add(PPReflectionBlurVMaterial);
 	pp_stage.bmap = ReflectionView.bmap;
 	GroundMaterial.skin1 = pp_stage.bmap;
+	TurretMaterial.skin1 = pp_stage.bmap;
 	
 	set(ReflectionView, SHOW);
 	proc_mode = PROC_LATE;

@@ -330,7 +330,7 @@ VECTOR * stage_load(STAGE * stage)
 					}
 					
 					//ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
-					ent->material = GroundMaterial;
+					ent->material = TurretMaterial;
 				//moved to turret
 				/*	set(ent, POLYGON);
 					set(ent, FLAG1);
