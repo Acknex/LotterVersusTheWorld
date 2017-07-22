@@ -197,6 +197,12 @@ MATERIAL *WallLowerMaterial =
 	flags = PASS_SOLID;
 }
 
+MATERIAL *BlinkingObjectMaterial = 
+{
+	effect = "BlinkingObjects.fx";
+	flags = PASS_SOLID;
+}
+
 BMAP * GroundAtlas = "tile-floor-atlas_01.dds";
 
 MATERIAL *GroundMaterial =

@@ -5,6 +5,7 @@
 #include "turret.h"
 #include "spikes.h"
 #include "hole.h"
+#include "sphere_of_death.h"
 #include "teleporter.h"
 #include "entity_defs.h"
 #include "marker.h"
@@ -337,7 +338,10 @@ VECTOR * stage_load(STAGE * stage)
 				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
 					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
 
-				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
+				} else if(tile->flags & TILE_FLAG_TRAP_SPHERE) {
+					ent = ent_create("sphere_of_death.mdl", vec_add(vector(0, 0, 32), &center), enemy_sphere);
+				}
+				else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 					ent->type = TypeEnemy;
 					MARKER_attach(ent);
@@ -390,7 +394,8 @@ VECTOR * stage_load(STAGE * stage)
 					{
 						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
 						screen->pan = rot;
-screen->material = ObjectMaterial;
+						screen->material = ObjectMaterial;
+						set(screen, PASSABLE);
 					}
 				}
 			}

@@ -22,7 +22,8 @@ TEXT* txtMarkers =
 	/*TypeSpikes 8*/           ".spikes\n 0xBEEFED",
 	/*TypeHole 9*/             ".hole\n 0xAAAAAA",
 	/*TypeEnemy 10*/           ".boring standard enemy\n 0x4711",
-	/*TypeEnemy 11*/           ".retrovirus\n 0xBADD00D"
+	/*TypeEnemy 11*/           ".retrovirus\n 0xBADD00D",
+	/*TypeEnemy 12*/           ".sphere\n 0xDEADBA11"
 	);
 }
 

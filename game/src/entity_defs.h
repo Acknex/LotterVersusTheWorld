@@ -25,6 +25,7 @@
 #define TypeHole 9
 #define TypeEnemy 10
 #define TypeBat 11
+#define TypeSphereOfDeath 12
 
 
-#define TypeMaxNumber 12 //adjust and never exceed
+#define TypeMaxNumber 13 //adjust and never exceed
