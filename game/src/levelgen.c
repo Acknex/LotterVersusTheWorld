@@ -278,28 +278,31 @@ void stageFill(STAGE* stage)
 	}
 	templateDestroy(template);
 	
-		// widen narrow paths
+	// widen narrow paths
 	for(i = 2; i < stage->size[0]-1; i++)
 	{
 		for(j = 2; j < stage->size[1]-1; j++)
 		{
 			tile = stageGetTile(stage,i,j);
-			count = 0;
-			for(k = 0; k < 4; k++)
+			if(tile->value)
 			{
-				i2 = i+levelgenOffset2D[k*2+0];
-				j2 = j+levelgenOffset2D[k*2+1];
-				tile2 = stageGetTile(stage,i2,j2);
-				borderTiles[k] = tile2;
-				borderValues[k] = tile2->value;
-				if(tile2->value == TILE_EMPTY) count++;
-			}
-			if(count == 2)
-			{
-				if(borderValues[0]*borderValues[2] || borderValues[1]*borderValues[3])
+				count = 0;
+				for(k = 0; k < 4; k++)
 				{
-					if(borderValues[0]*borderValues[2]) borderTiles[3]->value = 1;
-					else borderTiles[0]->value = 1;
+					i2 = i+levelgenOffset2D[k*2+0];
+					j2 = j+levelgenOffset2D[k*2+1];
+					tile2 = stageGetTile(stage,i2,j2);
+					borderTiles[k] = tile2;
+					borderValues[k] = !tile2->value;
+					if(tile2->value == TILE_EMPTY) count++;
+				}
+				if(count == 2)
+				{
+					if(borderValues[0]*borderValues[2] || borderValues[1]*borderValues[3])
+					{
+						if(borderValues[0]*borderValues[2]) borderTiles[0]->value = 2;
+						else borderTiles[3]->value = 2;
+					}
 				}
 			}
 		}		
@@ -701,9 +704,9 @@ void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
 			if(tile->value)
 			{
 				//vec_fill(vColor,128);
-				//if(tile->value == 2) vec_set(vColor,vector(0,0,255));
 				if(tile->flood[FLOOD_EXIT]) vec_lerp(vColor,COLOR_GREEN,COLOR_RED,minv(tile->flood[FLOOD_EXIT]/48.0,1));
 				else vec_fill(vColor,128);
+				if(tile->value == 2) vec_set(vColor,vector(255,0,255));
 			}
 			else vec_fill(vColor,16);
 			draw_quad(NULL, vector(posX+i*tileSize,posY+j*tileSize,0), NULL, vector(tileSize,tileSize,0), NULL, vColor, 100, 0);
