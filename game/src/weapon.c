@@ -4,7 +4,7 @@ void weapon_startup()
 	{
 		if(player && mouse_left) 
 		{
-			player.skill44 = 2;
+			player.skill44 = 1;
 			shoot();
 		}
 		wait(1);		
@@ -12,59 +12,61 @@ void weapon_startup()
 }
 
 
-void ray_timer()
+void projectile()
 {
 	var t = 0;
 	
-	vec_set(my.pan, player.pan);
+	vec_set(my.pan, vector(player.pan + weapon_angle_correction, 0, 0));
 	
 	my.flags |= (FLAG2 | PASSABLE);
 	
 	VECTOR dir;
 	VECTOR offset;
 	VECTOR to;
-	vec_for_angle(dir, player.pan);
+	vec_for_angle(dir, vector(player.pan + weapon_angle_correction, 0, 0));
 	vec_set(offset, dir);
-	vec_scale(dir, 10);
+	vec_scale(dir, weapon_speed);
 	
-	vec_scale(offset, 5.5);
+	vec_scale(offset, weapon_projectile_spawn_offset);
 	vec_add(my.x, offset);
 	
 	my.tilt = 90;
 	my.pan += 90;
 	
-	vec_scale(my.scale_x, 0.45);
+	vec_scale(my.scale_x, 0.6);
 	c_setminmax(me);
-	my.skill50 = 0;
+	
+	my.skill50 = 0; // How many time a projectile has bounced already
 	
 	var dist = 2;
 	while(1)
 	{
-		t += time_step / 16;
-		//dist = c_move(me, nullvector, dir, ACTIVATE_SHOOT | IGNORE_PASSABLE);
+		t += time_step / 16; //Dead after timer if projectile is shot into the wild
 		
+		vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, dir.z * time_step) );
 		
-		my.x += dir.x * time_step;
-		my.y += dir.y * time_step;
-		my.z += dir.z * time_step;
+		my.flags |= LIGHT;
+		my.red = 255;
+		my.green = 128;
+		my.blue = 255;
+		my.lightrange = 16;
 		
 		vec_set(to, dir);
 		vec_normalize(to, 1);
 		vec_set(offset, to);
-		vec_scale(to, 16);
-		vec_scale(offset, 4);
+		vec_scale(to, 18);
+		vec_scale(offset, 12);
 		vec_add(to, my.x);
 		vec_add(offset, my.x);
-		dist = c_trace(offset, to, IGNORE_ME);
+		dist = c_trace(offset, to, IGNORE_ME | IGNORE_PASSABLE);
 		
+		/*
 		draw_line3d(to, NULL, 100);
 		draw_line3d(offset, COLOR_GREEN, 100);
 		draw_line3d(to, COLOR_GREEN, 100);
+		*/
 		
-		if(you == player)
-		{
-			break;
-		}
+		if(you == player)	{ break; }
 		
 		if((dist != 0 || t > 5) && player.skill44 == 0 ) 
 		{ 
@@ -73,7 +75,7 @@ void ray_timer()
 		else if( dist != 0 && player.skill44 > 0 && my.skill50 < player.skill44 )
 		{
 			vec_set(dir, bounce);
-			vec_scale(dir, 10);
+			vec_scale(dir, weapon_speed);
 			vec_to_angle(my.pan, dir);
 			my.tilt = 90;
 			my.pan += 90;
@@ -86,15 +88,13 @@ void ray_timer()
 		wait(1);
 	}
 	ptr_remove(me);
-	
-	
 }
 
 void cooldown()
 {
 	if(proc_status(cooldown) == 0)
 	{
-		while(player.skill43 < 0.12 && mouse_left)
+		while(player.skill43 < weapon_cooldown_time && mouse_left)
 		{
 			player.skill43 += time_step / 16;
 			wait(1);
@@ -109,7 +109,7 @@ void shoot()
 	
 	if(player.skill43 == 0)
 	{
-		ent_create("billboard.tga", player.x, ray_timer);
+		ent_create("billboard.tga", player.x, projectile);
 		cooldown();
 	}
 	
