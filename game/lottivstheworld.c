@@ -2,11 +2,13 @@
 
 #define PRAGMA_PATH "src"
 #define PRAGMA_PATH "shaders"
+#define PRAGMA_PATH "graphics"
 
 #include "player.h"
 #include "camera.h"
 #include "materials.h"
 #include "level.h"
+#include "weapon.h"
 
 #define DEBUG
 
