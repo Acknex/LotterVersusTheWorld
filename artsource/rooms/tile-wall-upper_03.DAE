@@ -6,8 +6,8 @@
       <authoring_tool>FBX COLLADA exporter</authoring_tool>
       <comments></comments>
     </contributor>
-    <created>2017-07-22T02:21:45Z</created>
-    <modified>2017-07-22T02:21:45Z</modified>
+    <created>2017-07-22T06:43:52Z</created>
+    <modified>2017-07-22T06:43:52Z</modified>
     <revision></revision>
     <title></title>
     <subject></subject>
@@ -74,74 +74,12 @@
         </polygons>
       </mesh>
     </geometry>
-    <geometry id="Plane002-lib" name="Plane002Mesh">
-      <mesh>
-        <source id="Plane002-lib-Position">
-          <float_array id="Plane002-lib-Position-array" count="12">
-0.000060 99.999985 0.000000
-0.000014 -100.000015 0.000000
--0.000006 99.999985 -400.000000
--0.000051 -100.000015 -400.000000
-</float_array>
-          <technique_common>
-            <accessor source="#Plane002-lib-Position-array" count="4" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="Plane002-lib-Normal0">
-          <float_array id="Plane002-lib-Normal0-array" count="12">
-1.000000 -0.000000 -0.000000
-1.000000 -0.000000 -0.000000
-1.000000 -0.000000 -0.000000
-1.000000 -0.000000 -0.000000
-</float_array>
-          <technique_common>
-            <accessor source="#Plane002-lib-Normal0-array" count="4" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="Plane002-lib-UV0">
-          <float_array id="Plane002-lib-UV0-array" count="8">
-0.000000 0.000000
-1.000000 0.000000
-0.000000 1.000000
-1.000000 1.000000
-</float_array>
-          <technique_common>
-            <accessor source="#Plane002-lib-UV0-array" count="4" stride="2">
-              <param name="S" type="float"/>
-              <param name="T" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="Plane002-lib-Vertex">
-          <input semantic="POSITION" source="#Plane002-lib-Position"/>
-        </vertices>
-        <polygons count="2">
-          <input semantic="VERTEX" offset="0" source="#Plane002-lib-Vertex"/>
-          <input semantic="NORMAL" offset="1" source="#Plane002-lib-Normal0"/>
-          <input semantic="TEXCOORD" offset="2" set="0" source="#Plane002-lib-UV0"/>
-          <p>2 2 2 0 0 0 1 1 1</p>
-          <p>1 1 1 3 3 3 2 2 2</p>
-        </polygons>
-      </mesh>
-    </geometry>
   </library_geometries>
   <library_visual_scenes>
     <visual_scene id="RootNode" name="RootNode">
       <node id="Plane001" name="Plane001">
         <matrix sid="matrix">1.000000 0.000000 0.000000 100.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix>
         <instance_geometry url="#Plane001-lib"/>
-      </node>
-      <node id="Plane002" name="Plane002">
-        <matrix sid="matrix">1.000000 0.000000 -0.000000 100.000000 -0.000000 1.000000 -0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix>
-        <instance_geometry url="#Plane002-lib"/>
       </node>
     </visual_scene>
   </library_visual_scenes>
