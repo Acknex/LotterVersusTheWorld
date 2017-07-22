@@ -4,12 +4,12 @@
 #include "font.h"
 #include "sky.h"
 #include "music_player.h"
+#include "hud.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
 
 var INIT__levelRunning = 0;
-
 
 void INIT_levelStart()
 {
@@ -37,10 +37,12 @@ void INIT_levelStart()
 	ground_reflections();
 	pp_bloom(2.5);
 	mouse_init_game();
+	hud_ingame_init();
+	hud_ingame_show();
 	//skychange(); //because.
 	
 
-	startMusic("media\\in_game1.mp3", 4);
+	startMusic("media\\in_game1.mp3", 4, 1);
 
 	//this is debug hack for items
 //	VECTOR* vecTemp;
@@ -76,6 +78,7 @@ void INIT_levelLoop()
 		updateMusic();
 		player_move();
 		update_camera();
+		hud_ingame_update();
 		
 		if(LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);

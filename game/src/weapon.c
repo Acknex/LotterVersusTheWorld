@@ -154,31 +154,6 @@ void projectile()
 	ptr_remove(me);
 }
 
-void granate_exp_event(PARTICLE *p) //PLATZHALTER
-{
-	
-}
-
-void granate_explosion(PARTICLE *p) // PLATZHALTER
-{
-	p->flags = MOVE | BRIGHT;
-	p->size = 16;
-	p->vel_x = 80 - random(160);
-	p->vel_y = 80 - random(160);
-	p->vel_z = 80;
-	p->lifespan = 500;
-	p->red = 255;
-	p->green = 255;
-	p->blue = 128;
-	p->event = granate_exp_event;
-}
-
-void explosion(ENTITY *ent) // PLATZHALTER !!
-{
-	snd_play(sndGrenadeExplode, 100, 0);
-	effect(granate_explosion, 120,  ent.x, nullvector);
-}
-
 void granate()
 {
 	VECTOR vstart,temp, vTarget, midPos1, midPos2;
@@ -227,7 +202,8 @@ void granate()
 		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
-	explosion(me);
+	effect(p_granate_explode,200,my.x,nullvector);
+	snd_play(sndGrenadeExplode, 100, 0);
 	c_scan(my.x, nullvector, vector(360, 0, 200), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
@@ -275,7 +251,7 @@ void shoot(int wp_type)
 	if(player.weapon_granade_cooldown == 0 && wp_type == 2)
 	{
 		snd_play(sndGrenadeThrow, 100, 0);
-		ent_create("cube.mdl", spawn, granate);
+		ent_create("sphere.mdl", spawn, granate);
 		cooldown_granate();
 	}
 }

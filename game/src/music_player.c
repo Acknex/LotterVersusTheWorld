@@ -5,7 +5,7 @@ var volume_last = 0;
 var crossTime = 0;
 var maxVol = 100;
 
-void startMusic(STRING* file, var crossFadeTime)
+void startMusic(STRING* file, var crossFadeTime, var loop)
 {
 	if(handle_current != 0)
 	{
@@ -20,7 +20,14 @@ void startMusic(STRING* file, var crossFadeTime)
 	
 	if(file != NULL)
 	{
-		handle_current = media_loop(file, NULL, 0);
+		if(loop == 1)
+		{
+			handle_current = media_loop(file, NULL, 0);
+		}
+		else
+		{
+			handle_current = media_play(file, NULL, 0);
+		}
 	}
 	else {
 		handle_current = 0;
@@ -48,6 +55,10 @@ void setMusicMasterVolume(var vol)
 
 void updateMusic()
 {
+	if(media_playing(handle_current) == 0)
+	{
+		startMusic(NULL, 0, 0);
+	}
 	if(crossTime == 0)
 		return;
 	DEBUG_VAR(volume_current, 180);

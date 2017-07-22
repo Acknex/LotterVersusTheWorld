@@ -182,8 +182,9 @@ void SPHEREOD__loop()
 	SPHEREOD__die();
 }
 
-void SPHEREOD_die()
+void SPHEREOD__die()
 {
+	effect(p_sphere_explode,200,my.x,nullvector);
 	ptr_remove(me);
 }
 
