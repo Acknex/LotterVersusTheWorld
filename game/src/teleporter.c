@@ -1,11 +1,25 @@
 
 #include "init.h"
 
+ENTITY * teleporterEntity = NULL;
+
+void teleporter_enable()
+{
+	reset(teleporterEntity, INVISIBLE);
+}
+
+void teleporter_disable()
+{
+	set(teleporterEntity, INVISIBLE);
+}
+
 action teleporter_out()
 {
+	teleporterEntity = me;
 	ent_create("Teleport.mdl", my.x, NULL);
 	set(me, PASSABLE);
 	set(me, FLAG2);
+	set(me, INVISIBLE);
 	while(!player) wait(1);
 	
 	proc_mode = PROC_LATE;
@@ -14,7 +28,7 @@ action teleporter_out()
 	while(me)
 	{
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
-		if(dist < 50) // ist höhenabhängig!
+		if(is(me, INVISIBLE) && dist < 50) // ist höhenabhängig!
 		{
 			player.near_teleport = 1;
 			player.z += time_step;
