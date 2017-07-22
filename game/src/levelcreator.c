@@ -239,7 +239,7 @@ void stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
-	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -250), NULL);
+	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
