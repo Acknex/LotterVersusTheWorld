@@ -4,6 +4,7 @@ void weapon_startup()
 	{
 		if(player && mouse_left) 
 		{
+			player.skill44 = 2;
 			shoot();
 		}
 		wait(1);		
@@ -69,7 +70,7 @@ void ray_timer()
 		{ 
 			break; 
 		}
-		else if( dist != 0 && player.skill44 == 1 && my.skill50 < player.skill44 )
+		else if( dist != 0 && player.skill44 > 0 && my.skill50 < player.skill44 )
 		{
 			vec_set(dir, bounce);
 			vec_scale(dir, 10);
@@ -106,17 +107,13 @@ void shoot()
 {
 	VECTOR to;
 	
-	player.flags |= (FLAG2);
-	player.skill44 = 1;
-	
-	
 	if(player.skill43 == 0)
 	{
 		ent_create("billboard.tga", player.x, ray_timer);
 		cooldown();
 	}
 	
-	vec_for_angle(to, player.pan);
-	vec_scale(to, 1000);
-	vec_add(to, player.x);
+	//vec_for_angle(to, player.pan);
+	//vec_scale(to, 1000);
+	//vec_add(to, player.x);
 }
