@@ -134,7 +134,7 @@ var stageGetFloodAtPos(STAGE* stage, VECTOR* vpos, int floodId)
 	return FLOOD_VALUE_MAX;
 }
 
-var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VECTOR* vNewTarget, int floodId, var border)
+var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VECTOR* vNewTarget, int floodId, var border, var tryStraightLine)
 {
 	VECTOR currentCenter;
 	TILE* tile, *tile2;
@@ -153,30 +153,34 @@ var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VE
 	minY = minv(y,finalY);
 	maxY = maxv(y,finalY);
 	
-	ok = 1;
-	for(i = minX; i <= maxX; i++)
+	if(tryStraightLine == 1)
 	{
-		for(j = minY; j <= maxY; j++)
+		ok = 1;
+
+		for(i = minX; i <= maxX; i++)
 		{
-			tile = stageGetTile(stage,i,j);
-			if(!tile)
+			for(j = minY; j <= maxY; j++)
 			{
-				i = maxX+1;
-				ok = 0;
-				break;
-			}
-			if(tile->value == TILE_EMPTY)
-			{
-				i = maxX+1;
-				ok = 0;
-				break;
-			}
-		}	
-	}
-	if(ok)
-	{
-		vec_set(vNewTarget,vFinalTarget);
-		return 0;
+				tile = stageGetTile(stage,i,j);
+				if(!tile)
+				{
+					i = maxX+1;
+					ok = 0;
+					break;
+				}
+				if(tile->value == TILE_EMPTY)
+				{
+					i = maxX+1;
+					ok = 0;
+					break;
+				}
+			}	
+		}
+		if(ok)
+		{
+			vec_set(vNewTarget,vFinalTarget);
+			return 0;
+		}
 	}
 	
 	currentCenter.x = x*200;
@@ -232,9 +236,9 @@ VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py)
 // create a random level, not traversable
 void stageFill(STAGE* stage)
 {
-	int i,j,k,i2,j2,i3,j3,count,curIter,maxIter;
+	int i,j,k,i2,j2,i3,j3,count,curIter,maxIter,borderValues[4];
 	int sourceX,sourceY,targetX,targetY,sizeX,sizeY;
-	TILE* tile, *tile2;
+	TILE *tile, *tile2, *borderTiles[4];
 	TEMPLATE* template;
 	
 	template = templateCreate(str_printf(NULL,"level\\template%d.dat",(int)(random(5))), 24, 24);
@@ -274,6 +278,36 @@ void stageFill(STAGE* stage)
 	}
 	templateDestroy(template);
 	
+	// widen narrow paths
+	for(i = 2; i < stage->size[0]-1; i++)
+	{
+		for(j = 2; j < stage->size[1]-1; j++)
+		{
+			tile = stageGetTile(stage,i,j);
+			if(tile->value)
+			{
+				count = 0;
+				for(k = 0; k < 4; k++)
+				{
+					i2 = i+levelgenOffset2D[k*2+0];
+					j2 = j+levelgenOffset2D[k*2+1];
+					tile2 = stageGetTile(stage,i2,j2);
+					borderTiles[k] = tile2;
+					borderValues[k] = !tile2->value;
+					if(tile2->value == TILE_EMPTY) count++;
+				}
+				if(count == 2)
+				{
+					if(borderValues[0]*borderValues[2] || borderValues[1]*borderValues[3])
+					{
+						if(borderValues[0]*borderValues[2]) borderTiles[0]->value = 2;
+						else borderTiles[3]->value = 2;
+					}
+				}
+			}
+		}		
+	}
+	
 	// remove noise (empty 1x1 areas)
 	for(i = 1; i < stage->size[0]-1; i++)
 	{
@@ -286,10 +320,14 @@ void stageFill(STAGE* stage)
 				i2 = i+levelgenOffset2D[k*2+0];
 				j2 = j+levelgenOffset2D[k*2+1];
 				tile2 = stageGetTile(stage,i2,j2);
+				borderTiles[k] = tile2;
+				borderValues[k] = tile2->value;
 				if(tile2->value == TILE_EMPTY) count++;
 			}
 			if(tile->value && count == 4) tile->value = TILE_EMPTY;
-			if(tile->value == TILE_EMPTY && count == 0) tile->value = 1;
+			if(tile->value == TILE_EMPTY && count <= 1) tile->value = 1;
+			if(tile->value && count == 3) tile->value = TILE_EMPTY;
+			if(tile->value && count == 1) tile->value = 1;
 		}		
 	}
 }
@@ -666,9 +704,9 @@ void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
 			if(tile->value)
 			{
 				//vec_fill(vColor,128);
-				//if(tile->value == 2) vec_set(vColor,vector(0,0,255));
 				if(tile->flood[FLOOD_EXIT]) vec_lerp(vColor,COLOR_GREEN,COLOR_RED,minv(tile->flood[FLOOD_EXIT]/48.0,1));
 				else vec_fill(vColor,128);
+				if(tile->value == 2) vec_set(vColor,vector(255,0,255));
 			}
 			else vec_fill(vColor,16);
 			draw_quad(NULL, vector(posX+i*tileSize,posY+j*tileSize,0), NULL, vector(tileSize,tileSize,0), NULL, vColor, 100, 0);

@@ -36,6 +36,7 @@ void main()
 	INIT_globalLoop();
 	INIT_levelLoop();
 	
+	on_h = MARKER_toggle;
 	on_exit = INIT_exit;
 	on_close = quitGame;
 

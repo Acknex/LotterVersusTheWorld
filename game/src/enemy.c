@@ -156,7 +156,7 @@ action enemy_bat()
 		{
 			if(LEVEL__stage)
 			{
-				var flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20);
+				var flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20, 1);
 				//if(flood > 999) vec_set(curTarget,my.x);
 				//draw_num3d(flood,my.x,-80,COLOR_WHITE);
 			}
@@ -173,7 +173,7 @@ action enemy_bat()
 		}	
 		my.skill31 += 12*time_step;
 		my.skill31 %= 360;
-		my.z = 64+16*sinv(my.skill31);
+		my.z = 96+16*sinv(my.skill31);
 		if(!(my.eflags&CLIPPED))
 		{
 			vec_set(temp2,nullvector);
