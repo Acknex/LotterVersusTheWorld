@@ -73,6 +73,8 @@ void projectile()
 	vec_scale( vTarget, t);
 	vec_add(vTarget, mouse_pos3d);
 	
+	vTarget.z += 50;
+	
 	
 	
 	my.group = 4;
@@ -88,14 +90,12 @@ void projectile()
 	vec_sub(vTarget, player.x);
 	vec_to_angle(my.pan, vTarget);
 	vec_normalize(vTarget, 1);
-	vec_scale(vTarget, weapon_speed);
+	vec_scale(vTarget, weapon_speed * time_step);
 	
 	my.tilt = 90;
 	my.pan += 90;
 	
 	vec_scale(my.scale_x, weapon_projectile_scale);
-	//c_setminmax(me);
-	//c_updatehull(me, 1);
 	
 	var length = 0;
 	var orig_height = my.z;
@@ -112,8 +112,13 @@ void projectile()
 		my.green = 128;
 		my.blue = 255;
 		
+		vec_normalize(vTarget, 1);
+		vec_scale(vTarget, weapon_speed * time_step);
+		
 		c_ignore(3,4,0);
 		dist = c_move(me, nullvector, vTarget, ACTIVATE_SHOOT | USE_POLYGON);
+		
+		
 		
 		if((you || !dist) && (player.weapon_bouncing == 0 || my.skill21 >= player.weapon_bouncing))
 		{
@@ -138,54 +143,6 @@ void projectile()
 			my.skill21 += 1;
 			my.z += 10;
 		}
-		
-		
-	
-		/*
-		if((dist == 0 || t > weapon_lifetime) && player.weapon_bouncing == 0 ) 
-		{
-			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
-			vec_normalize(v, 1);
-			vec_add(v.x, hit.x);
-			ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
-			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			//vec_add(ricochet->x, hit.nx);
-			break; 
-		}
-		else if(player.weapon_bouncing > 0 && my.skill1 < player.weapon_bouncing )
-		{
-			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
-			vec_normalize(v, 1);
-			vec_add(v.x, hit.x);
-			ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
-			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			vec_set(dir, vector(bounce.x, bounce.y, bounce.z));
-			vec_scale(dir, weapon_speed);
-			vec_to_angle(my.pan, dir);
-			my.tilt = 90;
-			my.pan += 90;
-			my.skill1 += 1;
-		} 
-		else if (dist == 0 || t > weapon_lifetime)
-		{
-			if(dist != 0)
-			{
-				
-				VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
-				vec_normalize(v, 1);
-				vec_add(v.x, hit.x);
-				ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
-				vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			}
-			break;
-		}
-		else
-		{
-			
-		if(abs(orig_height - my.z) < 80) { length = -18 * time_step; } else { length = 0; }
-			//vec_add(my.x, vector(vTarget.x * time_step, vTarget.y * time_step, vTarget.z * time_step) );
-		}
-		*/
 		wait(1);
 	}
 	ptr_remove(me);
@@ -296,9 +253,13 @@ void cooldown_granate()
 
 void shoot(int wp_type)
 {
+	
+	VECTOR spawn;
+	vec_for_vertex(spawn, player, 2139);
+	
 	if(player.weapon_cooldown == 0 && wp_type == 1)
 	{
-		ent_create("billboard.tga", player.x, projectile);
+		ent_create("billboard.tga", spawn, projectile);
 		cooldown();
 	}
 	
@@ -306,7 +267,7 @@ void shoot(int wp_type)
 	
 	if(player.weapon_granade_cooldown == 0 && wp_type == 2)
 	{
-		ent_create("cube.mdl", player.x, granate);
+		ent_create("cube.mdl", spawn, granate);
 		cooldown_granate();
 	}
 }
