@@ -70,7 +70,7 @@ void pp_bloom(float threshold, float strength)
 
 
 BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
-BMAP * WallMainTextImage = "#1024x256x32";
+BMAP * WallMainTextImage = "tile-wall-text.png";
 FONT * WallMainTextFont = "Courier#15b";
 
 TEXT * WallMainText = 
@@ -80,18 +80,19 @@ TEXT * WallMainText =
 	blue = 0;
 	red = 0;
 	green = 255;
-	font = WallMainTextFont;
-	flags = SHOW;
+	// font = WallMainTextFont;
 	strings = 20;
 }
 
 function WallMainText_startup()
 {
-	WallMainText.target_map = WallMainTextImage;
 	// WallMainText.size_x = bmap_width(WallMainTextImage);
 	WallMainText.size_y = bmap_height(WallMainTextImage);
 	str_cpy(delimit_str, "");
 	txt_load(WallMainText, "wallpaper.txt");
+	
+	wait(1);
+		bmap_to_mipmap(WallMainTextImage);
 	
 	while(1)
 	{
@@ -102,6 +103,20 @@ function WallMainText_startup()
 		int idx = random(str_len(str));
 		
 		str_setchr(str, 1 + idx, 0x20 + integer(random(128-0x20)));
+		
+//		bmap_rendertarget(WallMainTextImage, 0, 0);
+//
+//		draw_quad(
+//			NULL,
+//			NULL, NULL,
+//			vector(bmap_width(WallMainTextImage), bmap_height(WallMainTextImage), 0), NULL,
+//			COLOR_RED, 100, 0);
+//		draw_obj(WallMainText);
+//
+//		bmap_rendertarget(NULL, 0, 0);
+//		
+//		bmap_to_mipmap(WallMainTextImage);
+		
 		
 		//draw_quad(
 		//	WallMainText.target_map,

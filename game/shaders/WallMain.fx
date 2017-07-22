@@ -31,13 +31,31 @@ out_ps vs(
 	return Out;
 }
 
+
 float4 ps(out_ps In): COLOR
 {
 	float2 patternUV = float2(0.001, 0.004) * float2(In.WorldPos.x - In.WorldPos.z, -In.WorldPos.y);
 	
 	float3 attributes = tex2D(sTexture, In.uv).rgb;
 	
-	float3 text = tex2D(sWallTest, patternUV);
+	//float ioffset = 7 * floor((In.WorldPos.x - 100) / 200) + floor((In.WorldPos.z - 100) / 200);
+	//float toff = 0.03 * vecTime.w;
+	//
+ //   toff *= 2.3;
+ //  	toff -= 0.3;
+	//toff -= frac(toff);
+	//
+	//ioffset += toff;
+	
+	float2 textcoord = patternUV;// + float2(0, 0.111 * ioffset);
+	
+	textcoord.x -= 0.0005 * vecTime.w;
+	
+	textcoord.x -= 0.0009 * (1.2 + sin(0.3 * floor(textcoord.y * 17))) * vecTime.w;
+	
+	// return float4(frac(0.1 * ioffset), 0, 0, 1);
+	
+	float3 text = tex2D(sWallTest, textcoord);
 	
 	//return float4(text, 1);
 	
@@ -56,7 +74,7 @@ technique object
 	{
 		sampler[0] = (sTexture);
 		VertexShader = compile vs_2_0 vs();
-		PixelShader = compile ps_2_0 ps();
+		PixelShader = compile ps_3_0 ps();
 	}
 }
 
