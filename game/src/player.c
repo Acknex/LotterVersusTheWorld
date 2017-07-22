@@ -98,4 +98,18 @@ void player_init() {
 	player->trigger_range = 20;
 	
 	player.damage = 1;
+	
+	player.emask |= EVENT_SHOOT;
+	player.event = player_event;
+}
+
+void player_event() {
+	switch(event_type) {
+		case EVENT_SHOOT:
+			my.health -=your.damage;
+			if (my.health <= 0) {
+				printf("You are DEAD!");
+			}
+		break;
+	}
 }

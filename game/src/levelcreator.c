@@ -298,16 +298,18 @@ VECTOR * stage_load(STAGE * stage)
 				center.y = j * 200;
 				center.z = 0;
 				
-				switch(tile->value)
-				{
-					case 2: {
-						ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
-						ent->material = GroundMaterial;
-						set(ent, POLYGON);
-						set(ent, FLAG1);
-						ent_animate(ent, "closed", 0, 0);
-						break;
-					}
+				if(tile->flags & TILE_FLAG_TRAP_TURRET) {
+					ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
+					ent->material = GroundMaterial;
+					set(ent, POLYGON);
+					set(ent, FLAG1);
+					ent_animate(ent, "closed", 0, 0);
+				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
+					
+				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
+					
+				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
+					
 				}
 			}
 		}
