@@ -275,11 +275,10 @@ VECTOR * stage_load(STAGE * stage)
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	
-	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
+	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
-	
 	
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
