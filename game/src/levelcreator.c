@@ -3,6 +3,8 @@
 
 #include "materials.h"
 #include "turret.h"
+#include "spikes.h"
+#include "hole.h"
 #include "entity_defs.h"
 #include "marker.h"
 
@@ -337,19 +339,14 @@ VECTOR * stage_load(STAGE * stage)
 					ent_animate(ent, "closed", 0, 0);
 					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 8;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-hole.mdl", &center, enemy_hole);
+					ent->material = TurretMaterial;
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
-					ent->material = GroundMaterial;
-					set(ent, POLYGON);
-					set(ent, FLAG1);
-					ent->type = 7;
-					MARKER_attach(ent);
-				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 9;
+					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
+					ent->material = TurretMaterial;
+				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
+					//ent->type = 9;
 					MARKER_attach(ent);
 				}
 			}
