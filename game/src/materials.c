@@ -47,11 +47,11 @@ void pp_bloom(float strength)
 	{
 		pp_isBloomEnabled = true;
 		
-		PPBlurHMaterial.skill1 = floatv(2.0);
+		PPBlurHMaterial.skill1 = floatv(1.0);
 		PPBlurHMaterial.skill2 = floatv(0.0);
 		
 		PPBlurVMaterial.skill1 = floatv(0.0);
-		PPBlurVMaterial.skill2 = floatv(2.0);
+		PPBlurVMaterial.skill2 = floatv(1.0);
 		
 		pp_view = cam;
 		pp_stage = cam;
@@ -85,11 +85,21 @@ TEXT * WallMainText =
 	strings = 20;
 }
 
+float bloomFactor = 2.5;
+
 function ColorLUT_Bounce()
 {
 	while(key_p)
 	{
 		ColorVariation = 0.5 + 0.5 * sinv(4 * total_ticks);
+		wait(1);
+	}
+	
+	while(key_o)
+	{
+		bloomFactor = 2.0 + 2.0 * sinv(4 * total_ticks);
+		pp_bloom(bloomFactor);
+		
 		wait(1);
 	}
 }
@@ -105,9 +115,12 @@ function WallMainText_startup()
 	bmap_to_mipmap(WallMainTextImage);
 	
 	on_p = ColorLUT_Bounce;
+	on_o = ColorLUT_Bounce;
 	
 	while(1)
 	{
+		DEBUG_VAR(bloomFactor, 100);
+		
 		int idx = random(WallMainText.strings);
 		
 		STRING * str = (WallMainText.pstring)[idx];
