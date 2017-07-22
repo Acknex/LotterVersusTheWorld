@@ -1,6 +1,10 @@
 #include "camera.h"
 #include "player.h"
 #include "levelgen.h"
+#include "font.h"
+#include "sky.h"
+
+#include "items.h" //temp
 
 var INIT__levelRunning = 0;
 
@@ -24,6 +28,11 @@ void INIT_levelStart()
 	
 	ground_reflections();
 	pp_bloom(0.3, 2.0);
+	//skychange(); //because.
+	
+	//this is debug hack for items
+	VECTOR* vecTemp = vector(175,175, 50);
+	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
 }
 
 void INIT_levelEnd()
@@ -37,6 +46,7 @@ void INIT_levelEnd()
 	wait(1);
 	
 	hide_camera();
+	//sky_active = 0;
 }
 
 void INIT_levelLoop()
@@ -49,13 +59,20 @@ void INIT_levelLoop()
 	}
 }
 
-void INIT_global()
+void INIT_start()
 {
+	FONT_create();
 	create_camera();	
 }
 
+void INIT_exit()
+{
+	//error("clean exit");
+	FONT_remove();
+}
+	
 void INIT_resize()
 {
-	//error("bling");
 	pp_bloom_resize();
+	FONT_scale();
 }

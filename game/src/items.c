@@ -46,7 +46,7 @@ action item_coin()
 	
 	while(!is(me, is_collected))
 	{
-		ITEM_particleTrigger();
+		ITEM_update();
 		my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 		my->pan -= 5 * time_step;
 		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
@@ -65,7 +65,7 @@ action item_life()
 	
 	while(!is(me, is_collected))
 	{
-		ITEM_particleTrigger();
+		ITEM_update();
 		my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 		my->pan += 20 * time_step * sinv(total_ticks * 2 - vOffset);
 		wait(1);
@@ -84,7 +84,7 @@ action item_jetpack()
 	
 	while(!is(me, is_collected))
 	{
-		ITEM_particleTrigger();
+		ITEM_update();
 		my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 		my->pan = 135 * sinv(total_ticks * 2 - vOffset);
 		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
