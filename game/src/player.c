@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "datatypes.h"
 #include "levelgen.h"
+#include "entity_defs.h"
 
 STAGE* LEVEL__stage = NULL;
 
@@ -29,7 +30,7 @@ void player_move() {
 	}
 	player.pan = 180-dir.pan - view->pan;
 	
-	draw_textmode("Arial", 1, 20, 100);
+	//draw_textmode("Arial", 1, 20, 100);
 	
 	#ifdef DEBUG
 	DEBUG_VAR(player.min_x, 100);
@@ -80,6 +81,7 @@ VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
 
 void player_init() {
 	player = ent_create("cbabe.MDL", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
+
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2);
@@ -94,4 +96,6 @@ void player_init() {
 	mouse_mode = 4;
 	player.z -= player.min_z;
 	player->trigger_range = 20;
+	
+	player.damage = 1;
 }

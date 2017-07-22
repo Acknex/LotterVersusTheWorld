@@ -14,13 +14,12 @@ void TURRET__event();
 
 action enemy_turret()
 {
-	my->scale_x *= 2;
-	my->scale_y *= 2;
-	my->scale_z *= 5;
 	ENEMY_init();
 	my->delayCounter = 0;
 	my->event = TURRET__event;
 	my->type = TypeTurret;
+	//c_updatehull(me, 0);
+	set(my, PASSABLE);
 
 	TURRET__loop();
 }
@@ -44,7 +43,7 @@ void TURRET__loop()
 			}
 			
 		}
-		my->pan += TURRET_TURNSPEED * time_step;
+		//my->pan += TURRET_TURNSPEED * time_step;
 		my->delayCounter = cycle(my->delayCounter, 0, TURRET_SHOOTDELAY);
 		wait(1);	
 	}
