@@ -176,7 +176,7 @@ action enemy_bat()
 		{
 			vec_set(temp2,nullvector);
 			int i = 1;
-			you = ent_pvs(i,1); // retrieve first transparent entity
+			you = ent_pvs(i,0); // retrieve first entity
 			while (you) // repeat until there are no more entities
 			{ 
 				if(you != me && your.skill34 == 19287 && my.skill36 > your.skill36)
@@ -191,7 +191,7 @@ action enemy_bat()
 					}
 				}
 				i++;
-				you = ent_pvs(i,1); // get next entity
+				you = ent_pvs(i,0); // get next entity
 			}
 			vec_scale(temp2,0.75*time_step);
 			vec_add(vspeed,temp2);
