@@ -48,7 +48,7 @@ float4 ps(out_ps In): COLOR
 	
 	if(blendmap.a < 0.01)
 	{
-		return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b, a+b+c);
+		return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b, blendmap.r+blendmap.g+blendmap.b);
 	}
 	
 	float blinking = sin(vecTime.x / blendmap.a);
@@ -62,6 +62,9 @@ technique object
 {
 	pass one
 	{
+		ZWriteEnable = True;
+		AlphaBlendEnable = False;
+		
 		VertexShader = compile vs_2_0 vs();
 		PixelShader = compile ps_2_0 ps();
 	}
