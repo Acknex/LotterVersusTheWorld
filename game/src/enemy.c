@@ -106,7 +106,6 @@ void ENEMY__projectileLoop()
 	ptr_remove(me);
 }
 
-STAGE* LEVEL__stage = NULL;
 
 void enemy_bat_fade()
 {
@@ -130,6 +129,7 @@ action enemy_bat()
 	my.skill37 = random(360); // slight pan movement variations
 	batId++;
 	my.group = 9;
+	my.type = TypeBat;
 	
 	while(my.health > 0)
 	{
@@ -209,6 +209,7 @@ action enemy_bat()
 			}
 		}
 		else my.skill38 = 0;
+		MARKER_update(me);
 		
 		wait(1);
 	}
