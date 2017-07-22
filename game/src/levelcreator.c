@@ -308,11 +308,34 @@ VECTOR * stage_load(STAGE * stage)
 				center.z = 0;
 				
 				if(tile->flags & TILE_FLAG_TRAP_TURRET) {
-					ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
+					var rand = integer(random(4));
+					switch (rand)
+					{
+						case 0:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_rotcw);
+							break;
+
+						case 1:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_rotccw);
+							break;
+
+						case 2:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_alternate);
+							break;
+
+						case 3:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_aim);
+							break;
+
+					}
+					
+					//ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
 					ent->material = GroundMaterial;
-					set(ent, POLYGON);
+				//moved to turret
+				/*	set(ent, POLYGON);
 					set(ent, FLAG1);
 					ent_animate(ent, "closed", 0, 0);
+					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 					ent->type = 8;

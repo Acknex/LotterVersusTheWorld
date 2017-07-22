@@ -18,5 +18,6 @@
 #define TypeWall 4
 #define TypeDestroyed 5
 #define TypeTurret 6
+#define TypeTurret2 7
 
-#define TypeMaxNumber 7 //adjust and never exceed
+#define TypeMaxNumber 8 //adjust and never exceed
