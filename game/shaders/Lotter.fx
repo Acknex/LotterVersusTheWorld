@@ -49,7 +49,9 @@ InNormal = normalize(InNormal);
 	float chrome = tex2D(ChromeMapSampler,Lookup.xy);
 	float chromeFac = 1-Color.a;
 	
+	float ColorBrightness = Color.rgb*(1-Color.a*0.5)*2;
 	float4 final = Color*diffuse+chrome*chrome*0.5*chromeFac;
+	final.a = ColorBrightness;
 	
 	return final;
 } 

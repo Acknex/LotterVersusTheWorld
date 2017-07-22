@@ -12,6 +12,12 @@ MATERIAL *LotterMaterial =
 	flags = PASS_SOLID;
 }
 
+MATERIAL *HoveboardGlowMaterial =
+{
+	effect = "hoverboardGlow.fx";
+	flags = AUTORELOAD;
+}
+
 MATERIAL *PPThresholdLuminanceMaterial =
 {
 	effect = "ThresholdLum.fx";
@@ -102,6 +108,12 @@ function ColorLUT_Bounce()
 MATERIAL *ObjectMaterial = 
 {
 	effect = "Objects.fx";
+	flags = PASS_SOLID;
+}
+
+MATERIAL *HologramMaterial =
+{
+	effect = "Hologram.fx";
 	flags = PASS_SOLID;
 }
 

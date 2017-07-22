@@ -60,7 +60,7 @@ void update_camera()
 	if ((camera_focus_ent != NULL) && (cam != NULL))
 	{
 		vec_set(vecPos, vector(-CAMERA_DIST, 0, 0));
-		vec_rotate(vecPos, cam->pan);
+		vec_rotate(vecPos, vector(cam->pan,cam->tilt+3,0)); // +3 because not enough information visible on bottom part of screen
 		vec_add(vecPos, camera_focus_ent->x);
 		VECTOR tmp;
 		var fac = clamp(time_step, 0, 1) * CAMERA_SPEEDFAC;

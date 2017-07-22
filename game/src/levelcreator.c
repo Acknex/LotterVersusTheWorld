@@ -342,7 +342,7 @@ VECTOR * stage_load(STAGE * stage)
 					ent = ent_create("sphere_of_death.mdl", vec_add(vector(0, 0, 32), &center), enemy_sphere);
 				}
 				else if(tile->flags & TILE_FLAG_TRAP_SPUTNIK) {
-					ent = ent_create("Sputnik.mdl", &center, NULL);
+					ent = ent_create("Sputnik.mdl", vec_add(vector(0, 0, 75), &center), enemy_sputnik);
 					ent->type = TypeEnemy;
 					MARKER_attach(ent);
 				} else if(tile->value != 0) {
@@ -392,10 +392,8 @@ VECTOR * stage_load(STAGE * stage)
 					}
 					else if ((r > 96) && (r < 100))
 					{
-						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
+						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), screenOnWall);
 						screen->pan = rot;
-						screen->material = BlinkingObjectMaterial;
-						set(screen, PASSABLE);
 					}
 				}
 			}

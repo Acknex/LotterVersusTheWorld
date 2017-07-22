@@ -76,6 +76,7 @@ action item_life()
 
 action item_jetpack()
 {
+	my->material = HologramMaterial;
 	ITEM_setup();
 	my->event = item_jetpack_evt;
 	var vZ = my->z;
@@ -84,7 +85,7 @@ action item_jetpack()
 	
 	while(!is(me, is_collected))
 	{
-		ITEM_update();
+//		ITEM_update();
 		my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 		my->pan = 135 * sinv(total_ticks * 2 - vOffset);
 		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
