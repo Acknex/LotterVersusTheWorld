@@ -50,6 +50,7 @@ void projectile()
 	vec_set(my.pan, vector(player.pan + weapon_angle_correction, 0, 0));
 	
 	my.flags |= (PASSABLE);
+	my.type = TypePlayerProjectile;
 	
 	VECTOR dir;
 	VECTOR offset;
