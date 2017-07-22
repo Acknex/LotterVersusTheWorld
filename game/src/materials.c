@@ -6,25 +6,21 @@ VIEW *BloomImageView = NULL;
 MATERIAL *PPThresholdLuminanceMaterial =
 {
 	effect = "ThresholdLum.fx";
-	flags = AUTORELOAD;
 }
 
 MATERIAL *PPBloomMixMaterial =
 {
 	effect = "BloomMix.fx";
-	flags = AUTORELOAD;
 }
 
 MATERIAL *PPBlurHMaterial =
 {
 	effect = "Blur.fx";
-	flags = AUTORELOAD;
 }
 
 MATERIAL *PPBlurVMaterial =
 {
 	effect = "Blur.fx";
-	flags = AUTORELOAD;
 }
 
 void pp_bloom_resize()
@@ -171,6 +167,11 @@ MATERIAL *WallLowerMaterial =
 {
 	effect = "WallLower.fx";
 	skin1 = WallLower01BMAP;
+}
+
+MATERIAL *ObjectMaterial = 
+{
+	effect = "Objects.fx";
 }
 
 BMAP * GroundAtlas = "tile-floor-atlas_01.dds";

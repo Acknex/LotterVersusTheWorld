@@ -44,7 +44,9 @@ void INIT_levelStart()
 	vecTemp = vector(175,175, 25);
 	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
 	vecTemp = vector(725,900, 50);
-	ent_create(CUBE_MDL, vecTemp, enemy_turret);}
+	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
+	you.material = ObjectMaterial;
+}
 
 void INIT_levelEnd()
 {
