@@ -73,11 +73,20 @@ void INIT_levelLoop()
 {
 	while(INIT__levelRunning != 0)
 	{
-		updateMusic();
+		//updateMusic();
 		player_move();
 		update_camera();
 		
 		if(LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
+		wait(1);
+	}
+}
+
+void INIT_globalLoop()
+{
+	while(1)
+	{
+		updateMusic();
 		wait(1);
 	}
 }
