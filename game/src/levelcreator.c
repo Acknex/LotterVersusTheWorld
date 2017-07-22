@@ -30,7 +30,7 @@ void stageRenderInit()
 	ent_remove(ent);
 }
 
-ENTITY * stage_load(STAGE * stage)
+void stage_load(STAGE * stage)
 {
 	level_load(NULL);
 	
@@ -101,9 +101,11 @@ ENTITY * stage_load(STAGE * stage)
 	
 	dmdl_delete(model);
 	
-	ENTITY * ent = ent_create(CUBE_MDL, vector(0,0,0), NULL);
+	ENTITY * ent = ent_create("level_stub.mdl", vector(0,0,0), NULL);
+	
+	set(ent, POLYGON);
 	
 	ent_setmesh(ent, mesh, 0, 0);
 	
-	return ent;
+	c_updatehull(ent, 0);
 }

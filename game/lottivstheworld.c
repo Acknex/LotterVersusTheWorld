@@ -6,7 +6,7 @@
 
 #include "player.h"
 #include "camera.h"
-#include "bloom.h"
+#include "materials.h"
 #include "level.h"
 #include "weapon.h"
 
@@ -19,8 +19,9 @@
 void main() 
 {
 	d3d_antialias = 9;
+	on_resize = INIT_resize;	
+	INIT_global();
 	wait(1);
-	create_camera();
 	LEVEL_start();
 	LEVEL_loop();
 }

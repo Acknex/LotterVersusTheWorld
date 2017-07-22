@@ -6,8 +6,8 @@
       <authoring_tool>FBX COLLADA exporter</authoring_tool>
       <comments></comments>
     </contributor>
-    <created>2017-07-22T01:27:47Z</created>
-    <modified>2017-07-22T01:27:47Z</modified>
+    <created>2017-07-22T01:42:04Z</created>
+    <modified>2017-07-22T01:42:04Z</modified>
     <revision></revision>
     <title></title>
     <subject></subject>
@@ -78,10 +78,10 @@
       <mesh>
         <source id="Plane002-lib-Position">
           <float_array id="Plane002-lib-Position-array" count="12">
--0.000045 -99.999985 0.000000
--0.000029 100.000015 0.000000
-0.000021 -99.999985 -400.000000
-0.000036 100.000015 -400.000000
+0.000060 99.999985 0.000000
+0.000014 -100.000015 0.000000
+-0.000006 99.999985 -400.000000
+-0.000051 -100.000015 -400.000000
 </float_array>
           <technique_common>
             <accessor source="#Plane002-lib-Position-array" count="4" stride="3">
@@ -93,10 +93,10 @@
         </source>
         <source id="Plane002-lib-Normal0">
           <float_array id="Plane002-lib-Normal0-array" count="12">
--1.000000 0.000000 -0.000000
--1.000000 0.000000 -0.000000
--1.000000 0.000000 -0.000000
--1.000000 0.000000 -0.000000
+1.000000 -0.000000 -0.000000
+1.000000 -0.000000 -0.000000
+1.000000 -0.000000 -0.000000
+1.000000 -0.000000 -0.000000
 </float_array>
           <technique_common>
             <accessor source="#Plane002-lib-Normal0-array" count="4" stride="3">
