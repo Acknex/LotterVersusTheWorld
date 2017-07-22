@@ -4,6 +4,7 @@
 #include "materials.h"
 #include "turret.h"
 #include "entity_defs.h"
+#include "marker.h"
 
 /*
 typedef struct {
@@ -308,11 +309,20 @@ VECTOR * stage_load(STAGE * stage)
 					set(ent, FLAG1);
 					ent_animate(ent, "closed", 0, 0);
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+					ent->type = 8;
+					MARKER_attach(ent);
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
+					ent->material = GroundMaterial;
+					set(ent, POLYGON);
+					set(ent, FLAG1);
+					ent->type = 7;
+					MARKER_attach(ent);
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+					ent->type = 9;
+					MARKER_attach(ent);
 				}
 			}
 		}
