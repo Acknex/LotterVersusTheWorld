@@ -3,6 +3,8 @@
 
 #include "materials.h"
 #include "turret.h"
+#include "spikes.h"
+#include "hole.h"
 #include "entity_defs.h"
 #include "marker.h"
 
@@ -259,36 +261,6 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	c_updatehull(ent, 0);
 	
 	return ent;
-}
-
-action enemy_hole()
-{
-	set(me, POLYGON);
-	set(me, FLAG1);
-	my.type = 9;
-	
-	while(me)
-	{
-		my.skill41 = floatv(0.5 + 0.5 * sinv(total_ticks));
-		ent_animate(me, "activate", total_ticks, ANM_CYCLE);
-		MARKER_update(me);
-		wait(1);
-	}
-}
-
-action enemy_spikes()
-{
-	set(me, POLYGON);
-	set(me, FLAG1);
-	my.type = 8;
-	
-	while(me)
-	{
-		my.skill41 = floatv(0.5 + 0.5 * sinv(total_ticks));
-		ent_animate(me, "open", 50 + 50 * sinv(10 * total_ticks), ANM_CYCLE);
-		MARKER_update(me);
-		wait(1);
-	}
 }
 
 VECTOR * stage_load(STAGE * stage)
