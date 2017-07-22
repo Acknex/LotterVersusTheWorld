@@ -223,7 +223,7 @@ void shoot()
 {
 	VECTOR to;
 	
-	player.weapon_type = 1;
+	player.weapon_type = 0;//1;
 	
 	if(player.skill43 == 0 && player.weapon_type == 0)
 	{
