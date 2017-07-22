@@ -145,10 +145,11 @@ void player_move() {
 	
 	c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 	player.z = 190;
-	if(HIT_TARGET)
+	var len = vec_length(vPlayerSpeed);
+	if(HIT_TARGET && len > 15)
 	{
 		bounce.z = 0;
-		vec_normalize(bounce,vec_length(vPlayerSpeed)*0.45);
+		vec_normalize(bounce,len*0.45);
 		vPlayerSpeed.x = bounce.x;
 		vPlayerSpeed.y = bounce.y;
 	}

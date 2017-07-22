@@ -11,7 +11,7 @@ void weapon_startup()
 			{
 				shootingHandle = snd_loop(sndPlayerShot, 50, 0);
 			}
-			player.skill44 = 2;
+			player.weapon_bouncing = 2;
 			player.group = 3;
 			shoot(1);
 		}
@@ -112,7 +112,7 @@ void projectile()
 		
 		if(you == player)	{ break; }
 		
-		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
+		if((dist != 0 || t > weapon_lifetime) && player.weapon_bouncing == 0 ) 
 		{
 			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 			vec_normalize(v, 1);
@@ -122,7 +122,7 @@ void projectile()
 			//vec_add(ricochet->x, hit.nx);
 			break; 
 		}
-		else if( dist != 0 && player.skill44 > 0 && my.skill50 < player.skill44 )
+		else if( dist != 0 && player.weapon_bouncing > 0 && my.skill50 < player.weapon_bouncing )
 		{
 			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 			vec_normalize(v, 1);
