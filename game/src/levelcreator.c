@@ -320,7 +320,7 @@ VECTOR * stage_load(STAGE * stage)
 					ent->type = 7;
 					MARKER_attach(ent);
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
 					ent->type = 9;
 					MARKER_attach(ent);
 				}

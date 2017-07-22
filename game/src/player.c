@@ -3,7 +3,7 @@
 #include "levelgen.h"
 #include "entity_defs.h"
 
-STAGE* LEVEL__stage = NULL;
+//STAGE* LEVEL__stage = NULL;
 
 var anim_percentage = 0;
 var dist_ahead = 0;
@@ -104,8 +104,7 @@ void player_move() {
 		static int playerX = 0;
 		static int playerY = 0;
 		int x,y;
-		x = floor((player.x-100)/200);
-		y = floor((player.y-100)/200);
+	stageGetIndicesFromPos(LEVEL__stage,player.x,&x,&y);
 		if(playerX != x || playerY != y)
 		{
 			playerX = x;

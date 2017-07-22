@@ -1,8 +1,10 @@
 
+// flood types
 #define FLOOD_EXIT 0
 #define FLOOD_ENTRANCE 1
 #define FLOOD_PLAYER 2
 #define FLOOD_TMP1 3
+#define FLOOD_TYPE_MAX 4
 #define FLOOD_VALUE_MAX 999999
 
 #define TILE_EMPTY 0
@@ -21,7 +23,7 @@ struct _TILE
 	int flags;
 	int tmp; // used for various levelgen algorithms
 	int prev[2];
-	int flood[4];
+	int flood[4]; // 4 == FLOOD_TYPE_MAX
 };
 
 typedef struct _TILE TILE;
