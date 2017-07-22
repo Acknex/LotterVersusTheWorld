@@ -126,4 +126,34 @@ void p_granate_explode(PARTICLE* p)
 	p.event = p_granate_explode_fade;
 }
 
+void p_sphere_explode_fade(PARTICLE* p)
+{
+	if(p_event_do_wall_collision(p))
+	{
+		effect(p_bat_wall_bounce_highlight,1,p.x,nullvector);
+	}
+	if(p.lifespan < 6) p.size = p.skill_a*p.lifespan/6.0;
+	else
+	{
+		float x = (p.lifespan-6)/(p.skill_b-6)+1;
+		p.size = p.skill_a*x*x;
+	}
+}
 
+void p_sphere_explode(PARTICLE* p)
+{
+	vec_randomize(p.vel_x,40);
+	vec_set(p.blue,vector(220,120,120));
+	vec_scale(p.blue,random(0.2)+0.8);
+	set(p,MOVE | BRIGHT);
+	p.lifespan = p.skill_b = 8+random(8);
+	p.alpha = 50+random(50);
+	p.gravity = 5;
+	p.size = p.skill_a = random(8)+8;
+	if(LEVEL__stage)
+	{
+		p.skill_x = (int)((p.x+100)/200);
+		p.skill_y = (int)((p.y+100)/200);
+	}
+	p.event = p_bat_explode_fade;
+}
