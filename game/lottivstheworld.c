@@ -25,7 +25,7 @@ void quitGame()
 
 void main() 
 {
-	d3d_antialias = 9;
+	d3d_antialias = 0;
 	video_mode = 12;
 	on_resize = INIT_resize;
 	INIT_start();
