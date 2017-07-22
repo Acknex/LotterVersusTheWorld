@@ -17,7 +17,10 @@ TEXT* txtMarkers =
 	".lotti\n 0xB00B5",
 	".bugfix\n 0xDEC0DED",
 	".destroyed\n 0xDEAD",
-	".turret\n 0xBAFFBAFF"
+	".turret\n 0xBAFFBAFF",
+	".spikes",
+	".hole",
+	".enemy"
 	);
 }
 
