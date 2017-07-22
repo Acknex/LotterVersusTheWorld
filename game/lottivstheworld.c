@@ -26,6 +26,7 @@ void quitGame()
 
 void main() 
 {
+	max_entities = 20000;
 	d3d_antialias = 0;
 	video_mode = 12;
 	on_resize = INIT_resize;
