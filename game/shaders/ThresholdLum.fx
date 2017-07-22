@@ -1,5 +1,11 @@
 Texture TargetMap;
-sampler2D g_samSrcColor = sampler_state { texture = <TargetMap>; MipFilter = Linear;	};
+sampler g_samSrcColor = sampler_state
+{
+	Texture = <TargetMap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
 
 float4 vecViewPort;
 float4 vecSkill1;
