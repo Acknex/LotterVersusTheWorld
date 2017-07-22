@@ -3,6 +3,14 @@
 static BOOL pp_isBloomEnabled = false;
 VIEW *BloomImageView = NULL;
 
+BMAP* chrome_tga = "chrome.tga";
+
+MATERIAL *LotterMaterial =
+{
+	effect = "Lotter.fx";
+	flags = AUTORELOAD;
+}
+
 MATERIAL *PPThresholdLuminanceMaterial =
 {
 	effect = "ThresholdLum.fx";
@@ -162,11 +170,13 @@ MATERIAL *WallOutlineMaterial =
 }
 
 BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
+BMAP *WallLowerLavaBMAP = "graphics/lava.png";
 
 MATERIAL *WallLowerMaterial =
 {
 	effect = "WallLower.fx";
 	skin1 = WallLower01BMAP;
+	skin2 = WallLowerLavaBMAP;
 }
 
 MATERIAL *ObjectMaterial = 
@@ -184,24 +194,40 @@ MATERIAL *GroundMaterial =
 
 VIEW *ReflectionView = NULL;
 
+MATERIAL *PPReflectionBlurHMaterial =
+{
+	effect = "BlurSmall.fx";
+}
+
+MATERIAL *PPReflectionBlurVMaterial =
+{
+	effect = "BlurSmall.fx";
+}
+
 void ground_reflections()
 {
 	if(ReflectionView)
 		return;
+		
+	PPReflectionBlurHMaterial.skill1 = floatv(1.0);
+	PPReflectionBlurHMaterial.skill2 = floatv(0.0);
 	
-	ReflectionView = view_create(-1);
+	PPReflectionBlurVMaterial.skill1 = floatv(0.0);
+	PPReflectionBlurVMaterial.skill2 = floatv(1.0);
+	
+	ReflectionView = view_create(-2);
 	ReflectionView.size_x = 512;
 	ReflectionView.size_y = 512;
 	set(ReflectionView, NOFLAG1);
 	
-/*	pp_view = cam;
-	pp_stage = cam;
+	pp_view = ReflectionView;
+	pp_stage = ReflectionView;
 		
-	pp_add(PPThresholdLuminanceMaterial);*/
+	pp_add(PPReflectionBlurHMaterial);
+	pp_add(PPReflectionBlurVMaterial);
 	
-	ReflectionView.bmap = bmap_createblack(512, 512, 8888);
-	
-	GroundMaterial.skin1 = ReflectionView.bmap;
+	pp_stage.bmap = bmap_createblack(512,512, 8888);
+	GroundMaterial.skin1 = pp_stage.bmap;
 	
 	set(ReflectionView, SHOW);
 	proc_mode = PROC_LATE;

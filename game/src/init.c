@@ -10,7 +10,6 @@
 
 var INIT__levelRunning = 0;
 
-STAGE* LEVEL__stage = NULL;
 
 void INIT_levelStart()
 {
@@ -19,7 +18,7 @@ void INIT_levelStart()
 	//level_load("prototype_wmb.wmb");
 	//level_load("prototype.mdl");
 	//level_load("test_level_small.wmb");
-	LEVEL__stage = stageCreate(32,32,8172.607,0);
+	LEVEL__stage = stageCreate(32,32,0,0); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
 	stageAddExitAndEntrance(LEVEL__stage);
@@ -53,9 +52,9 @@ void INIT_levelStart()
 
 void INIT_levelEnd()
 {
-	// TODO: @superku: stageRemove or similar!
 	stage_unload(); // destroy all meshes
-	// stage_remove(LEVEL__stage);
+	stageDestroy(LEVEL__stage);
+	LEVEL__stage = NULL;
 
 	INIT__levelRunning = 0;
 	
@@ -74,6 +73,8 @@ void INIT_levelLoop()
 		updateMusic();
 		player_move();
 		update_camera();
+		
+		if(LEVEL__stage) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);
 	}
 }

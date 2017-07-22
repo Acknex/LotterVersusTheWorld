@@ -5,7 +5,11 @@ void weapon_startup()
 		if((player != NULL) && mouse_left) 
 		{
 			player.skill44 = 2;
-			shoot();
+			shoot(1);
+		}
+		else if((player != NULL) && mouse_right)
+		{
+			shoot(2);
 		}
 		wait(1);		
 	}
@@ -140,6 +144,8 @@ void granate()
 	
 	my.group = 2;
 	
+	my.flags |= PASSABLE;
+	
 	// Calculate grenate target
 	vec_set(vTarget,mouse_dir3d);
 	vec_scale(vTarget,1000);
@@ -192,22 +198,31 @@ void cooldown()
 {
 	if(proc_status(cooldown) == 0)
 	{
-		while(player.skill43 < weapon_cooldown_time && mouse_left)
+		while(player.weapon_cooldown < weapon_cooldown_time && mouse_left)
 		{
-			player.skill43 += time_step / 16;
+			player.weapon_cooldown += time_step / 16;
 			wait(1);
 		}
-		player.skill43 = 0;
+		player.weapon_cooldown = 0;
 	}
 }
 
-void shoot()
+void cooldown_granate()
 {
-	VECTOR to;
-	
-	player.weapon_type = 0;//1;
-	
-	if(player.skill43 == 0 && player.weapon_type == 0)
+	if(proc_status(cooldown_granate) == 0)
+	{
+		while(player.weapon_granade_cooldown < weapon_grenade_cooldown_time)
+		{
+			player.weapon_granade_cooldown += time_step / 16;
+			wait(1);
+		}
+		player.weapon_granade_cooldown = 0;
+	}
+}
+
+void shoot(int wp_type)
+{
+	if(player.weapon_cooldown == 0 && wp_type == 1)
 	{
 		ent_create("billboard.tga", player.x, projectile);
 		cooldown();
@@ -215,15 +230,9 @@ void shoot()
 	
 	//Test für Granate
 	
-	if(player.weapon_type == 1)
+	if(player.weapon_granade_cooldown == 0 && wp_type == 2)
 	{
-		
-		if(mouse_left)
-		{
-			
-		}
-		
 		ent_create("cube.mdl", player.x, granate);
-		cooldown();
+		cooldown_granate();
 	}
 }
