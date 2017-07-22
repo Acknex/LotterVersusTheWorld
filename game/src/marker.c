@@ -29,7 +29,7 @@ void MARKER_update(ENTITY* ent)
 		vec_set(&vecTemp, ent->x);
 		if (vec_to_screen(vecTemp, get_camera()) != NULL)
 		{
-			draw_text("0xC0FFEE", vecTemp.x, vecTemp.y, vector(255,255,255));
+			draw_text("0xC0FFEE\n.jetpack", vecTemp.x, vecTemp.y, vector(255,255,255));
 		}
 	}	
 }
