@@ -216,7 +216,7 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != TILE_EMPTY) {
+				if(n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));
