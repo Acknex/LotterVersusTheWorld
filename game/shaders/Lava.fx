@@ -52,20 +52,21 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	float3 blendmap = pow(tex2D(sTexture, 10 * In.uv).rgb * tex2D(sTexture, In.uv).rgb, 0.5);
-	float fac = blendmap.r;
+	//float fac = pow(tex2D(sTexture, 10 * In.uv).r * tex2D(sTexture, In.uv).r, 0.5);
+	float fac = tex2D(sTexture, 10 * In.uv + float2(0.004 * vecTime.w, 0.0005 * vecTime.w)).r;
+	float fac2 = tex2D(sTexture, 8 * In.uv + float2(0.0035 * vecTime.w, -0.0005 * vecTime.w)).r;
+	float fac3 = tex2D(sTexture, 1 * In.uv + float2(0.00035 * vecTime.w, 0)).r;
+	fac = clamp(fac * (fac2 * 2) * (fac3 * 4),0,1);
 	
-	float hl0 = 1-pow(tex2D(sTexture, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0002 * vecTime.w)).r, 3);
-	float hl1 = 1-pow(tex2D(sTexture, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).r, 3);
+	float hl0 = tex2D(sTexture, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0001 * vecTime.w)).g;
+	float hl1 = tex2D(sTexture, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).g;
+	
 	float highlight = hl0 * hl1;
 	
+	float4 a = tex2D(sLUT, float2(0.5 * fac, 1.5/64.0));
 	float4 b = tex2D(sLUT, float2(0.5 * saturate(highlight), 2.5/64.0));
-	float4 a = tex2D(sLUT, float2(0.5 * blendmap.r, 1.5/64.0));
-	return a+b;
-
-	// return float4(fac,fac,fac, 0);
-
-	// return float4(lerp(a, b, fac), 0.0);
+	return a+(b*0.4) * saturate(length(a));
+	//return fac;
 }
 
 
@@ -75,6 +76,7 @@ technique object
 	{
 		VertexShader = compile vs_2_0 vs();
 		PixelShader = compile ps_2_0 ps();
+		AlphaBlendEnable = false;
 	}
 }
 
