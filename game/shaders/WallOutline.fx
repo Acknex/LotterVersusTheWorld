@@ -9,7 +9,13 @@ float4 vecTime;
 float ColorVariation_flt;
 
 Texture ColorLUT_bmap;
-sampler sLUT = sampler_state { Texture = <ColorLUT_bmap>; MipFilter = Linear; };
+sampler sLUT = sampler_state
+{
+	Texture = <ColorLUT_bmap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
 
 struct out_ps // Output to the pixelshader fragment
 {

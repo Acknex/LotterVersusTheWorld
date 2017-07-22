@@ -12,7 +12,13 @@ float ColorVariation_flt;
 
 sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 sampler sDetails = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; AddressV = Clamp; };
-sampler sLUT = sampler_state { Texture = <ColorLUT_bmap>; MipFilter = Linear; };
+sampler sLUT = sampler_state
+{
+	Texture = <ColorLUT_bmap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
 
 struct out_ps // Output to the pixelshader fragment
 {
