@@ -19,12 +19,13 @@ void ricochet_effect()
 	my.red = 255;
 	my.green = 128;
 	my.blue = 255;
+	
+	vec_scale(my.scale_x, 0.5);
+	wait(1);
 	if(my.pan == 0)
 		my.pan = 0.01;
 	if(my.tilt == 0)
 		my.tilt = 0.01;
-	
-	vec_scale(my.scale_x, 0.5);
 	while(t < 0.3) {
 		var f = t / 0.3;
 		var scale = 0.01+f*1;
