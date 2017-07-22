@@ -23,7 +23,9 @@ action enemy_sputnik()
 	my.group = 9;
 	my.type = TypeEnemy;
 	my.health = 50; // TANK IT, BABY
+	my.damage = 12;
 	var attacking = 0;
+	var attacked = 0;
 	while(my.health > 0)
 	{
 		my.skill37 += 10*time_step;
@@ -36,8 +38,7 @@ action enemy_sputnik()
 		
 		if(attacking <= 0)
 		{
-		
-			if(vec_length(vector(myTarget.x-my.x,myTarget.y-my.y,0)) > 32)
+			if(vec_length(vector(myTarget.x-my.x,myTarget.y-my.y,0)) > 125)
 			{
 				if(LEVEL__stage)
 				{
@@ -100,6 +101,10 @@ action enemy_sputnik()
 				my.skill38 = 0;
 			}
 		}
+		else
+		{
+			vec_set(vspeed, vector(0,0,0));
+		}
 		MARKER_update(me);
 		
 		if(player)
@@ -114,10 +119,18 @@ action enemy_sputnik()
 			}
 			else if(attacking > 0)
 			{
-				ent_animate(me, "die", attacking, 0);
+				ent_animate(me, "attack", attacking, 0);
+				
+				if(attacking >= 30 && attacked == 0)
+				{
+					var vMode = IGNORE_WORLD | IGNORE_MAPS | IGNORE_SPRITES | IGNORE_PASSABLE | IGNORE_ME | SCAN_ENTS;
+					c_scan(my.x,my.pan,vector(120, 90, 200), vMode);
+					attacked = 1;
+				}
+				
 				if(attacking >= 100)
 				{
-					attacking = -50;
+					attacking = -25;
 				}
 				attacking += 10 * time_step;
 			}
@@ -131,7 +144,7 @@ action enemy_sputnik()
 				ent_animate(me, "idle", 10 * total_ticks, ANM_CYCLE);
 			}
 			attacking += time_step;
-			if(attacking > 0) { attacking = 0; }
+			if(attacking > 0) { attacking = 0; attacked = 0; }
 		}
 		
 		wait(1);
