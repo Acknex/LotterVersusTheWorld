@@ -2,9 +2,12 @@
 
 #define PRAGMA_PATH "../src/"
 #define PRAGMA_PATH "../models/"
+#define PRAGMA_PATH "../shaders/"
+#define PRAGMA_PATH "../graphics/"
 
 #include <acknex.h>
 #include <default.c>
+#include <mtlFx.c>
 #include "datatypes.h"
 #include "levelgen.h"
 #include "levelcreator.c"

@@ -11,8 +11,13 @@ typedef struct {
 	float tu4,tv4;  // 4th coordinate set, for additional data
 } D3DVERTEX;
 */
-	
+
 LPD3DXMESH stage_wallMesh, stage_groundMesh, stage_pillarMesh;
+
+MATERIAL * stageMtlLava = 
+{
+	effect = "Lava.fx";
+}
 
 void stageRenderInit()
 {
@@ -32,6 +37,9 @@ ENTITY * stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
+	ENTITY * ent = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -250), NULL);
+	ent->material = stageMtlLava;
+	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	DynamicModel * model = dmdl_create();
 	
@@ -45,7 +53,7 @@ ENTITY * stage_load(STAGE * stage)
 		for(j = 0; j < stage->size[1]; j++)
 		{
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 0) {
+			if(tile->value == 1) {
 				continue;
 			}
 			
@@ -61,7 +69,7 @@ ENTITY * stage_load(STAGE * stage)
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 0) {
+			if(tile->value == 1) {
 				continue;
 			}
 			
@@ -79,7 +87,7 @@ ENTITY * stage_load(STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != 0) {
+				if(n->value != 1) {
 					continue;
 				}
 			
