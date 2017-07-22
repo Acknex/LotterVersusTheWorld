@@ -173,7 +173,7 @@ action enemy_bat()
 		}	
 		my.skill31 += 12*time_step;
 		my.skill31 %= 360;
-		my.z = 64+16*sinv(my.skill31);
+		my.z = 96+16*sinv(my.skill31);
 		if(!(my.eflags&CLIPPED))
 		{
 			vec_set(temp2,nullvector);

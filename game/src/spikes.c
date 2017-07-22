@@ -1,4 +1,4 @@
-#define SPIKES_ATTACKRANGE 350
+#define SPIKES_ATTACKRANGE 500
 #define SPIKES_ANIMOPENSPEED 10
 #define SPIKES_ANIMCLOSESPEED 7
 #define SPIKES_ANIMOPENSPEEDFAST 40
@@ -77,7 +77,7 @@ void SPIKES__loop()
 
 void SPIKES__turnOn()
 {
-	//MARKER_update(me);
+	MARKER_update(me);
 	my->animCounter += SPIKES_ANIMOPENSPEED * time_step;
 	if (my->animCounter >= 100)
 	{
@@ -112,7 +112,7 @@ void SPIKES__turnOff()
 
 void SPIKES__sleep()
 {
-	MARKER_update(me);
+	//MARKER_update(me);
 	my->skill41 = floatv(0.0);
 	if (vec_dist(player->x, my->x) < SPIKES_ATTACKRANGE)
 	{
