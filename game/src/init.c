@@ -33,7 +33,7 @@ void INIT_levelStart()
 	show_camera();
 	
 	ground_reflections();
-	pp_bloom(2.0);
+	pp_bloom(2.5);
 	//skychange(); //because.
 	
 
