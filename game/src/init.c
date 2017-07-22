@@ -51,6 +51,8 @@ void INIT_levelStart()
 //	vecTemp = vector(725,900, 50);
 //	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
 //	you.material = ObjectMaterial;
+
+	enemy_spawn_hex();
 }
 
 void INIT_levelEnd()

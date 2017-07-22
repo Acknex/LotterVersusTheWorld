@@ -222,3 +222,30 @@ action enemy_bat()
 	snd_play(sndBatDeath, 100, 0);
 	ptr_remove(me);
 }
+
+action enemy_hex()
+{
+	ENEMY_init();
+	
+	my->material = HexMaterial;
+	
+	while(my.health > 0)
+	{
+		VECTOR dir;
+		vec_diff(dir, player.x, my.x);
+		ANGLE angle;
+		vec_to_angle(angle, dir);
+		my.pan = angle.pan+90.0;
+		wait(1);
+	}
+	
+	effect(p_bat_explode,100,my.x,nullvector);
+	snd_play(sndBatDeath, 100, 0);
+	ptr_remove(me);
+}
+
+void enemy_spawn_hex()
+{
+	VECTOR *pos = stageGetExitPos(LEVEL__stage, NULL, NULL, NULL);
+	ent_create("hex_01.mdl", pos, enemy_hex);
+}
