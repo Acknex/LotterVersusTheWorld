@@ -11,7 +11,15 @@ void weapon_startup()
 	}
 }
 
-
+void ricochet_effect()
+{
+	var t = 0;
+	while(t < 300) {
+		vec_scale(my.x, t/300*1.5);
+		my.alpha = (300 - time_step)/300;
+		t+=time_step/16;
+	}
+}
 void projectile()
 {
 	var t = 0;
@@ -70,10 +78,14 @@ void projectile()
 		
 		if((dist != 0 || t > 5) && player.skill44 == 0 ) 
 		{ 
+			ENTITY* ricochet = ent_create("billboard.tga", my.x, ricochet_effect);
+			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
 			break; 
 		}
 		else if( dist != 0 && player.skill44 > 0 && my.skill50 < player.skill44 )
 		{
+			ENTITY* ricochet = ent_create("billboard.tga", my.x, ricochet_effect);
+			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
 			vec_set(dir, bounce);
 			vec_scale(dir, weapon_speed);
 			vec_to_angle(my.pan, dir);
