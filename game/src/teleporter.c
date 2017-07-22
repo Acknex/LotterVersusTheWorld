@@ -54,8 +54,6 @@ action teleporter_out()
 			player.near_teleport = 0;
 			portloader = maxv(0, portloader - 10 * time_step);
 		}
-		DEBUG_VAR(dist, 512);
-		DEBUG_VAR(portloader, 528);
 		my->skill41 = floatv(0.001 + 0.001 * portloader);
 		wait(1);
 	}
