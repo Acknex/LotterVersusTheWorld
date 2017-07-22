@@ -1,4 +1,6 @@
-"acklog.txt" 
-"*.bak" 
-"*.raw" 
-"*.wed" 
+acklog.txt
+*.bak
+*.raw
+*.wed
+ackerr.txt
+*.blend?
