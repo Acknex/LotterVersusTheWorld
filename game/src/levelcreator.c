@@ -351,7 +351,7 @@ VECTOR * stage_load(STAGE * stage)
 					TILE* neighborn = stageGetTile(stage, i, j-1);
 					TILE* neighbors = stageGetTile(stage, i, j+1);
 					if (neighbors->value == 0)
-					ent_create("rack_case.mdl", vec_add(vector(offx, offy, 0), &center), rack_buildup);{
+					{
 						rot = -90;
 						offy = 95;
 					}
@@ -389,6 +389,7 @@ VECTOR * stage_load(STAGE * stage)
 					{
 						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
 						screen->pan = rot;
+screen->material = ObjectMaterial;
 					}
 				}
 			}
