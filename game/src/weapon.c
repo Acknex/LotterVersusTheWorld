@@ -233,7 +233,7 @@ void granate()
 		wait(1);
 	}
 	explosion(me);
-	c_scan(my.x, nullvector, vector(360, 0, 130), SCAN_ENTS | IGNORE_ME);
+	c_scan(my.x, nullvector, vector(360, 0, 200), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
 
