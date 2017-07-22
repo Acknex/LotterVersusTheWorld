@@ -66,6 +66,7 @@ action enemy_turret_aim()
 {
 	TURRET__init();
 	my->turretRotationMode = TURRETTURNAIM;
+	my->type = TypeTurret2;
 }
 
 void TURRET__init()
@@ -118,6 +119,7 @@ void TURRET__loop()
 
 void TURRET__turnOn()
 {
+	MARKER_update(me);
 	my->animCounter += TURRET_ANIMOPENSPEED * time_step;
 	if (my->animCounter >= 100)
 	{
@@ -130,6 +132,7 @@ void TURRET__turnOn()
 
 void TURRET__turnOff()
 {
+	MARKER_update(me);
 	my->animCounter += TURRET_ANIMCLOSESPEED * time_step;
 	if (my->animCounter >= 100)
 	{
