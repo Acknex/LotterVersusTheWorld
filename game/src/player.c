@@ -25,7 +25,7 @@ void player_move() {
 	}
 	player.pan = 180-dir.pan - view->pan;
 	
-	draw_textmode("Arial", 1, 20, 100);
+	//draw_textmode("Arial", 1, 20, 100);
 	
 	#ifdef DEBUG
 	DEBUG_VAR(player.min_x, 100);
@@ -72,7 +72,7 @@ void player_move() {
 }
 
 void player_init() {
-	player = ent_create("cbabe.MDL", vector(0,0,0), NULL);
+	player = ent_create("cbabe.MDL", vector(100,100,0), NULL);
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2);
