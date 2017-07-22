@@ -10,6 +10,7 @@ var dist_ahead = 0;
 var dist_strafe = 0;
 VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
+var playerVelY = 0;
 
 void player_move_old() {
 	
@@ -153,7 +154,13 @@ void player_move() {
 		c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 		
 		if(player.near_teleport == 0) {
-			player.z = 190;
+			// Fancy mini-gravity
+			playerVelY -= 1.5 * time_step;
+			player.z += playerVelY * time_step;
+			if(player.z <= 190) {
+				playerVelY *= -0.3;
+				player.z = 190;
+			}
 		}
 		var len = vec_length(vPlayerSpeed);
 		if(HIT_TARGET && len > 15)
