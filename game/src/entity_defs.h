@@ -13,3 +13,4 @@
 #define TypePlayerProjectile 1
 #define TypeEnemyProjectile 2
 #define TypePlayer 3
+#define TypeWall 4
