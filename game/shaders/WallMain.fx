@@ -108,7 +108,7 @@ technique object
 {
 	pass one
 	{
-		VertexShader = compile vs_2_0 vs();
+		VertexShader = compile vs_3_0 vs();
 		PixelShader = compile ps_3_0 ps();
 	}
 	
@@ -119,7 +119,7 @@ technique object
 		ZWriteEnable = False;
 		AlphaBlendEnable = True;
 		ColorWriteEnable = RED|GREEN|BLUE;
-		VertexShader = compile vs_2_0 vs();
+		VertexShader = compile vs_3_0 vs();
 		PixelShader = compile ps_3_0 ps_translucent();
 	}
 }
