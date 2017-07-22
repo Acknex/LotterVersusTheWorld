@@ -6,6 +6,10 @@
 #include <normal>
 
 float4 vecTime;
+float ColorVariation_flt;
+
+Texture ColorLUT_bmap;
+sampler sLUT = sampler_state { Texture = <ColorLUT_bmap>; MipFilter = Linear; };
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -25,7 +29,9 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	return float4(0.0f, 0.0, 1.0, 1.0);
+	float lutPosition = ColorVariation_flt * 0.5;
+	float3 color = tex2D(sLUT, float2(lutPosition, 20.5/64.0));
+	return float4(color, 1.0);
 }
 
 

@@ -73,6 +73,7 @@ BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
 BMAP * WallMainTextImage = "tile-wall-text.png";
 FONT * WallMainTextFont = "Courier#15b";
 BMAP *ColorLUT = "color-lut_01.dds";
+float ColorVariation = 0.5;
 
 TEXT * WallMainText = 
 {
@@ -93,7 +94,7 @@ function WallMainText_startup()
 	txt_load(WallMainText, "wallpaper.txt");
 	
 	wait(1);
-		bmap_to_mipmap(WallMainTextImage);
+	bmap_to_mipmap(WallMainTextImage);
 	
 	while(1)
 	{
