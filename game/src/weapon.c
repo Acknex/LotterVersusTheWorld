@@ -227,7 +227,7 @@ void granate()
 		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
-	explosion(me);
+	effect(p_granate_explode,200,my.x,nullvector);
 	c_scan(my.x, nullvector, vector(360, 0, 200), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
@@ -275,7 +275,7 @@ void shoot(int wp_type)
 	if(player.weapon_granade_cooldown == 0 && wp_type == 2)
 	{
 		snd_play(sndGrenadeThrow, 100, 0);
-		ent_create("cube.mdl", spawn, granate);
+		ent_create("sphere.mdl", spawn, granate);
 		cooldown_granate();
 	}
 }
