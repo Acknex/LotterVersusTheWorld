@@ -3,7 +3,7 @@ void player_move() {
 		player.x +=5 * time_step;
 	}
 	if (key_s) {
-		player.x +=5 * time_step;
+		player.x -=5 * time_step;
 	}
 	if (key_a) {
 		player.y +=5 * time_step;
