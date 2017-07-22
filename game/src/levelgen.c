@@ -134,7 +134,7 @@ var stageGetFloodAtPos(STAGE* stage, VECTOR* vpos, int floodId)
 	return FLOOD_VALUE_MAX;
 }
 
-var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VECTOR* vNewTarget, int floodId, var border)
+var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VECTOR* vNewTarget, int floodId, var border, var tryStraightLine)
 {
 	VECTOR currentCenter;
 	TILE* tile, *tile2;
@@ -153,30 +153,34 @@ var stageGetTargetFromFlood(STAGE* stage, VECTOR* vpos, VECTOR* vFinalTarget, VE
 	minY = minv(y,finalY);
 	maxY = maxv(y,finalY);
 	
-	ok = 1;
-	for(i = minX; i <= maxX; i++)
+	if(tryStraightLine == 1)
 	{
-		for(j = minY; j <= maxY; j++)
+		ok = 1;
+
+		for(i = minX; i <= maxX; i++)
 		{
-			tile = stageGetTile(stage,i,j);
-			if(!tile)
+			for(j = minY; j <= maxY; j++)
 			{
-				i = maxX+1;
-				ok = 0;
-				break;
-			}
-			if(tile->value == TILE_EMPTY)
-			{
-				i = maxX+1;
-				ok = 0;
-				break;
-			}
-		}	
-	}
-	if(ok)
-	{
-		vec_set(vNewTarget,vFinalTarget);
-		return 0;
+				tile = stageGetTile(stage,i,j);
+				if(!tile)
+				{
+					i = maxX+1;
+					ok = 0;
+					break;
+				}
+				if(tile->value == TILE_EMPTY)
+				{
+					i = maxX+1;
+					ok = 0;
+					break;
+				}
+			}	
+		}
+		if(ok)
+		{
+			vec_set(vNewTarget,vFinalTarget);
+			return 0;
+		}
 	}
 	
 	currentCenter.x = x*200;
