@@ -72,7 +72,7 @@ void player_move() {
 		}		
 	} else {
 		anim_percentage += 5*time_step; 
-		ent_animate(player,"idle",anim_percentage,ANM_CYCLE);
+		ent_animate(player,"stand",anim_percentage,ANM_CYCLE);
 	}
 }
 
@@ -80,11 +80,11 @@ void player_move() {
 VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
 
 void player_init() {
-	player = ent_create("cbabe.MDL", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
+	player = ent_create("cbabe_male.mdl", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
 
 	
 	// Adapt scale
-	vec_scale(player.scale_x, 2);
+	//vec_scale(player.scale_x, 2);
 	
 	// Adapt bounding box
 	c_setminmax(player);
