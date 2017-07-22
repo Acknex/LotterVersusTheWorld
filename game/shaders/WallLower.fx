@@ -6,10 +6,12 @@
 #include <normal>
 
 Texture mtlSkin1;
+Texture ColorLUT_bmap;
 float4 vecTime;
 
 sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 sampler sDetails = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; AddressV = Clamp; };
+sampler sLUT = sampler_state { Texture = <ColorLUT_bmap>; MipFilter = Linear; };
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -33,11 +35,16 @@ float4 ps(out_ps In): COLOR
 {
 	float height = -In.WorldPos.y*0.003;
 	float2 patternUV = 0.0013 * float2(In.WorldPos.x - In.WorldPos.z, In.WorldPos.y);
+	float lineValue = tex2D(sDetails, float2(patternUV.x, height)).a;
 	
-	float3 color = lerp(float3(0.0, 0.1, 0.0), float3(0.4, 0.1, 0.0), tex2D(sTexture, patternUV).r);
-	color += tex2D(sDetails, float2(In.uv.x, height)).a * float3(0.7, 0.4, 0.0) * 3.0;
+	float3 color1 = tex2D(sLUT, float2(5.0/512.0, 10.5*8.0));
+	float3 color2 = tex2D(sLUT, float2(5.0/512.0, 11.5*8.0));
+	float3 color3 = tex2D(sLUT, float2(5.0/512.0, 12.5*8.0));
+	
+	float3 color = lerp(color1, color2, tex2D(sTexture, patternUV).r);
+	color += lineValue * color3;
 	color += max(height - 0.5, 0) * float3(1.0, 0.0, 0.0);
-	return float4(color, 1.0);
+	return float4(color, lineValue);
 }
 
 
