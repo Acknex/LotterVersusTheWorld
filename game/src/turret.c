@@ -27,6 +27,11 @@ action enemy_turret()
 
 void TURRET__loop()
 {
+	while(player == NULL)
+	{
+		wait(1);
+	}
+	
 	while (!is(my, dead))
 	{
 		MARKER_update(me);
