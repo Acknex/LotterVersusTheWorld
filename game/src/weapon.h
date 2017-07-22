@@ -5,7 +5,7 @@
 	void projectile();
 	
 	var weapon_speed = 32;
-	var weapon_angle_correction = -11;
+	var weapon_angle_correction = 0;
 	var weapon_projectile_spawn_offset = 16;
 	var weapon_cooldown_time = 0.12;
 	var weapon_lifetime = 5;
