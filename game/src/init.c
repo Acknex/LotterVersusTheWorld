@@ -53,6 +53,8 @@ void INIT_levelStart()
 
 void INIT_levelEnd()
 {
+	me = NULL; //decouple from any calling entity
+	
 	stage_unload(); // destroy all meshes
 	stageDestroy(LEVEL__stage);
 	LEVEL__stage = NULL;

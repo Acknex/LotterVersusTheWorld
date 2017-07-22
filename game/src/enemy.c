@@ -83,8 +83,8 @@ void ENEMY__projectileLoop()
 		vec_rotate (to, my->pan);
 		vec_add(to, my->x);
 		
-		draw_line3d(my->x,NULL,100); // move to first corner   
-		draw_line3d(to,vector(0,0,255),100);
+		//draw_line3d(my->x,NULL,100); // move to first corner   
+		//draw_line3d(to,vector(0,0,255),100);
 		
 		var vDist = c_trace(my.x, to, vFlags);
 		if((vDist == 0) && (my->bulletLifeTime > 0)) 
@@ -101,7 +101,7 @@ void ENEMY__projectileLoop()
 			RICOCHET_create(hit.entity);
 			set(my, dead);
 		}
-		MARKER_update(me);
+		//MARKER_update(me);
 		wait(1);
 	}
 	my->event = NULL;
@@ -156,7 +156,7 @@ action enemy_bat()
 		{
 			if(LEVEL__stage)
 			{
-				var flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20);
+				var flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20, 1);
 				//if(flood > 999) vec_set(curTarget,my.x);
 				//draw_num3d(flood,my.x,-80,COLOR_WHITE);
 			}
