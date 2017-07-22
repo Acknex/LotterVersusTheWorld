@@ -14,7 +14,7 @@ typedef struct {
 } D3DVERTEX;
 */
 
-LPD3DXMESH stage_groundMesh, stage_upperWallMesh, stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
+LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 
 MATERIAL * stageMtlLava = 
 {
@@ -23,13 +23,17 @@ MATERIAL * stageMtlLava =
 
 void stageRenderInit()
 {
+	int i;
+	
 	ENTITY * ent = ent_create("tile-ground.mdl", vector(0,0,0), NULL);
 	stage_groundMesh = ent_getmesh(ent, 0, 0);
 	ent_remove(ent);
 	
-	ent = ent_create("tile-wall-upper.mdl", vector(0,0,0), NULL);
-	stage_upperWallMesh = ent_getmesh(ent, 0, 0);
-	ent_remove(ent);
+	for(i = 0; i < 3; i++) {
+		ent = ent_create(str_printf(NULL, "tile-wall-upper-%02d.mdl", (i+1)), vector(0,0,0), NULL);
+		stage_upperWallMesh[i] = ent_getmesh(ent, 0, 0);
+		ent_remove(ent);
+	}
 	
 	ent = ent_create("tile-wall-lower.mdl", vector(0,0,0), NULL);
 	stage_lowerWallMesh = ent_getmesh(ent, 0, 0);
@@ -46,8 +50,11 @@ void stageRenderInit()
 
 void stage_unload()
 {
+	int i;
 	stage_groundMesh->Release();
-	stage_upperWallMesh->Release();
+	for(i = 0; i < 3; i++) {
+		(stage_upperWallMesh[0])->Release();
+	}
 	stage_lowerWallMesh->Release();
 	stage_upperWallOutlineMesh->Release();
 	stage_outlinePostMesh->Release();
@@ -106,7 +113,7 @@ void stage_loadUpperWall(DynamicModel * model, STAGE * stage)
 				if(n->value != 1) {
 					continue;
 				}
-				dmdl_add_mesh(model, stage_upperWallMesh, &center, vector(coords[3*k+2],0,0));
+				dmdl_add_mesh(model, stage_upperWallMesh[random(3)], &center, vector(coords[3*k+2],0,0));
 			}
 		}
 	}

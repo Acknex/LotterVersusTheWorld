@@ -68,9 +68,13 @@ void pp_bloom(float threshold, float strength)
 }
 
 
+
+BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
+
 MATERIAL *WallMainMaterial =
 {
 	effect = "WallMain.fx";
+	skin1 = WallMainAtlas;
 }
 
 MATERIAL *WallOutlineMaterial =
