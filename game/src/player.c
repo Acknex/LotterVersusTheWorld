@@ -81,7 +81,7 @@ VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
 
 void player_init() {
 	player = ent_create("cbabe_male.mdl", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
-
+player->material = LotterMaterial;
 	
 	// Adapt scale
 	//vec_scale(player.scale_x, 2);
