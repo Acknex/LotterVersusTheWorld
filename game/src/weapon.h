@@ -14,7 +14,7 @@
 	//Player skill43 is active cooldown timer
 	//Player skill44 is possible projectile bounce count
 	
-	STRING *str_weapon_code = "€";
+	STRING *str_weapon_code = "::";
 	
 	FONT *monoid = "Monoid#32b";
 	

@@ -538,7 +538,7 @@ void stageSetEnemyType(STAGE* stage, int idx, int flagType)
 	
 	if(idx < 0 || idx >= stage->numEnemies) return;
 	tile = stageGetTile(stage,(stage->enemyData)[idx*2+0],(stage->enemyData)[idx*2+0]);
-	tile->flags |= type;
+	tile->flags |= flagType;
 }
 
 void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
