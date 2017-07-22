@@ -112,10 +112,10 @@ VECTOR* stageGetPosFromIndices(STAGE* stage, VECTOR* vpos, int x, int y)
 {
 	if(vpos)
 	{
-		vec_set(vpos,vector(x*200-100,y*200-100,0));
+		vec_set(vpos,vector(x*200,y*200,0));
 		return vpos;
 	}
-	return vector(x*200-100,y*200-100,0);
+	return vector(x*200,y*200,0);
 }
 
 VECTOR* stageGetExitPos(STAGE* stage, VECTOR* vpos, int *px, int *py)

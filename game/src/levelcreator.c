@@ -8,17 +8,6 @@
 #include "entity_defs.h"
 #include "marker.h"
 
-/*
-typedef struct {
-	float x,y,z;	// position in DirectX coordinates
-	float nx,ny,nz;	// normal
-	float u1,v1;    // first coordinate set, for textures
-	float u2,v2;    // second coordinate set, for shadow maps
-	float x3,y3,z3,w3; // third coordinate set, for tangent vector and handedness
-	float tu4,tv4;  // 4th coordinate set, for additional data
-} D3DVERTEX;
-*/
-
 LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 
 BMAP * stage_bmpBlackSkin = "#32x32x24";
@@ -353,7 +342,9 @@ VECTOR * stage_load(STAGE * stage)
 		}
 	}
 	
-	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ent->material = TeleporterEffectMaterial;
+	set(ent, PASSABLE);
 	
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }
