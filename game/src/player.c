@@ -157,6 +157,21 @@ void player_move() {
 	ent_bonerotate(player,"Bone1",vector(0,sinv(total_ticks*8)*10,0));
 	ent_bonerotate(player,"Bone4",vector(0,sinv(total_ticks*8)*10,0));
 	
+	int i;
+	for(i = 0; i < 2; i++)
+	{
+		if(!player.skill[28+i])
+		{
+			you = ent_create("hoverboardGlow.mdl",player,NULL);
+			your.material = HoveboardGlowMaterial;
+			set(you,PASSABLE | UNLIT | TRANSLUCENT);
+			player.skill[28+i] = you;
+		}
+		you = player.skill[28+i];
+		STRING* str = str_printf(NULL,"Bone%d",(int)(22+i));
+		vec_for_bone(your.x,player,str);
+		ang_for_bone(your.pan,player,str);
+	}
 	
 	MARKER_update(player);
 	if(LEVEL__stage) 
