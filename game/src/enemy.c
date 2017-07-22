@@ -10,6 +10,8 @@
 void ENEMY__projectileEvent();
 void ENEMY__projectileLoop();
 
+SOUND* sndBatDeath = "sounds\\bat_destroyed.wav";
+
 action enemy_projectile()
 {
 	my->emask |= ENABLE_IMPACT | ENABLE_SHOOT | ENABLE_ENTITY;
@@ -213,5 +215,6 @@ action enemy_bat()
 		wait(1);
 	}
 	effect(p_bat_explode,100,my.x,nullvector);
+	snd_play(sndBatDeath, 100, 0);
 	ptr_remove(me);
 }
