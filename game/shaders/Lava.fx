@@ -62,10 +62,6 @@ float4 ps(out_ps In): COLOR
 	float4 b = tex2D(sLUT, float2(0.5 * saturate(highlight), 2.5/64.0));
 	float4 a = tex2D(sLUT, float2(0.5 * blendmap.r, 1.5/64.0));
 	return a+b;
-
-	// return float4(fac,fac,fac, 0);
-
-	// return float4(lerp(a, b, fac), 0.0);
 }
 
 
