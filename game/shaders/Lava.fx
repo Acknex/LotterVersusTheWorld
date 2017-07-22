@@ -66,7 +66,6 @@ float4 ps(out_ps In): COLOR
 	float4 a = tex2D(sLUT, float2(0.5 * fac, 1.5/64.0));
 	float4 b = tex2D(sLUT, float2(0.5 * saturate(highlight), 2.5/64.0));
 	return a+(b*0.4) * saturate(length(a));
-	//return fac;
 }
 
 technique object
