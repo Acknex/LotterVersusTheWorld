@@ -25,7 +25,6 @@
 
 ENTITY* camera_focus_ent = NULL;
 VIEW* cam;
-VECTOR lastPosition = vector(-999, -999, -999);
 var vDistanceFactor;
 var vViewWidth;
 
@@ -61,15 +60,7 @@ void update_camera()
 	
 	if ((camera_focus_ent != NULL) && (cam != NULL))
 	{
-		var velocity = 0;
-		
-		if(lastPosition.z != -999)
-		{
-			velocity = vec_dist(lastPosition, camera_focus_ent->x);
-		}
-		vec_set(lastPosition, camera_focus_ent->x);
-
-		vec_set(vecPos, vector(-CAMERA_DIST-velocity*CAMERA_VELOCITY_FACTOR, 0, 0));
+		vec_set(vecPos, vector(-CAMERA_DIST, 0, 0));
 		vec_rotate(vecPos, vector(cam->pan,cam->tilt+3,0)); // +3 because not enough information visible on bottom part of screen
 		vec_add(vecPos, camera_focus_ent->x);
 		VECTOR tmp;
