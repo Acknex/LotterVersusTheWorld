@@ -264,11 +264,10 @@ VECTOR * stage_load(STAGE * stage)
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	
-	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
+	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
-	
 	
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
@@ -333,9 +332,9 @@ VECTOR * stage_load(STAGE * stage)
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
 					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
 					ent->material = TurretMaterial;
-				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 10;
+				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
+					//ent->type = 9;
 					MARKER_attach(ent);
 				}
 			}
