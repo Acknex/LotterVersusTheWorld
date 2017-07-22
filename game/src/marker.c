@@ -7,6 +7,11 @@ void MARKER_attach(ENTITY* ent)
 	{
 	//	set(ent, has_marker);
 	}
+	while(ent)
+	{
+		MARKER_update(ent);
+		wait(1);
+	}
 }
 
 void MARKER_detach(ENTITY* ent)

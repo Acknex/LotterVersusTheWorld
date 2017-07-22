@@ -13,7 +13,7 @@
 #define TILE_FLAG_TRAP_SPIKES (1<<3)
 #define TILE_FLAG_TRAP_HOLE (1<<4)
 #define TILE_FLAG_TRAP_TURRET (1<<5)
-
+#define TILE_FLAG_TRAP_BAT (1<<6)
 
 struct _TILE
 {

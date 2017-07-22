@@ -470,7 +470,7 @@ int stageCreateEnemyIsPositionValid(STAGE* stage, int i2, int j2)
 
 void stageCreateEnemyData(STAGE* stage)
 {
-	int i,j,i2,j2,i3,j3,k,enemyCur,found;
+	int i,j,i2,j2,i3,j3,k,enemyCur,found,enemyType;
 	var maxDiff;
 	TILE* tile, *tile2;
 	LEVELGENSTACK* workingStack;
@@ -524,6 +524,12 @@ void stageCreateEnemyData(STAGE* stage)
 		stageGetPosFromIndices(stage, &(stage->enemyPositions)[enemyCur], i2, j2);
 		//cprintf4("\n%d): (%d,%d,%d)",enemyCur,(int)(stage->enemyData)[enemyCur].x,(int)(stage->enemyData)[enemyCur].y,(int)(stage->enemyData)[enemyCur].z);
 		tile = stageGetTile(stage,i2,j2);
+		enemyType = 0+random(4);
+		if(random(2) > 1) enemyType = 2;
+		if(enemyType == 0) tile->flags |= TILE_FLAG_TRAP_SPIKES;
+		if(enemyType == 1) tile->flags |= TILE_FLAG_TRAP_HOLE;
+		if(enemyType == 2) tile->flags |= TILE_FLAG_TRAP_TURRET;
+		if(enemyType == 3) tile->flags |= TILE_FLAG_TRAP_BAT;
 		tile->flags |= TILE_FLAG_ENEMYSPAWN;
 		(stage->enemyData)[enemyCur*2+0] = i2;
 		(stage->enemyData)[enemyCur*2+1] = j2;
