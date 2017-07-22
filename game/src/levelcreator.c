@@ -200,9 +200,6 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == TILE_EMPTY) {
-				continue;
-			}
 			
 			VECTOR center;
 			center.x = i * 200;
@@ -218,7 +215,10 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
+				if(tile->value != TILE_EMPTY && n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
+					continue;
+				}
+				if(tile->value == TILE_EMPTY && (n->value == TILE_EMPTY || !(n->flags & TILE_FLAG_TRAP_HOLE))) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));
