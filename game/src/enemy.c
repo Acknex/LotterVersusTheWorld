@@ -27,7 +27,6 @@ action enemy_projectile()
 void ENEMY_init()
 {
 	my->emask |= ENABLE_SHOOT;
-	//my->z -= my->min_z;
 	my->health = 3;
 	my->damage = 1;
 	my->bulletSpeed = 30;
@@ -41,8 +40,7 @@ var ENEMY_hit(var vEventType)
 		{
 			if (your->type == TypePlayerProjectile || you == player)
 			{
-				my->health = maxv(0, my->health - 1);
-//				my->health = maxv(0, my->health - your->damage);
+				my->health = maxv(0, my->health - your->damage);
 				if (my->health <= 0)
 				{
 					set (my, dead);
@@ -80,7 +78,7 @@ void ENEMY__projectileLoop()
 	while (!is(my, dead))
 	{
 		my->bulletLifeTime -= time_step;
-		VECTOR* to = vector(12,0,0);
+		VECTOR* to = vector(-12,0,0);
 		vec_rotate (to, my->pan);
 		vec_add(to, my->x);
 		
@@ -91,7 +89,7 @@ void ENEMY__projectileLoop()
 		if((vDist == 0) && (my->bulletLifeTime > 0)) 
 		{
 		
-			VECTOR* vecMove = vector(my->bulletSpeed, 0, 0);
+			VECTOR* vecMove = vector(-my->bulletSpeed, 0, 0);
 			vec_rotate(vecMove, my->pan);
 			vec_scale(vecMove, time_step);
 			//c_move(me, vector(my->bulletSpeed, 0, 0), nullvector, vFlags);
@@ -105,6 +103,7 @@ void ENEMY__projectileLoop()
 		MARKER_update(me);
 		wait(1);
 	}
+	my->event = NULL;
 	ptr_remove(me);
 }
 
