@@ -6,6 +6,7 @@
 
 void player_move();
 void player_init();
+void player_event();
 
 #include "player.c"
 

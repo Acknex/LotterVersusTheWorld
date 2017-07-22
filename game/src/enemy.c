@@ -27,7 +27,7 @@ action enemy_projectile()
 void ENEMY_init()
 {
 	my->emask |= ENABLE_SHOOT;
-	my->z -= my->min_z;
+	//my->z -= my->min_z;
 	my->health = 3;
 	my->damage = 1;
 	my->bulletSpeed = 30;
