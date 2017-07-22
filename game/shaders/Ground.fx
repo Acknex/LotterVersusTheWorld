@@ -55,10 +55,10 @@ float4 ps(out_ps In): COLOR
 		col1 * attributes.r +
 		col2 * attributes.g;
 	
-	float4 reflection = float4(tex2D(sReflection, texcoords).rgb, 1.0);
+	float4 reflection = tex2D(sReflection, texcoords);
 	float fresnel = abs(normalize(vecViewPos.xyz - In.worldPos).y);
 	fresnel = pow(fresnel, 0.5);
-	return lerp(reflection, floorcol, saturate(fresnel));
+	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 1.0);
 }
 
 

@@ -23,13 +23,17 @@ void INIT_levelStart()
 	stageFill(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
 	
+	sky_color.red = 0;
+	sky_color.green = 0;
+	sky_color.blue = 0.1;
+	
 	player_init();
 	//setup camera	
 	focus_camera(player);
 	show_camera();
 	
 	ground_reflections();
-	pp_bloom(0.3, 2.0);
+	pp_bloom(2.0);
 	//skychange(); //because.
 	
 
