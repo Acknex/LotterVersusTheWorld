@@ -28,7 +28,7 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	float3 color = tex2D(sTexture, In.uv).a * float3(0.7, 0.3, 0.0);
+	float3 color = 0.0;//tex2D(sTexture, In.uv).rgb;
 	return float4(color, 1.0);
 }
 
