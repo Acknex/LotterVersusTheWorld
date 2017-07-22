@@ -17,6 +17,8 @@ typedef struct {
 
 LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 
+BMAP * stage_bmpBlackSkin = "#32x32x24";
+
 MATERIAL * stageMtlLava = 
 {
 	effect = "Lava.fx";
@@ -75,12 +77,15 @@ void stage_loadGround(DynamicModel * model, STAGE * stage)
 				continue;
 			}
 			
-			VECTOR center;
-			center.x = i * 200;
-			center.y = j * 200;
-			center.z = 0;
-			
-			dmdl_add_mesh(model, stage_groundMesh, &center, vector(0,0,0));
+			if(tile->value == 1)
+			{
+				VECTOR center;
+				center.x = i * 200;
+				center.y = j * 200;
+				center.z = 0;
+				
+				dmdl_add_mesh(model, stage_groundMesh, &center, vector(0,0,0));
+			}
 		}
 	}
 }
@@ -233,6 +238,7 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	set(ent, POLYGON);
 	
 	ent_setmesh(ent, mesh, 0, 0);
+	ent_setskin(ent, stage_bmpBlackSkin, 1);
 	
 	c_updatehull(ent, 0);
 	
@@ -245,6 +251,11 @@ void stage_load(STAGE * stage)
 	
 	// Initialize models
 	stageRenderInit();
+	
+	{
+		TILE * tile = stageGetTile(stage, 2, 4);
+		tile->value = 2;
+	}
 	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
@@ -267,6 +278,31 @@ void stage_load(STAGE * stage)
 	set(entLava, FLAG1);
 	
 	entOutlines->flags |= PASSABLE;
+	
+	{
+		int i, j;
+		for(i = 1; i < (stage->size[0] - 1); i++) {
+			for(j = 1; j < (stage->size[1] - 1); j++) {
+				ENTITY * ent;
+				TILE * tile = stageGetTile(stage, i, j);
+				
+				VECTOR center;
+				center.x = i * 200;
+				center.y = j * 200;
+				center.z = 0;
+				
+				switch(tile->value)
+				{
+					case 2: {
+						ent = ent_create("tile-floor-turret.mdl", &center, NULL);
+						ent->material = GroundMaterial;
+						set(ent, POLYGON);
+						break;
+					}
+				}
+			}
+		}
+	}
 	
 	//while(!player) { wait(1); }
 	//
