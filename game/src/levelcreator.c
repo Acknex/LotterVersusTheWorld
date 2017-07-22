@@ -30,8 +30,8 @@ BOOL stageTileHasNoGround(TILE * tile)
 {
 	if(!tile) return FALSE;
 	return (tile->flags & TILE_FLAG_TRAP_SPIKES)
-		&& (tile->flags & TILE_FLAG_TRAP_HOLE)
-		&& (tile->flags & TILE_FLAG_TRAP_TURRET);
+		|| (tile->flags & TILE_FLAG_TRAP_HOLE)
+		|| (tile->flags & TILE_FLAG_TRAP_TURRET);
 }
 
 void stageRenderInit()
@@ -277,6 +277,11 @@ VECTOR * stage_load(STAGE * stage)
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
+	
+	
+	set(entUpperWall	, FLAG2);
+	set(entOutlines	, FLAG2);
+	
 	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;

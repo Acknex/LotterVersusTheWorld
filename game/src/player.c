@@ -29,7 +29,7 @@ void player_move() {
 	vec_scale(to,5000); // set a range
 	vec_add(to, mouse_pos3d);
 	you = player;
-	c_trace(mouse_pos3d, to, IGNORE_YOU);
+	c_trace(mouse_pos3d, to, IGNORE_YOU | IGNORE_FLAG2);
 	
 	draw_point3d(to, COLOR_WHITE, 100, 20);
 	
