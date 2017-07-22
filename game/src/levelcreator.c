@@ -341,11 +341,11 @@ VECTOR * stage_load(STAGE * stage)
 				} else if(tile->flags & TILE_FLAG_TRAP_SPHERE) {
 					ent = ent_create("sphere_of_death.mdl", vec_add(vector(0, 0, 32), &center), enemy_sphere);
 				}
-				else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+				else if(tile->flags & TILE_FLAG_TRAP_SPUTNIK) {
+					ent = ent_create("Sputnik.mdl", &center, NULL);
 					ent->type = TypeEnemy;
 					MARKER_attach(ent);
-                                } else if(tile->value != 0) {
+				} else if(tile->value != 0) {
 					var r = random(100);
 					var rot = 0;
 					var offx = 0;
