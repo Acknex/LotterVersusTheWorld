@@ -6,6 +6,7 @@
 #include "camera.h" //bloom does not include camera.h...
 #include "bloom.h"
 #include "level.h"
+#include "items.h"
 
 #define DEBUG
 

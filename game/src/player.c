@@ -38,7 +38,7 @@ void player_move() {
 	//transform with camera angle
 	VIEW* view = get_camera();
 	vec_rotate(vecDir, vector(view->pan, 0, 0));
-	c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE);
+	c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 }
 
 void player_init() {
@@ -47,4 +47,5 @@ void player_init() {
 	c_setminmax(player);
 	mouse_mode = 4;
 	player.z -= player.min_z;
+	player->trigger_range = 20;
 }

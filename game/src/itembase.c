@@ -22,7 +22,7 @@
  */
 
 #include <mtlfx.c>
-#include "player.h"
+#include <particles.c>
 
 #define PARTICLECNT skill42
 

@@ -29,10 +29,14 @@
 
 SOUND* sndCollect = "collect.wav";
 
+void item_coin_evt();
+void item_life_evt();
+void item_jetpack_evt();
+
 
 action item_coin()
 {
-	item_setup();	
+	ITEM_setup();	
 	my->event = item_coin_evt;
 	var vZ = my->z;
 	var vOffset = random(500);
@@ -53,7 +57,7 @@ action item_coin()
 
 action item_life()
 {
-	item_setup();
+	ITEM_setup();
 	my->event = item_life_evt;
 	var vZ = my->z;
 	var vOffset = random(500);
@@ -72,7 +76,7 @@ action item_life()
 
 action item_jetpack()
 {
-	item_setup();
+	ITEM_setup();
 	my->event = item_jetpack_evt;
 	var vZ = my->z;
 	var vOffset = random(500);
