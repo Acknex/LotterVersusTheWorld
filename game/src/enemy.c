@@ -77,7 +77,7 @@ void ENEMY__projectileLoop()
 	while (!is(my, dead))
 	{
 		my->bulletLifeTime -= time_step;
-		VECTOR* to = vector(16,0,0);
+		VECTOR* to = vector(12,0,0);
 		vec_rotate (to, my->pan);
 		vec_add(to, my->x);
 		
@@ -96,8 +96,7 @@ void ENEMY__projectileLoop()
 		}
 		else
 		{
-			COLOR* color = vector(255,255,255);
-			RICOCHET_create(color);
+			RICOCHET_create(hit.entity);
 			set(my, dead);
 		}
 		wait(1);
