@@ -32,6 +32,7 @@ void TURRET__sleep();
 SOUND* sndTurretUp = "sounds\\turret_up.wav";
 SOUND* sndTurretDown = "sounds\\turret_down.wav";
 SOUND* sndTurretDestroyed = "sounds\\turret_destroyed.wav";
+SOUND* sndTurretShot = "sounds\\turret_shot.wav";
 
 
 action enemy_turret()
@@ -105,7 +106,7 @@ void TURRET__turnOff()
 	if (vec_dist(player->x, my->x) < TURRET_ATTACKRANGE)
 	{
 		my->turretState = TURRETOPEN;
-		ent_playsound(my, sndTurretUp, 10000);
+		snd_play(sndTurretUp, 100, 0);
 		my->animCounter = 100 - my->animCounter;
 	}
 }
@@ -127,7 +128,7 @@ void TURRET__active()
 	}
 	else
 	{
-		ent_playsound(my, sndTurretDown, 10000);
+		snd_play(sndTurretDown, 100, 0);
 		my->turretState = TURRETCLOSE;
 		my->animCounter = 0;
 	}
@@ -135,7 +136,7 @@ void TURRET__active()
 
 void TURRET__die()
 {
-	ent_playsound(my, sndTurretDestroyed, 10000);
+	snd_play(sndTurretDestroyed, 100, 0);
 	my->event = NULL;
 	my->animCounter = 0;
 	my->type = TypeDestroyed;
@@ -165,7 +166,7 @@ void TURRET__sleep()
 	if (vec_dist(player->x, my->x) < TURRET_ATTACKRANGE)
 	{
 		my->turretState = TURRETOPEN;
-		ent_playsound(my, sndTurretUp, 10000);
+		snd_play(sndTurretUp, 100, 0);
 		my->animCounter = 0;
 	}
 }
@@ -183,6 +184,7 @@ void TURRET__shoot()
 	ANGLE* angRot = vector(my->shootAngle, 0, 0);
 	vec_rotate(vecDist, angRot);
 	vec_add (vecDist, &vecPos);
+	snd_play(sndTurretShot, 100, 0);
 	ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	
 	ent->pan = my->shootAngle;	
 }
