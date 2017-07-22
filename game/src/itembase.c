@@ -23,7 +23,7 @@
 
 #include <mtlfx.c>
 #include <particles.c>
-#include "marker.c"
+#include "marker.h"
 
 #define PARTICLECNT skill42
 
