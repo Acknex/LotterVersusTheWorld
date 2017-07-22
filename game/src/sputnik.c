@@ -21,8 +21,8 @@ action enemy_sputnik()
 	my.skill37 = random(360); // slight pan movement variations
 	batId++;
 	my.group = 9;
-	my.type = TypeBat;
-	
+	my.type = TypeEnemy;
+	my.health = 50; // TANK IT, BABY
 	while(my.health > 0)
 	{
 		my.skill37 += 10*time_step;
@@ -94,9 +94,9 @@ action enemy_sputnik()
 		MARKER_update(me);
 		
 		if(vec_length(vspeed) > 0.3) {
-			ent_animate(me, "walk", total_ticks, ANM_CYCLE);
+			ent_animate(me, "walk", 10 * total_ticks, ANM_CYCLE);
 		} else {
-			ent_animate(me, "idle", total_ticks, ANM_CYCLE);
+			ent_animate(me, "idle", 10 * total_ticks, ANM_CYCLE);
 		}
 		
 		wait(1);
