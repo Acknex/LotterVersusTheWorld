@@ -336,8 +336,7 @@ VECTOR * stage_load(STAGE * stage)
 					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
 					ent->material = TurretMaterial;
 				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
-					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
-
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat); // implement virus !!!
 				} else if(tile->flags & TILE_FLAG_TRAP_SPHERE) {
 					ent = ent_create("sphere_of_death.mdl", vec_add(vector(0, 0, 32), &center), enemy_sphere);
 				}
