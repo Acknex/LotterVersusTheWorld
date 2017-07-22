@@ -126,7 +126,7 @@ void player_move() {
 	draw_point3d(target, COLOR_WHITE, 100, 16);
 	
 	vec_diff(temp,target,player.x);
-	if(vec_to_angle(temp2,temp) > 8)
+	if(!player.near_teleport && vec_to_angle(temp2,temp) > 8)
 	{
 		var diff = ang(temp2.x-player.pan);
 		static var diffAlignSpeed = 0;
@@ -140,7 +140,6 @@ void player_move() {
 	
 	if(player.pause_control == 0)
 	{
-	
 		static VECTOR vPlayerSpeed;
 		vec_set(temp,vector(key_w-key_s,key_a-key_d,0));
 		VIEW* view = get_camera();

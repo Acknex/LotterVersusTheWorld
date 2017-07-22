@@ -7,17 +7,19 @@ action teleporter_out()
 	set(me, FLAG2);
 	while(!player) wait(1);
 	
+	proc_mode = PROC_LATE;
+	
 	var portloader = 0;
 	while(me)
 	{
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
-		if(dist < 170) // ist höhenabhängig!
+		if(dist < 50) // ist höhenabhängig!
 		{
 			player.near_teleport = 1;
 			player.z += time_step;
-			portloader += time_step;
-			if(portloader >= 80) {
-				player.pan += 0.1 * (portloader - 80);
+			player.pan += 0.1 * portloader * time_step;
+			portloader += 0.5 * time_step;
+			if(portloader >= 75) {
 				player.pause_control = 1;
 			}
 			if(portloader >= 100) {
