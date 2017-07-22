@@ -3,6 +3,14 @@
 static BOOL pp_isBloomEnabled = false;
 VIEW *BloomImageView = NULL;
 
+BMAP* chrome_tga = "chrome.tga";
+
+MATERIAL *LotterMaterial =
+{
+	effect = "Lotter.fx";
+	flags = AUTORELOAD;
+}
+
 MATERIAL *PPThresholdLuminanceMaterial =
 {
 	effect = "ThresholdLum.fx";
