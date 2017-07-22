@@ -3,6 +3,7 @@
 
 action teleporter_out()
 {
+	ent_create("Teleport.mdl", my.x, NULL);
 	set(me, PASSABLE);
 	set(me, FLAG2);
 	while(!player) wait(1);
