@@ -22,7 +22,7 @@ TEMPLATE* templateCreate(STRING* str_file, int sizeX, int sizeY)
 	TEMPLATE* template;
 	
 	template = (TEMPLATE*)sys_malloc(sizeof(TEMPLATE));
-	strcpy(&(template->cfile),str_file->chars);
+	strcpy((template->cfile),str_file->chars);
 	template->size[0] = sizeX;
 	template->size[1] = sizeY;
 	template->values = (int*)sys_malloc(sizeof(int)*sizeX*sizeY);
@@ -237,11 +237,12 @@ VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py)
 void stageFill(STAGE* stage)
 {
 	int i,j,k,i2,j2,i3,j3,count,curIter,maxIter,borderValues[4];
-	int sourceX,sourceY,targetX,targetY,sizeX,sizeY;
+	int sourceX,sourceY,targetX,targetY,sizeX,sizeY,numWalkable;
 	TILE *tile, *tile2, *borderTiles[4];
 	TEMPLATE* template;
 	
-	template = templateCreate(str_printf(NULL,"level\\template%d.dat",(int)(random(5))), 24, 24);
+	template = templateCreate(str_printf(NULL,"level\\template%d.dat",(int)(random(5))), 24, 24); //
+	//cprintf1("\ntemplate: %s",template->cfile);
 	for(i = 0; i < stage->size[0]; i++)
 	{
 		for(j = 0; j < stage->size[1]; j++)
@@ -250,15 +251,15 @@ void stageFill(STAGE* stage)
 			tile->value = TILE_EMPTY;
 		}		
 	}
-	maxIter = 30+random(30);
+	maxIter = 30+random(20);
 	for(curIter = 0; curIter < maxIter; curIter++)
 	{
 		sourceX = random(template->size[0]);
 		sourceY = random(template->size[1]);
 		targetX = random(stage->size[0]);
 		targetY = random(stage->size[1]);
-		sizeX = random(9)+4;
-		sizeY = random(9)+4;
+		sizeX = random(6)+6;
+		sizeY = random(6)+6;
 		for(i = 0; i < sizeX; i++)
 		{
 			for(j = 0; j < sizeY; j++)
@@ -278,14 +279,14 @@ void stageFill(STAGE* stage)
 	}
 	templateDestroy(template);
 	
-	// widen narrow paths
-	for(i = 2; i < stage->size[0]-1; i++)
+	// remove noise (empty 1x1 areas)
+	for(curIter = 0; curIter < 4; curIter++)
 	{
-		for(j = 2; j < stage->size[1]-1; j++)
+		for(i = 1; i < stage->size[0]-1; i++)
 		{
-			tile = stageGetTile(stage,i,j);
-			if(tile->value)
+			for(j = 1; j < stage->size[1]-1; j++)
 			{
+				tile = stageGetTile(stage,i,j);
 				count = 0;
 				for(k = 0; k < 4; k++)
 				{
@@ -293,42 +294,15 @@ void stageFill(STAGE* stage)
 					j2 = j+levelgenOffset2D[k*2+1];
 					tile2 = stageGetTile(stage,i2,j2);
 					borderTiles[k] = tile2;
-					borderValues[k] = !tile2->value;
+					borderValues[k] = tile2->value;
 					if(tile2->value == TILE_EMPTY) count++;
 				}
-				if(count == 2)
-				{
-					if(borderValues[0]*borderValues[2] || borderValues[1]*borderValues[3])
-					{
-						if(borderValues[0]*borderValues[2]) borderTiles[0]->value = 2;
-						else borderTiles[3]->value = 2;
-					}
-				}
-			}
-		}		
-	}
-	
-	// remove noise (empty 1x1 areas)
-	for(i = 1; i < stage->size[0]-1; i++)
-	{
-		for(j = 1; j < stage->size[1]-1; j++)
-		{
-			tile = stageGetTile(stage,i,j);
-			count = 0;
-			for(k = 0; k < 4; k++)
-			{
-				i2 = i+levelgenOffset2D[k*2+0];
-				j2 = j+levelgenOffset2D[k*2+1];
-				tile2 = stageGetTile(stage,i2,j2);
-				borderTiles[k] = tile2;
-				borderValues[k] = tile2->value;
-				if(tile2->value == TILE_EMPTY) count++;
-			}
-			if(tile->value && count == 4) tile->value = TILE_EMPTY;
-			if(tile->value == TILE_EMPTY && count <= 1) tile->value = 1;
-			if(tile->value && count == 3) tile->value = TILE_EMPTY;
-			if(tile->value && count == 1) tile->value = 1;
-		}		
+				if(tile->value && count == 4) tile->value = TILE_EMPTY;
+				if(tile->value == TILE_EMPTY && count <= 1) tile->value = 1;
+				if(tile->value && count == 3) tile->value = TILE_EMPTY;
+				if(tile->value && count == 1) tile->value = 1;
+			}		
+		}
 	}
 }
 
@@ -452,11 +426,46 @@ void stageConnect(STAGE* stage)
 		iterationCount++;
 	}
 	if(iterationCount >= 50000) error("levelgen: stageConnect(): iterationCount >= 50000!");
+	
+	int i,j,k,i2,j2,i3,j3,count,curIter,maxIter,borderValues[4];
+	int sourceX,sourceY,targetX,targetY,sizeX,sizeY;
+	TILE *tile, *tile2, *borderTiles[4];
+	// widen narrow paths
+	for(i = 2; i < stage->size[0]-1; i++)
+	{
+		for(j = 2; j < stage->size[1]-1; j++)
+		{
+			tile = stageGetTile(stage,i,j);
+			if(tile->value)
+			{
+				count = 0;
+				for(k = 0; k < 4; k++)
+				{
+					i2 = i+levelgenOffset2D[k*2+0];
+					j2 = j+levelgenOffset2D[k*2+1];
+					tile2 = stageGetTile(stage,i2,j2);
+					borderTiles[k] = tile2;
+					borderValues[k] = !tile2->value;
+					if(tile2->value == TILE_EMPTY) count++;
+				}
+				if(count == 2)
+				{
+					if(borderValues[0]*borderValues[2] || borderValues[1]*borderValues[3])
+					{
+						if(borderValues[0]*borderValues[2]) borderTiles[0]->value = 2;
+						else borderTiles[3]->value = 2;
+					}
+				}
+			}
+		}		
+	}
+	
+	
 }
 
 void stageDoFlood(STAGE* stage, int startX, int startY, int floodId, int floodMax, int mode)
 {
-	int i,j,k,i2,j2,i3,j3,iterationCount = 0,shiftX,shiftY,found;
+	int i,j,k,i2,j2,i3,j3,iterationCount = 0,found;
 	TILE* tile, *tile2;
 	LEVELGENSTACK* workingStack;
 	
@@ -469,6 +478,7 @@ void stageDoFlood(STAGE* stage, int startX, int startY, int floodId, int floodMa
 			tile->flood[floodId] = FLOOD_VALUE_MAX;
 		}		
 	}
+	if(floodId == FLOOD_EXIT) stage->floodExitMax = 0;
 	tile = stageGetTile(stage,startX,startY);
 	tile->flood[floodId] = 0;
 	(workingStack->values)[0] = startX;
@@ -491,6 +501,7 @@ void stageDoFlood(STAGE* stage, int startX, int startY, int floodId, int floodMa
 				if(tile2->value != TILE_EMPTY && tile2->flood[floodId] == FLOOD_VALUE_MAX)
 				{
 					tile2->flood[floodId] = tile->flood[floodId]+1;
+	if(floodId == FLOOD_EXIT) stage->floodExitMax = maxv(stage->floodExitMax,tile2->flood[floodId]);
 					if(workingStack->stackMax >= workingStack->stackSize) error("stageDoFlood(): stack overflow! Wow!");
 					(workingStack->values)[workingStack->stackMax*2+0] = i3;
 					(workingStack->values)[workingStack->stackMax*2+1] = j3;
@@ -568,7 +579,6 @@ void stageAddExitAndEntrance(STAGE* stage)
 	
 	stageDoFlood(stage,stage->exitPos[0],stage->exitPos[1],FLOOD_EXIT,FLOOD_VALUE_MAX,0);
 	if(workingStack->stackMax < 30) error("stageAddExitAndEntrance(): strange workingStack->stackMax after FLOOD_EXIT!");
-	stage->floodExitMax = workingStack->stackMax;
 	
 	workingStack->stackCurrent = workingStack->stackMax*(0.9+random(0.1))-1; //-random(10);
 	i2 = (workingStack->values)[workingStack->stackCurrent*2+0];
@@ -658,12 +668,13 @@ void stageCreateEnemyData(STAGE* stage)
 		stageGetPosFromIndices(stage, &(stage->enemyPositions)[enemyCur], i2, j2);
 		//cprintf4("\n%d): (%d,%d,%d)",enemyCur,(int)(stage->enemyData)[enemyCur].x,(int)(stage->enemyData)[enemyCur].y,(int)(stage->enemyData)[enemyCur].z);
 		tile = stageGetTile(stage,i2,j2);
-		enemyType = 0+random(5);
+		enemyType = 0+random(5+(enemyCur < stage->numEnemies*0.5)*1.9);
 		if(enemyType == 0) tile->flags |= TILE_FLAG_TRAP_SPIKES;
 		if(enemyType == 1) tile->flags |= TILE_FLAG_TRAP_HOLE;
 		if(enemyType == 2) tile->flags |= TILE_FLAG_TRAP_TURRET;
 		if(enemyType == 3) tile->flags |= TILE_FLAG_TRAP_BAT;
 		if(enemyType == 4) tile->flags |= TILE_FLAG_TRAP_SPHERE;
+		if(enemyType >= 5) tile->flags |= TILE_FLAG_TRAP_SPUTNIK;
 		tile->flags |= TILE_FLAG_ENEMYSPAWN;
 		(stage->enemyData)[enemyCur*2+0] = i2;
 		(stage->enemyData)[enemyCur*2+1] = j2;
@@ -727,5 +738,45 @@ void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
 		}		
 	}
 }
+
+// vresult can be NULL, wanted near 1 -> position near entrance
+VECTOR* stageGetQuestPosition(STAGE* stage, VECTOR* vresult, float wanted, float tolerance)
+{
+	int i,j,k,i2,j2,shiftX,shiftY;
+	float fac;
+	TILE* tile;
+	
+	if(!stage->floodExitMax) error("stageGetQuestPosition(): !stage->floodExitMax");
+	shiftX = random(stage->size[0]);
+	shiftY = random(stage->size[1]);
+	for(i = 0; i < stage->size[0]; i++)
+	{
+		for(j = 0; j < stage->size[1]; j++)
+		{
+			i2 = (i+shiftX)%stage->size[0];
+			j2 = (j+shiftY)%stage->size[1];
+			if(i2 > 1 && i2 < stage->size[0]-2 && j2 > 1 && j2 < stage->size[1]-2)
+			{
+				tile = stageGetTile(stage,i2,j2);
+				if(tile->flood[FLOOD_EXIT] < FLOOD_VALUE_MAX)
+				{
+					fac = tile->flood[FLOOD_EXIT]/(float)stage->floodExitMax;
+					if(abs(fac-wanted) < tolerance)
+					{
+						VECTOR* pv = stageGetPosFromIndices(stage, NULL, i2, j2);
+						if(vresult && pv) vec_set(vresult,pv);
+						return pv;
+					}
+				}
+			}
+		}
+	}
+
+	return NULL;
+}
+
+
+
+
 
 #include "levelcreator.c"

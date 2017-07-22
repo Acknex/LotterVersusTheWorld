@@ -10,7 +10,6 @@
 
 var INIT__levelRunning = 0;
 
-
 void INIT_levelStart()
 {
 	INIT__levelRunning = 1;
