@@ -10,6 +10,17 @@ Texture mtlSkin2;
 sampler sReflection = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 sampler sTexture = sampler_state { Texture = <mtlSkin2>; MipFilter = Linear; };
 
+
+Texture ColorLUT_bmap;
+float ColorVariation_flt;
+sampler sLUT = sampler_state
+{
+	Texture = <ColorLUT_bmap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
+
 struct out_ps // Output to the pixelshader fragment
 {
 	float4 Pos		: POSITION;
@@ -35,13 +46,19 @@ float4 ps(out_ps In): COLOR
 	float2 texcoords = In.projection.xy / In.projection.z;
 	texcoords.xy *= 0.5;
 	texcoords.xy += 0.5;
-	float3 color = tex2D(sReflection, texcoords);
-	float3 floorcol = tex2D(sTexture, In.uv);
-	float fresnel = normalize(vecViewPos.xyz - In.worldPos).y;
-	fresnel = pow(fresnel, 3);
-	color = lerp(floorcol, color, saturate(fresnel));
 	
-	return float4(color, 1.0);
+	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 15.0/64.0));
+	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 16.0/64.0));
+	float3 attributes = tex2D(sTexture, In.uv);
+	
+	float4 floorcol = 
+		col1 * attributes.r +
+		col2 * attributes.g;
+	
+	float4 reflection = tex2D(sReflection, texcoords);
+	float fresnel = abs(normalize(vecViewPos.xyz - In.worldPos).y);
+	fresnel = pow(fresnel, 0.5);
+	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 1.0);
 }
 
 
