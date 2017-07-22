@@ -109,6 +109,12 @@ function ColorLUT_Bounce()
 	}
 }
 
+MATERIAL *ObjectMaterial = 
+{
+	effect = "Objects.fx";
+	flags = PASS_SOLID;
+}
+
 function WallMainText_startup()
 {
 	// WallMainText.size_x = bmap_width(WallMainTextImage);
@@ -188,12 +194,6 @@ MATERIAL *WallLowerMaterial =
 	effect = "WallLower.fx";
 	skin1 = WallLower01BMAP;
 	skin2 = WallLowerLavaBMAP;
-	flags = PASS_SOLID;
-}
-
-MATERIAL *ObjectMaterial = 
-{
-	effect = "Objects.fx";
 	flags = PASS_SOLID;
 }
 

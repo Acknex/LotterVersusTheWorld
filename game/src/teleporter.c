@@ -1,5 +1,5 @@
 
-
+#include "init.h"
 
 action teleporter_out()
 {
@@ -11,7 +11,7 @@ action teleporter_out()
 		DEBUG_VAR(dist, 512);
 		if(dist < 170) // ist höhenabhängig!
 		{
-			error("?");
+			INIT_levelEnd();
 			return;
 		}
 		wait(1);
