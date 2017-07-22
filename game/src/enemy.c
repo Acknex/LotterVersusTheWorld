@@ -26,7 +26,7 @@ action enemy_projectile()
 
 void ENEMY_init()
 {
-	my->emask |= ENABLE_SHOOT;
+	my->emask |= (ENABLE_SHOOT | ENABLE_SCAN);
 	my->health = 3;
 	my->damage = 1;
 	my->bulletSpeed = 30;
@@ -34,7 +34,7 @@ void ENEMY_init()
 
 var ENEMY_hit(var vEventType)
 {
-	if (vEventType == EVENT_SHOOT)// || EVENT_IMPACT)
+	if (vEventType == EVENT_SHOOT || vEventType == EVENT_SCAN)// || EVENT_IMPACT)
 	{
 		if (you != NULL)
 		{
@@ -49,7 +49,6 @@ var ENEMY_hit(var vEventType)
 			}
 		}
 	}
-	
 	return 0;
 }
 
