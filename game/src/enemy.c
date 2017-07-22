@@ -1,5 +1,6 @@
 #include "entity_defs.h"
 #include "ricochet.h"
+#include "marker.h"
 
 #define bulletSpeed skill20
 #define bulletLifeTime skill21
@@ -18,6 +19,7 @@ action enemy_projectile()
 	my->bulletLifeTime = ENEMY_BULLETLIFETIME;
 	vec_set(my->blue, vector(0,0,255));
 	set(my, LIGHT);
+	my->type = TypeEnemyProjectile;
 	ENEMY__projectileLoop();
 }
 
@@ -100,6 +102,7 @@ void ENEMY__projectileLoop()
 			RICOCHET_create(hit.entity);
 			set(my, dead);
 		}
+		MARKER_update(me);
 		wait(1);
 	}
 	ptr_remove(me);

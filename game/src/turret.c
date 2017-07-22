@@ -14,6 +14,8 @@ void TURRET__event();
 
 action enemy_turret()
 {
+	my->scale_x *= 2;
+	my->scale_y *= 2;
 	my->scale_z *= 5;
 	ENEMY_init();
 	my->delayCounter = 0;
