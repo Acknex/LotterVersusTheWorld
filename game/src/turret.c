@@ -236,7 +236,7 @@ void TURRET__die()
 	set(my, PASSABLE);
 	while (1)
 	{
-		if(random(100) < 30) {
+		if(random(100) < 5) {
 		
 			my->skill41 = floatv(0.0);
 		} else {

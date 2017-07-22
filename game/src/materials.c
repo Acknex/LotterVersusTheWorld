@@ -158,6 +158,15 @@ function WallMainText_startup()
 	}
 }
 
+BMAP * TeleporterEffectTexture = "teleport.png";
+
+MATERIAL *TeleporterEffectMaterial =
+{
+	effect = "Teleport.fx";
+	skin1 = TeleporterEffectTexture;
+	flags = TRANSLUCENT;
+}
+
 MATERIAL *WallMainMaterial =
 {
 	effect = "WallMain.fx";

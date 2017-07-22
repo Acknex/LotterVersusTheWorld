@@ -22,5 +22,7 @@
 #define TypeSpikes 8
 #define TypeHole 9
 #define TypeEnemy 10
+#define TypeBat 11
 
-#define TypeMaxNumber 11 //adjust and never exceed
+
+#define TypeMaxNumber 12 //adjust and never exceed
