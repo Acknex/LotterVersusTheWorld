@@ -12,6 +12,12 @@ MATERIAL *LotterMaterial =
 	flags = PASS_SOLID;
 }
 
+MATERIAL *HoveboardGlowMaterial =
+{
+	effect = "hoverboardGlow.fx";
+	flags = AUTORELOAD;
+}
+
 MATERIAL *PPThresholdLuminanceMaterial =
 {
 	effect = "ThresholdLum.fx";
