@@ -1,5 +1,8 @@
 void weapon_startup()
 {
+	
+	
+	
 	while(1)
 	{
 		if(player && mouse_left) 
@@ -15,6 +18,9 @@ void weapon_startup()
 void projectile()
 {
 	var t = 0;
+	
+	BMAP *blub = ent_getskin(me, 1);
+	txt_fragment->target_map = blub;
 	
 	vec_set(my.pan, vector(player.pan + weapon_angle_correction, 0, 0));
 	
