@@ -1,5 +1,6 @@
 #include "entity_defs.h"
 #include "ricochet.h"
+#include "marker.h"
 
 #define bulletSpeed skill20
 #define bulletLifeTime skill21
@@ -18,6 +19,7 @@ action enemy_projectile()
 	my->bulletLifeTime = ENEMY_BULLETLIFETIME;
 	vec_set(my->blue, vector(0,0,255));
 	set(my, LIGHT);
+	my->type = TypeEnemyProjectile;
 	ENEMY__projectileLoop();
 }
 
@@ -33,13 +35,14 @@ void ENEMY_init()
 
 var ENEMY_hit(var vEventType)
 {
-	if (vEventType == EVENT_SHOOT || EVENT_IMPACT)
+	if (vEventType == EVENT_SHOOT)// || EVENT_IMPACT)
 	{
 		if (you != NULL)
 		{
 			if (your->type == TypePlayerProjectile || you == player)
 			{
-				my->health = maxv(0, my->health - your->damage);
+				my->health = maxv(0, my->health - 1);
+//				my->health = maxv(0, my->health - your->damage);
 				if (my->health <= 0)
 				{
 					set (my, dead);
@@ -77,7 +80,7 @@ void ENEMY__projectileLoop()
 	while (!is(my, dead))
 	{
 		my->bulletLifeTime -= time_step;
-		VECTOR* to = vector(16,0,0);
+		VECTOR* to = vector(12,0,0);
 		vec_rotate (to, my->pan);
 		vec_add(to, my->x);
 		
@@ -96,10 +99,10 @@ void ENEMY__projectileLoop()
 		}
 		else
 		{
-			COLOR* color = vector(255,255,255);
-			RICOCHET_create(color);
+			RICOCHET_create(hit.entity);
 			set(my, dead);
 		}
+		MARKER_update(me);
 		wait(1);
 	}
 	ptr_remove(me);

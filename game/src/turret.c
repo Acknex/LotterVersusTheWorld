@@ -5,6 +5,7 @@
 #define delayCounter skill22
 
 #include "enemy.h"
+#include "marker.h"
 
 void TURRET__loop();
 void TURRET__shoot();
@@ -13,17 +14,27 @@ void TURRET__event();
 
 action enemy_turret()
 {
+	my->scale_x *= 2;
+	my->scale_y *= 2;
+	my->scale_z *= 5;
 	ENEMY_init();
 	my->delayCounter = 0;
 	my->event = TURRET__event;
-	
+	my->type = TypeTurret;
+
 	TURRET__loop();
 }
 
 void TURRET__loop()
 {
+	while(player == NULL)
+	{
+		wait(1);
+	}
+	
 	while (!is(my, dead))
 	{
+		MARKER_update(me);
 		my->delayCounter += time_step;
 		if (vec_dist(player->x, my->x) < TURRET_ATTACKRANGE)
 		{
@@ -42,7 +53,7 @@ void TURRET__loop()
 
 void TURRET__shoot()
 {
-	VECTOR* vecDist = vector(50, 0, 0);
+	VECTOR* vecDist = vector(30, 0, 0);
 	vec_rotate(vecDist, my->pan);
 	vec_add (vecDist, my->x);
 	ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	

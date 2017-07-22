@@ -19,9 +19,16 @@ void INIT_levelStart()
 	//level_load("prototype_wmb.wmb");
 	//level_load("prototype.mdl");
 	//level_load("test_level_small.wmb");
-	LEVEL__stage = stageCreate(32,32,137.1);
+	LEVEL__stage = stageCreate(32,32,8172.607,0);
 	stageFill(LEVEL__stage);
+	stageConnect(LEVEL__stage);
+	stageAddExitAndEntrance(LEVEL__stage);
+	stageCreateEnemyData(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
+	
+	sky_color.red = 0;
+	sky_color.green = 0;
+	sky_color.blue = 0.1;
 	
 	player_init();
 	//setup camera	
@@ -29,7 +36,7 @@ void INIT_levelStart()
 	show_camera();
 	
 	ground_reflections();
-	pp_bloom(0.3, 2.0);
+	pp_bloom(2.5);
 	//skychange(); //because.
 	
 
@@ -40,7 +47,9 @@ void INIT_levelStart()
 	vecTemp = vector(175,175, 25);
 	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
 	vecTemp = vector(725,900, 50);
-	ent_create(CUBE_MDL, vecTemp, enemy_turret);}
+	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
+	you.material = ObjectMaterial;
+}
 
 void INIT_levelEnd()
 {
