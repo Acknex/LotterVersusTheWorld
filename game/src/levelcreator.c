@@ -14,7 +14,7 @@ typedef struct {
 } D3DVERTEX;
 */
 
-LPD3DXMESH stage_groundMesh, stage_upperWallMesh, stage_lowerWallMesh;
+LPD3DXMESH stage_groundMesh, stage_upperWallMesh, stage_lowerWallMesh, stage_upperWallOutlineMesh;
 
 MATERIAL * stageMtlLava = 
 {
@@ -34,6 +34,10 @@ void stageRenderInit()
 	ent = ent_create("tile-wall-lower.mdl", vector(0,0,0), NULL);
 	stage_lowerWallMesh = ent_getmesh(ent, 0, 0);
 	ent_remove(ent);
+	
+	ent = ent_create("tile-wall-upper-outline.mdl", vector(0,0,0), NULL);
+	stage_upperWallOutlineMesh = ent_getmesh(ent, 0, 0);
+	ent_remove(ent);
 }
 
 void stage_unload()
@@ -41,6 +45,7 @@ void stage_unload()
 	stage_groundMesh->Release();
 	stage_upperWallMesh->Release();
 	stage_lowerWallMesh->Release();
+	stage_upperWallOutlineMesh->Release();
 }
 
 void stage_loadGround(DynamicModel * model, STAGE * stage)
@@ -97,6 +102,42 @@ void stage_loadUpperWall(DynamicModel * model, STAGE * stage)
 					continue;
 				}
 				dmdl_add_mesh(model, stage_upperWallMesh, &center, vector(coords[3*k+2],0,0));
+			}
+		}
+	}
+}
+
+
+void stage_loadUpperWallOutline(DynamicModel * model, STAGE * stage)
+{
+	int i,j;
+	TILE* tile;
+	VECTOR vColor;
+	for(i = 1; i < (stage->size[0] - 1); i++) {
+		for(j = 1; j < (stage->size[1] - 1); j++) {
+			tile = stageGetTile(stage, i, j);
+			if(tile->value == 1) {
+				continue;
+			}
+			
+			VECTOR center;
+			center.x = i * 200;
+			center.y = j * 200;
+			center.z = 0;
+			
+			int k;
+			int coords[] = {
+				 1,  0,   0,
+				 0,  1,  90
+				// -1,  0, 180,
+				//  0, -1, 270
+			};
+			for(k = 0; k < 2; k++) {
+				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
+				if(n->value != 1) {
+					continue;
+				}
+				dmdl_add_mesh(model, stage_upperWallOutlineMesh, &center, vector(coords[3*k+2],0,0));
 			}
 		}
 	}
@@ -179,8 +220,10 @@ void stage_load(STAGE * stage)
 	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
+	ENTITY * entOutlines = stage_genEntity(stage, stage_loadUpperWallOutline);
 	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;
 	entLowerWall->material = WallLowerMaterial;
+	entOutlines->material = WallOutlineMaterial;
 }
