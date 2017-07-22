@@ -26,6 +26,7 @@ void ricochet_effect()
 		my.pan = 0.01;
 	if(my.tilt == 0)
 		my.tilt = 0.01;
+	my.roll = random(360);
 	while(t < 0.3) {
 		var f = t / 0.3;
 		var scale = 0.01+f*1;

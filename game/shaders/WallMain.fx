@@ -64,7 +64,7 @@ float4 ps(out_ps In): COLOR
 		text,
 		pow(attributes.b, 0.5));
 	
-	return float4(color, 1.0);
+	return float4(color, 0.0);
 }
 
 

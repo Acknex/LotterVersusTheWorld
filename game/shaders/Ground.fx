@@ -36,13 +36,12 @@ float4 ps(out_ps In): COLOR
 	texcoords.xy *= 0.5;
 	texcoords.xy += 0.5;
 	float3 floorcol = tex2D(sTexture, In.uv);
-	texcoords.xy += (floorcol.rg - 0.1) * 0.05;
 	float3 color = tex2D(sReflection, texcoords);
 	float fresnel = abs(normalize(vecViewPos.xyz - In.worldPos).y);
 	fresnel = pow(fresnel, 0.5);
 	color = lerp(color, floorcol, saturate(fresnel));
 	
-	return float4(color, 1.0);
+	return float4(color, 0.0);
 }
 
 
