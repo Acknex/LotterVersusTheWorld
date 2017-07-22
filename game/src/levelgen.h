@@ -22,7 +22,7 @@ LEVELGENSTACK* levelgenStackCreate(int size)
 }
 
 ENTITY * stageRenderEntity(STAGE * stage);
-=======
+
 void stage_load(STAGE * stage);
 void stage_unload();
 
