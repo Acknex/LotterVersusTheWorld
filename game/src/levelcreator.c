@@ -376,7 +376,7 @@ VECTOR * stage_load(STAGE * stage)
 						r = 200;
 					}
 
-					if (r < 10)
+					if (r < 7)
 					{
 						ENTITY* desk = ent_create("desk.mdl", vec_add(vector(offx, offy, 0), &center), desk_buildup);
 						desk->skill1 = rot;
@@ -386,7 +386,7 @@ VECTOR * stage_load(STAGE * stage)
 						ENTITY* rack = ent_create("rack_case.mdl", vec_add(vector(offx, offy, 0), &center), rack_buildup);
 						rack->skill1 = rot;
 					}
-					else if ((r > 80) && (r < 100))
+					else if ((r > 96) && (r < 100))
 					{
 						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
 						screen->pan = rot;
