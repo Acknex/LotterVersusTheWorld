@@ -22,6 +22,7 @@ void INIT_levelStart()
 	focus_camera(player);
 	show_camera();
 	
+	ground_reflections();
 	pp_bloom(0.3, 2.0);
 }
 
@@ -56,4 +57,5 @@ void INIT_global()
 void INIT_resize()
 {
 	//error("bling");
+	pp_bloom_resize();
 }

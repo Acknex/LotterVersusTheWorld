@@ -227,8 +227,8 @@ void stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
-	ENTITY * ent = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -250), NULL);
-	ent->material = stageMtlLava;
+	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -250), NULL);
+	entLava->material = stageMtlLava;
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	
@@ -241,6 +241,10 @@ void stage_load(STAGE * stage)
 	entUpperWall->material = WallMainMaterial;
 	entLowerWall->material = WallLowerMaterial;
 	entOutlines->material = WallOutlineMaterial;
+	
+	set(entGround, FLAG1);
+	set(entLowerWall, FLAG1);
+	set(entLava, FLAG1);
 	
 	entOutlines->flags |= PASSABLE;
 }
