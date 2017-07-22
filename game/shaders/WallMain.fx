@@ -116,7 +116,7 @@ technique object
 	{
 		CullMode = CW;
 		DestBlend = One;
-		ZWriteEnable = True;
+		ZWriteEnable = False;
 		AlphaBlendEnable = True;
 		ColorWriteEnable = RED|GREEN|BLUE;
 		VertexShader = compile vs_2_0 vs();
