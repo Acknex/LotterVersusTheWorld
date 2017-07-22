@@ -30,7 +30,7 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	float height = -In.WorldPos.y*0.003333;
+	float height = -In.WorldPos.y*0.002333;
 	float3 color = lerp(float3(0.0, 0.1, 0.0), float3(0.3, 0.1, 0.0), tex2D(sTexture, float2(In.uv.x, height)).r);
 	color += tex2D(sTexture, float2(In.uv.x, height)).a * float3(0.7, 0.4, 0.0) * 3.0;
 	color += max(height - 0.3, 0) * float3(1.0, 0.0, 0.0);
