@@ -1,13 +1,26 @@
+SOUND* sndPlayerShot = "sounds\\player_shot.wav";
+
 void weapon_startup()
 {
+	var shootingHandle = 0;
 	while(1)
 	{
 		if((player != NULL) && mouse_left) 
 		{
+			if(shootingHandle == 0)
+			{
+				shootingHandle = snd_loop(sndPlayerShot, 50, 0);
+			}
 			player.skill44 = 2;
+			player.group = 3;
 			shoot(1);
 		}
-		else if((player != NULL) && mouse_right)
+		if(!mouse_left && shootingHandle != 0) 
+		{
+			snd_stop(shootingHandle);
+			shootingHandle = 0;
+		}
+		if((player != NULL) && mouse_right)
 		{
 			shoot(2);
 		}
@@ -55,6 +68,7 @@ void projectile()
 	
 	my.flags |= (PASSABLE | FLAG2);
 	my.type = TypePlayerProjectile;
+	my.damage = 1;
 	
 	VECTOR dir;
 	VECTOR offset;
@@ -69,8 +83,12 @@ void projectile()
 	my.tilt = 90;
 	my.pan += 90;
 	
+	
+	
 	vec_scale(my.scale_x, weapon_projectile_scale);
 	c_setminmax(me);
+	
+	
 	
 	my.skill50 = 0; // How many time a projectile has bounced already
 	
@@ -91,6 +109,7 @@ void projectile()
 		vec_add(to, my.x);
 		//vec_scale(offset, -16);
 		//vec_add(offset, my.x);
+		c_ignore(3);
 		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
 		
@@ -181,6 +200,8 @@ void granate()
 	vec_lerp(midPos2,vstart,vTarget,0.667);
 	midPos2.z = 200;
 	
+	my.damage = 3;
+	
 	// Bezier interpolation
 	while(my.skill1 < 16 && me)
 	{
@@ -205,17 +226,10 @@ void granate()
 		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
-	explosion(me);
+	//explosion(me);
 	c_scan(my.x, nullvector, vector(360, 0, 16), ACTIVATE_SHOOT);
 	ent_remove(me);
 }
-
-void shotgun()
-{
-	
-}
-
-
 
 void cooldown()
 {

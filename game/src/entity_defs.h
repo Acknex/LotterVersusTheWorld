@@ -18,5 +18,9 @@
 #define TypeWall 4
 #define TypeDestroyed 5
 #define TypeTurret 6
+#define TypeTurret2 7
+#define TypeSpikes 8
+#define TypeHole 9
+#define TypeEnemy 10
 
-#define TypeMaxNumber 7 //adjust and never exceed
+#define TypeMaxNumber 11 //adjust and never exceed
