@@ -344,9 +344,9 @@ VECTOR * stage_load(STAGE * stage)
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
 					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
 					ent->material = TurretMaterial;
-				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 10;
+				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
+					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
+					//ent->type = 9;
 					MARKER_attach(ent);
 				}
 			}
