@@ -23,7 +23,7 @@
 		font = monoid;
 		pos_x = 16;
 		pos_y = 16;
-		flags = CENTER_X | CENTER_Y | SHOW;
+		flags = CENTER_X | CENTER_Y;
 		strings = 1;
 		string(str_weapon_code);
 		red = 255;

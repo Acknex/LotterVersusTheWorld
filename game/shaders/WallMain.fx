@@ -49,26 +49,13 @@ float4 ps(out_ps In): COLOR
 	
 	float4 attributes = tex2D(sTexture, In.uv);
 	
-	//float ioffset = 7 * floor((In.WorldPos.x - 100) / 200) + floor((In.WorldPos.z - 100) / 200);
-	//float toff = 0.03 * vecTime.w;
-	//
-	//   toff *= 2.3;
-	//  	toff -= 0.3;
-	//toff -= frac(toff);
-	//
-	//ioffset += toff;
-	
-	float2 textcoord = patternUV;// + float2(0, 0.111 * ioffset);
+	float2 textcoord = patternUV;
 	
 	textcoord.x -= 0.0005 * vecTime.w;
 	
 	textcoord.x -= 0.0009 * (1.2 + sin(0.3 * floor(textcoord.y * 17))) * vecTime.w;
 	
-	// return float4(frac(0.1 * ioffset), 0, 0, 1);
-	
 	float4 text = tex2D(sWallTest, textcoord);
-	
-	//return float4(text, 1);
 	
 	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 21.5/64.0));
 	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 22.5/64.0));

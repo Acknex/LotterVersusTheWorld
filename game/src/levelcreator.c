@@ -2,6 +2,8 @@
 #include <DynamicModels.h>
 
 #include "materials.h"
+#include "turret.h"
+#include "entity_defs.h"
 
 /*
 typedef struct {
@@ -15,6 +17,8 @@ typedef struct {
 */
 
 LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
+
+BMAP * stage_bmpBlackSkin = "#32x32x24";
 
 MATERIAL * stageMtlLava = 
 {
@@ -74,12 +78,15 @@ void stage_loadGround(DynamicModel * model, STAGE * stage)
 				continue;
 			}
 			
-			VECTOR center;
-			center.x = i * 200;
-			center.y = j * 200;
-			center.z = 0;
-			
-			dmdl_add_mesh(model, stage_groundMesh, &center, vector(0,0,0));
+			if(tile->value == 1)
+			{
+				VECTOR center;
+				center.x = i * 200;
+				center.y = j * 200;
+				center.z = 0;
+				
+				dmdl_add_mesh(model, stage_groundMesh, &center, vector(0,0,0));
+			}
 		}
 	}
 }
@@ -165,7 +172,13 @@ void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
 				TILE * a = stageGetTile(stage, i+outlines[k+0], j+outlines[k+1]);
 				TILE * b = stageGetTile(stage, i+outlines[k+2], j+outlines[k+3]);
 				TILE * c = stageGetTile(stage, i+outlines[k+4], j+outlines[k+5]);
-				if(tile->value != a->value && a->value == b->value && b->value == c->value) {
+				
+				BOOL valid = FALSE;
+				if(!!tile->value != !!a->value && !!a->value == !!b->value && !!b->value == !!c->value) {
+					valid = TRUE;
+				}
+				
+				if(valid) {
 					VECTOR fo;
 					vec_set(&fo, &center);
 					fo.x += outlines[k+6];
@@ -232,18 +245,24 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	set(ent, POLYGON);
 	
 	ent_setmesh(ent, mesh, 0, 0);
+	ent_setskin(ent, stage_bmpBlackSkin, 1);
 	
 	c_updatehull(ent, 0);
 	
 	return ent;
 }
 
-void stage_load(STAGE * stage)
+VECTOR * stage_load(STAGE * stage)
 {
 	level_load(NULL);
 	
 	// Initialize models
 	stageRenderInit();
+	
+	{
+		TILE * tile = stageGetTile(stage, 1, 4);
+		tile->value = 2;
+	}
 	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
@@ -260,22 +279,43 @@ void stage_load(STAGE * stage)
 	entLowerWall->material = WallLowerMaterial;
 	entOutlines->material = WallOutlineMaterial;
 	
+	entUpperWall->type = TypeWall;
 	set(entGround, FLAG1);
 	set(entLowerWall, FLAG1);
 	set(entLava, FLAG1);
 	
 	entOutlines->flags |= PASSABLE;
 	
-	while(!player) { wait(1); }
-	
-	while(player)
 	{
-		draw_line3d(player.x, NULL, 100);
-		draw_line3d(player.x, COLOR_RED, 100);
-		draw_line3d(vector(player.x + 100, player.y, player.z), COLOR_RED, 100);
-		draw_line3d(player.x, NULL, 100);
-		draw_line3d(player.x, COLOR_GREEN, 100);
-		draw_line3d(vector(player.x, player.y + 100, player.z), COLOR_GREEN, 100);
-		wait(1);
+		int i, j;
+		for(i = 1; i < (stage->size[0] - 1); i++) {
+			for(j = 1; j < (stage->size[1] - 1); j++) {
+				ENTITY * ent;
+				TILE * tile = stageGetTile(stage, i, j);
+				
+				VECTOR center;
+				center.x = i * 200;
+				center.y = j * 200;
+				center.z = 0;
+				
+				if(tile->flags & TILE_FLAG_TRAP_TURRET) {
+					ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
+					ent->material = GroundMaterial;
+					set(ent, POLYGON);
+					set(ent, FLAG1);
+					ent_animate(ent, "closed", 0, 0);
+				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
+					
+				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
+					
+				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
+					
+				}
+			}
+		}
 	}
+	
+	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	
+	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }

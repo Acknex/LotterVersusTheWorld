@@ -6,25 +6,21 @@ VIEW *BloomImageView = NULL;
 MATERIAL *PPThresholdLuminanceMaterial =
 {
 	effect = "ThresholdLum.fx";
-	flags = AUTORELOAD;
 }
 
 MATERIAL *PPBloomMixMaterial =
 {
 	effect = "BloomMix.fx";
-	flags = AUTORELOAD;
 }
 
 MATERIAL *PPBlurHMaterial =
 {
 	effect = "Blur.fx";
-	flags = AUTORELOAD;
 }
 
 MATERIAL *PPBlurVMaterial =
 {
 	effect = "Blur.fx";
-	flags = AUTORELOAD;
 }
 
 void pp_bloom_resize()
@@ -47,11 +43,11 @@ void pp_bloom(float strength)
 	{
 		pp_isBloomEnabled = true;
 		
-		PPBlurHMaterial.skill1 = floatv(2.0);
+		PPBlurHMaterial.skill1 = floatv(1.0);
 		PPBlurHMaterial.skill2 = floatv(0.0);
 		
 		PPBlurVMaterial.skill1 = floatv(0.0);
-		PPBlurVMaterial.skill2 = floatv(2.0);
+		PPBlurVMaterial.skill2 = floatv(1.0);
 		
 		pp_view = cam;
 		pp_stage = cam;
@@ -85,11 +81,21 @@ TEXT * WallMainText =
 	strings = 20;
 }
 
+float bloomFactor = 2.5;
+
 function ColorLUT_Bounce()
 {
 	while(key_p)
 	{
 		ColorVariation = 0.5 + 0.5 * sinv(4 * total_ticks);
+		wait(1);
+	}
+	
+	while(key_o)
+	{
+		bloomFactor = 2.0 + 2.0 * sinv(4 * total_ticks);
+		pp_bloom(bloomFactor);
+		
 		wait(1);
 	}
 }
@@ -105,9 +111,12 @@ function WallMainText_startup()
 	bmap_to_mipmap(WallMainTextImage);
 	
 	on_p = ColorLUT_Bounce;
+	on_o = ColorLUT_Bounce;
 	
 	while(1)
 	{
+		DEBUG_VAR(bloomFactor, 100);
+		
 		int idx = random(WallMainText.strings);
 		
 		STRING * str = (WallMainText.pstring)[idx];
@@ -160,6 +169,11 @@ MATERIAL *WallLowerMaterial =
 	skin1 = WallLower01BMAP;
 }
 
+MATERIAL *ObjectMaterial = 
+{
+	effect = "Objects.fx";
+}
+
 BMAP * GroundAtlas = "tile-floor-atlas_01.dds";
 
 MATERIAL *GroundMaterial =
@@ -170,26 +184,43 @@ MATERIAL *GroundMaterial =
 
 VIEW *ReflectionView = NULL;
 
+MATERIAL *PPReflectionBlurHMaterial =
+{
+	effect = "BlurSmall.fx";
+}
+
+MATERIAL *PPReflectionBlurVMaterial =
+{
+	effect = "BlurSmall.fx";
+}
+
 void ground_reflections()
 {
 	if(ReflectionView)
 		return;
+		
+	PPReflectionBlurHMaterial.skill1 = floatv(1.0);
+	PPReflectionBlurHMaterial.skill2 = floatv(0.0);
 	
-	ReflectionView = view_create(-1);
+	PPReflectionBlurVMaterial.skill1 = floatv(0.0);
+	PPReflectionBlurVMaterial.skill2 = floatv(1.0);
+	
+	ReflectionView = view_create(-2);
 	ReflectionView.size_x = 512;
 	ReflectionView.size_y = 512;
 	set(ReflectionView, NOFLAG1);
 	
-/*	pp_view = cam;
-	pp_stage = cam;
+	pp_view = ReflectionView;
+	pp_stage = ReflectionView;
 		
-	pp_add(PPThresholdLuminanceMaterial);*/
+	pp_add(PPReflectionBlurHMaterial);
+	pp_add(PPReflectionBlurVMaterial);
 	
-	ReflectionView.bmap = bmap_createblack(512, 512, 8888);
-	
-	GroundMaterial.skin1 = ReflectionView.bmap;
+	pp_stage.bmap = bmap_createblack(512,512, 8888);
+	GroundMaterial.skin1 = pp_stage.bmap;
 	
 	set(ReflectionView, SHOW);
+	proc_mode = PROC_LATE;
 	
 	while(1)
 	{

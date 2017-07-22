@@ -7,8 +7,10 @@
 
 Texture mtlSkin1;
 Texture mtlSkin2;
+Texture entSkin1;
 sampler sReflection = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 sampler sTexture = sampler_state { Texture = <mtlSkin2>; MipFilter = Linear; };
+sampler sDetails = sampler_state { Texture = <entSkin1>; MipFilter = Linear; };
 
 
 Texture ColorLUT_bmap;
@@ -49,7 +51,9 @@ float4 ps(out_ps In): COLOR
 	
 	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 15.0/64.0));
 	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 16.0/64.0));
-	float3 attributes = tex2D(sTexture, In.uv);
+	float3 attributes = tex2D(sTexture, In.worldPos.xz / 200);
+	
+	attributes += tex2D(sDetails, In.uv);
 	
 	float4 floorcol = 
 		col1 * attributes.r +
@@ -57,8 +61,9 @@ float4 ps(out_ps In): COLOR
 	
 	float4 reflection = tex2D(sReflection, texcoords);
 	float fresnel = abs(normalize(vecViewPos.xyz - In.worldPos).y);
-	fresnel = pow(fresnel, 0.5);
-	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 1.0);
+	fresnel = max(pow(fresnel, 0.5), 0.5);
+	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 1.0)
+		+ float4(1,0,1,1) * attributes.b;
 }
 
 
@@ -68,6 +73,8 @@ technique object
 	{
 		VertexShader = compile vs_2_0 vs();
 		PixelShader = compile ps_2_0 ps();
+		AlphaBlendEnable = false;
+		ZWriteEnable = true;
 	}
 }
 
