@@ -31,36 +31,12 @@ void player_move() {
 	you = player;
 	c_trace(mouse_pos3d, to, IGNORE_YOU | IGNORE_FLAG2);
 	
-	draw_point3d(to, COLOR_WHITE, 100, 20);
+	//draw_point3d(to, COLOR_WHITE, 100, 20);
 	
 	vec_set(vTarget, hit.x);
 	vec_sub(vTarget, player.x);
 	vec_to_angle(tAngle, vTarget);
 	player.pan = tAngle.pan;
-	
-	
-	/*
-	if (vec_to_screen(playerpos, view) != NULL)
-	{
-		
-		vec_sub(playerpos, mouse_pos);
-		vec_to_angle(dir, playerpos);	
-		
-	}
-	player.pan = 180-dir.pan - view->pan;
-
-	*/
-	
-	//draw_textmode("Arial", 1, 20, 100);
-	
-	#ifdef DEBUG
-		DEBUG_VAR(player.min_x, 100);
-		DEBUG_VAR(player.min_y, 120);
-		DEBUG_VAR(player.min_z, 140);
-		DEBUG_VAR(player.max_x, 160);
-		DEBUG_VAR(player.max_y, 180);
-		DEBUG_VAR(player.max_z, 200);
-	#endif
 	
 	dist_ahead = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_w + key_cuu, 0, 1) - clamp(key_s + key_cud, 0, 1));
 	dist_strafe = (PLAYER_WALK_SPPED + key_shiftl*PLAYER_RUN_SPEED) * (clamp(key_a + key_cul, 0, 1) - clamp(key_d + key_cur, 0, 1));
@@ -90,11 +66,11 @@ void player_move() {
 	if (dist_ahead != 0 || dist_strafe != 0) {
 		if (key_shiftl) {
 			// run
-			anim_percentage += 0.2*maxv(abs(dist_ahead), abs(dist_strafe));
+			anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
 			ent_animate(player,"walk", anim_percentage, ANM_CYCLE);
 			} else {
 			//walk
-			anim_percentage += 0.2*maxv(abs(dist_ahead), abs(dist_strafe));
+			anim_percentage += 0.6*maxv(abs(dist_ahead), abs(dist_strafe)) * time_step;
 			ent_animate(player,"walk",anim_percentage,ANM_CYCLE);
 		}	
 		ent_blendframe(player, player, "strafe", 0, 25);
