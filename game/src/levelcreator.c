@@ -259,11 +259,6 @@ VECTOR * stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
-	{
-		TILE * tile = stageGetTile(stage, 1, 4);
-		tile->value = 2;
-	}
-	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	

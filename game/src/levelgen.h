@@ -56,6 +56,6 @@
 
 	void stageDraw(STAGE* stage, int posX, int posY, int tileSize);
 
-	#include "levelgen.h"
+	#include "levelgen.c"
 
 #endif
