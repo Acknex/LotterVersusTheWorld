@@ -1,4 +1,6 @@
 SOUND* sndPlayerShot = "sounds\\player_shot.wav";
+SOUND* sndGrenadeThrow = "sounds\\grenade_throw.wav";
+SOUND* sndGrenadeExplode = "sounds\\grenade_explode.wav";
 
 void weapon_startup()
 {
@@ -169,6 +171,7 @@ void granate_explosion(PARTICLE *p) // PLATZHALTER
 
 void explosion(ENTITY *ent) // PLATZHALTER !!
 {
+	snd_play(sndGrenadeExplode, 100, 0);
 	effect(granate_explosion, 120,  ent.x, nullvector);
 }
 
@@ -267,6 +270,7 @@ void shoot(int wp_type)
 	
 	if(player.weapon_granade_cooldown == 0 && wp_type == 2)
 	{
+		snd_play(sndGrenadeThrow, 100, 0);
 		ent_create("cube.mdl", spawn, granate);
 		cooldown_granate();
 	}
