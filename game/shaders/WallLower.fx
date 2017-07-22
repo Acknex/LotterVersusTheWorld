@@ -80,7 +80,7 @@ float4 ps(out_ps In): COLOR
 	
 	float4 lightColor = tex2D(sLUT, float2(lutPosition, 3.5/64.0));
 	float brightness = stuff.g;
-	brightness += lava * 0.5 * max(height + lava * 0.4 - 0.4, 0.0); // 0.1 ist stärke, hinten höhe
+	brightness += lava * 0.5 * max(height + lava * 0.1 - 0.4, 0.0); // 0.1 ist stärke, hinten höhe
 	color += lightColor * brightness;
 	return float4(color, lineValue + brightness);
 }
