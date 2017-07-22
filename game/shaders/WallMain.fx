@@ -44,7 +44,7 @@ float4 ps(out_ps In): COLOR
 	float3 color = lerp(
 		0.0,
 		text,
-		attributes.b);
+		pow(attributes.b, 0.5));
 	
 	return float4(color, 1.0);
 }
