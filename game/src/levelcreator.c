@@ -222,7 +222,6 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	load = foo;
 	load(model, stage);
 	
-	
 	LPD3DXMESH mesh = dmdl_create_mesh(model);
 	
 	dmdl_delete(model);
