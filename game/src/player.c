@@ -198,7 +198,7 @@ void player_init() {
 	
 	player.damage = 1;
 	
-	player.emask |= EVENT_SHOOT;
+	player.emask |= ENABLE_SHOOT | ENABLE_SCAN;
 	player.event = player_event;
 	player->type = TypePlayer;
 }
@@ -206,10 +206,13 @@ void player_init() {
 void player_event() {
 	switch(event_type) {
 		case EVENT_SHOOT:
+		case EVENT_SCAN:
 		my.health -=your.damage;
 		if (my.health <= 0) {
 			printf("You are DEAD!");
 		}
+		
 		break;
+		
 	}
 }
