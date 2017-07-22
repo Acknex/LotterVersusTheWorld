@@ -137,6 +137,9 @@ action enemy_bat()
 	{
 		if(!(my.eflags&CLIPPED))
 		{
+			/*my.skill30 += my.skill32*0.1*time_step;
+			my.skill30 %= 100;
+			ent_animate(my,"idle",my.skill30,0);*/
 			my.skill30 += my.skill32*time_step;
 			my.skill30 %= 360;
 			ent_bonereset_all(my);
