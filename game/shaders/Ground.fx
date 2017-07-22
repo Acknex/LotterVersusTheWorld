@@ -49,8 +49,8 @@ float4 ps(out_ps In): COLOR
 	texcoords.xy *= 0.5;
 	texcoords.xy += 0.5;
 	
-	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 15.0/64.0));
-	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 16.0/64.0));
+	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 15.5/64.0));
+	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 16.5/64.0));
 	float3 attributes = tex2D(sTexture, In.worldPos.xz / 200);
 	
 	attributes += tex2D(sDetails, In.uv);
