@@ -620,11 +620,12 @@ void stageCreateEnemyData(STAGE* stage)
 		stageGetPosFromIndices(stage, &(stage->enemyPositions)[enemyCur], i2, j2);
 		//cprintf4("\n%d): (%d,%d,%d)",enemyCur,(int)(stage->enemyData)[enemyCur].x,(int)(stage->enemyData)[enemyCur].y,(int)(stage->enemyData)[enemyCur].z);
 		tile = stageGetTile(stage,i2,j2);
-		enemyType = 0+random(4);
+		enemyType = 0+random(5);
 		if(enemyType == 0) tile->flags |= TILE_FLAG_TRAP_SPIKES;
 		if(enemyType == 1) tile->flags |= TILE_FLAG_TRAP_HOLE;
 		if(enemyType == 2) tile->flags |= TILE_FLAG_TRAP_TURRET;
 		if(enemyType == 3) tile->flags |= TILE_FLAG_TRAP_BAT;
+		if(enemyType == 4) tile->flags |= TILE_FLAG_TRAP_SPHERE;
 		tile->flags |= TILE_FLAG_ENEMYSPAWN;
 		(stage->enemyData)[enemyCur*2+0] = i2;
 		(stage->enemyData)[enemyCur*2+1] = j2;
