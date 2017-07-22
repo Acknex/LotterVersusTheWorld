@@ -33,13 +33,14 @@ void ENEMY_init()
 
 var ENEMY_hit(var vEventType)
 {
-	if (vEventType == EVENT_SHOOT || EVENT_IMPACT)
+	if (vEventType == EVENT_SHOOT)// || EVENT_IMPACT)
 	{
 		if (you != NULL)
 		{
 			if (your->type == TypePlayerProjectile || you == player)
 			{
-				my->health = maxv(0, my->health - your->damage);
+				my->health = maxv(0, my->health - 1);
+//				my->health = maxv(0, my->health - your->damage);
 				if (my->health <= 0)
 				{
 					set (my, dead);

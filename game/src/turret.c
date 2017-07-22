@@ -56,7 +56,6 @@ void TURRET__shoot()
 
 void TURRET__event()
 {
-	error("BÄM");
 	var vDamageDealt = ENEMY_hit(event_type);
 }
 
