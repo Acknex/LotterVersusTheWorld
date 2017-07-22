@@ -192,6 +192,12 @@ MATERIAL *GroundMaterial =
 	skin2 = GroundAtlas;
 }
 
+MATERIAL *TurretMaterial =
+{
+	effect = "Turret.fx";
+	skin2 = GroundAtlas;
+}
+
 VIEW *ReflectionView = NULL;
 
 MATERIAL *PPReflectionBlurHMaterial =
@@ -209,11 +215,11 @@ void ground_reflections()
 	if(ReflectionView)
 		return;
 		
-	PPReflectionBlurHMaterial.skill1 = floatv(1.0);
+	PPReflectionBlurHMaterial.skill1 = floatd(1.0, 512.0);
 	PPReflectionBlurHMaterial.skill2 = floatv(0.0);
 	
 	PPReflectionBlurVMaterial.skill1 = floatv(0.0);
-	PPReflectionBlurVMaterial.skill2 = floatv(1.0);
+	PPReflectionBlurVMaterial.skill2 = floatd(1.0, 512.0);
 	
 	ReflectionView = view_create(-2);
 	ReflectionView.size_x = 512;
@@ -222,24 +228,27 @@ void ground_reflections()
 	
 	pp_view = ReflectionView;
 	pp_stage = ReflectionView;
-		
-	pp_add(PPReflectionBlurHMaterial);
-	pp_add(PPReflectionBlurVMaterial);
+	pp_stage.bmap = bmap_createblack(512, 512, 8888);
 	
-	pp_stage.bmap = bmap_createblack(512,512, 8888);
+	pp_add(PPReflectionBlurHMaterial);
+	pp_stage.bmap = bmap_createblack(512, 512, 8888);
+	
+	pp_add(PPReflectionBlurVMaterial);
+	pp_stage.bmap = ReflectionView.bmap;
 	GroundMaterial.skin1 = pp_stage.bmap;
+	TurretMaterial.skin1 = pp_stage.bmap;
 	
 	set(ReflectionView, SHOW);
 	proc_mode = PROC_LATE;
 	
 	while(1)
 	{
-		ReflectionView.aspect = (screen_size.x/screen_size.y)*camera.aspect; // screen aspect, independent of render target
-		ReflectionView.arc    = camera.arc;
-		ReflectionView.fog_start = camera.fog_start;
-		ReflectionView.fog_end   = camera.fog_end;
-		ReflectionView.clip_far  = camera.clip_far;
-		ReflectionView.clip_near = camera.clip_near;
+		ReflectionView.aspect = (screen_size.x/screen_size.y)*cam.aspect; // screen aspect, independent of render target
+		ReflectionView.arc    = cam.arc;
+		ReflectionView.fog_start = cam.fog_start;
+		ReflectionView.fog_end   = cam.fog_end;
+		ReflectionView.clip_far  = cam.clip_far;
+		ReflectionView.clip_near = cam.clip_near;
 		
 		vec_set(ReflectionView.x, cam.x);
 		ReflectionView.z *= -1.0;

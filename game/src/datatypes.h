@@ -11,7 +11,7 @@
 
 #define TILE_FLAG_EXIT (1<<0)
 #define TILE_FLAG_ENTRANCE (1<<1)
-#define TILE_FLAG_ENEMYSPAWN (1<<2)
+#define TILE_FLAG_ENEMYSPAWN (1<<2) // for internal use only, don't spawn stuff in this case
 #define TILE_FLAG_TRAP_SPIKES (1<<3)
 #define TILE_FLAG_TRAP_HOLE (1<<4)
 #define TILE_FLAG_TRAP_TURRET (1<<5)

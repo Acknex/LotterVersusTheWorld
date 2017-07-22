@@ -36,6 +36,7 @@ void INIT_levelStart()
 	
 	ground_reflections();
 	pp_bloom(2.5);
+	mouse_init_game();
 	//skychange(); //because.
 	
 

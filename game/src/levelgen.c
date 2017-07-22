@@ -621,8 +621,6 @@ void stageCreateEnemyData(STAGE* stage)
 		//cprintf4("\n%d): (%d,%d,%d)",enemyCur,(int)(stage->enemyData)[enemyCur].x,(int)(stage->enemyData)[enemyCur].y,(int)(stage->enemyData)[enemyCur].z);
 		tile = stageGetTile(stage,i2,j2);
 		enemyType = 0+random(4);
-		if(random(2) > 1) enemyType = 2;
-		enemyType = 3;
 		if(enemyType == 0) tile->flags |= TILE_FLAG_TRAP_SPIKES;
 		if(enemyType == 1) tile->flags |= TILE_FLAG_TRAP_HOLE;
 		if(enemyType == 2) tile->flags |= TILE_FLAG_TRAP_TURRET;

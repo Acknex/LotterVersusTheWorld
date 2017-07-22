@@ -3,6 +3,8 @@
 
 #include "materials.h"
 #include "turret.h"
+#include "spikes.h"
+#include "hole.h"
 #include "entity_defs.h"
 #include "marker.h"
 
@@ -30,8 +32,8 @@ BOOL stageTileHasNoGround(TILE * tile)
 {
 	if(!tile) return FALSE;
 	return (tile->flags & TILE_FLAG_TRAP_SPIKES)
-		&& (tile->flags & TILE_FLAG_TRAP_HOLE)
-		&& (tile->flags & TILE_FLAG_TRAP_TURRET);
+		|| (tile->flags & TILE_FLAG_TRAP_HOLE)
+		|| (tile->flags & TILE_FLAG_TRAP_TURRET);
 }
 
 void stageRenderInit()
@@ -278,6 +280,11 @@ VECTOR * stage_load(STAGE * stage)
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
 	
+	
+	set(entUpperWall	, FLAG2);
+	set(entOutlines	, FLAG2);
+	
+	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;
 	entLowerWall->material = WallLowerMaterial;
@@ -303,25 +310,43 @@ VECTOR * stage_load(STAGE * stage)
 				center.z = 0;
 				
 				if(tile->flags & TILE_FLAG_TRAP_TURRET) {
-					ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
-					ent->material = GroundMaterial;
-					set(ent, POLYGON);
+					var rand = integer(random(4));
+					switch (rand)
+					{
+						case 0:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_rotcw);
+							break;
+
+						case 1:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_rotccw);
+							break;
+
+						case 2:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_alternate);
+							break;
+
+						case 3:
+							ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret_aim);
+							break;
+
+					}
+					
+					//ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
+					ent->material = TurretMaterial;
+				//moved to turret
+				/*	set(ent, POLYGON);
 					set(ent, FLAG1);
 					ent_animate(ent, "closed", 0, 0);
+					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 8;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-hole.mdl", &center, enemy_hole);
+					ent->material = TurretMaterial;
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
-					ent->material = GroundMaterial;
-					set(ent, POLYGON);
-					set(ent, FLAG1);
-					ent->type = 7;
-					MARKER_attach(ent);
-				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
+					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
+					ent->material = TurretMaterial;
+				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
 					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
-					ent->type = 9;
+					//ent->type = 9;
 					MARKER_attach(ent);
 				}
 			}
