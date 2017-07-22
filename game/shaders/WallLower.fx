@@ -5,7 +5,10 @@
 #include <fog>
 #include <normal>
 
+Texture mtlSkin1;
 float4 vecTime;
+
+sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -25,7 +28,8 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	return float4(0.0f, 0.0, 1.0, 1.0);
+	float3 color = tex2D(sTexture, In.uv).a * float3(1.0, 0.0, 0.0);
+	return float4(color, 1.0);
 }
 
 

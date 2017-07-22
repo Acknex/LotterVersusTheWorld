@@ -28,6 +28,7 @@ void INIT_levelStart()
 void INIT_levelEnd()
 {
 	// TODO: @superku: stageRemove or similar!
+	stage_unload(); // destroy all meshes
 	// stage_remove(LEVEL__stage);
 
 	INIT__levelRunning = 0;
