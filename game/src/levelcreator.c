@@ -394,7 +394,7 @@ VECTOR * stage_load(STAGE * stage)
 					{
 						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
 						screen->pan = rot;
-						screen->material = ObjectMaterial;
+						screen->material = BlinkingObjectMaterial;
 						set(screen, PASSABLE);
 					}
 				}
