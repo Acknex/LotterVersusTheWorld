@@ -16,6 +16,7 @@
 #define TILE_FLAG_TRAP_HOLE (1<<4)
 #define TILE_FLAG_TRAP_TURRET (1<<5)
 #define TILE_FLAG_TRAP_BAT (1<<6)
+#define TILE_FLAG_TRAP_SPHERE (1<< 7)
 
 struct _TILE
 {

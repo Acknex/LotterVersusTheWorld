@@ -6,10 +6,9 @@
 #define animCounter skill12
 #define delayCounter skill13
 
-#define weapon_type skill45
-#define weapon_cooldown skill43
-#define weapon_bouncing skill44
-#define weapon_granade_cooldown skill46
+#define weapon_cooldown skill16
+#define weapon_bouncing skill17
+#define weapon_granade_cooldown skill18
 
 //skill20-40: for individual use, do not define here
 
@@ -24,5 +23,8 @@
 #define TypeSpikes 8
 #define TypeHole 9
 #define TypeEnemy 10
+#define TypeBat 11
+#define TypeSphereOfDeath 12
 
-#define TypeMaxNumber 11 //adjust and never exceed
+
+#define TypeMaxNumber 13 //adjust and never exceed

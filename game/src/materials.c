@@ -109,6 +109,12 @@ function ColorLUT_Bounce()
 	}
 }
 
+MATERIAL *ObjectMaterial = 
+{
+	effect = "Objects.fx";
+	flags = PASS_SOLID;
+}
+
 function WallMainText_startup()
 {
 	// WallMainText.size_x = bmap_width(WallMainTextImage);
@@ -158,6 +164,15 @@ function WallMainText_startup()
 	}
 }
 
+BMAP * TeleporterEffectTexture = "teleport.png";
+
+MATERIAL *TeleporterEffectMaterial =
+{
+	effect = "Teleport.fx";
+	skin1 = TeleporterEffectTexture;
+	flags = TRANSLUCENT;
+}
+
 MATERIAL *WallMainMaterial =
 {
 	effect = "WallMain.fx";
@@ -182,9 +197,9 @@ MATERIAL *WallLowerMaterial =
 	flags = PASS_SOLID;
 }
 
-MATERIAL *ObjectMaterial = 
+MATERIAL *BlinkingObjectMaterial = 
 {
-	effect = "Objects.fx";
+	effect = "BlinkingObjects.fx";
 	flags = PASS_SOLID;
 }
 

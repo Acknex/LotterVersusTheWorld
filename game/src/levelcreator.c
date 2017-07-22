@@ -5,19 +5,11 @@
 #include "turret.h"
 #include "spikes.h"
 #include "hole.h"
+#include "sphere_of_death.h"
+#include "teleporter.h"
 #include "entity_defs.h"
 #include "marker.h"
-
-/*
-typedef struct {
-	float x,y,z;	// position in DirectX coordinates
-	float nx,ny,nz;	// normal
-	float u1,v1;    // first coordinate set, for textures
-	float u2,v2;    // second coordinate set, for shadow maps
-	float x3,y3,z3,w3; // third coordinate set, for tangent vector and handedness
-	float tu4,tv4;  // 4th coordinate set, for additional data
-} D3DVERTEX;
-*/
+#include "level_furniture.h"
 
 LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 
@@ -209,9 +201,6 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == TILE_EMPTY) {
-				continue;
-			}
 			
 			VECTOR center;
 			center.x = i * 200;
@@ -227,7 +216,10 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != TILE_EMPTY) {
+				if(tile->value != TILE_EMPTY && n->value != TILE_EMPTY && !(n->flags & TILE_FLAG_TRAP_HOLE)) {
+					continue;
+				}
+				if(tile->value == TILE_EMPTY && (n->value == TILE_EMPTY || !(n->flags & TILE_FLAG_TRAP_HOLE))) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));
@@ -346,16 +338,72 @@ VECTOR * stage_load(STAGE * stage)
 				} else if(tile->flags & TILE_FLAG_TRAP_BAT) {
 					ent = ent_create("bat.mdl", vec_add(vector(0, 0, 32), &center), enemy_bat);
 
-				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
+				} else if(tile->flags & TILE_FLAG_TRAP_SPHERE) {
+					ent = ent_create("sphere_of_death.mdl", vec_add(vector(0, 0, 32), &center), enemy_sphere);
+				}
+				else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 					ent->type = TypeEnemy;
 					MARKER_attach(ent);
+                                } else if(tile->value != 0) {
+					var r = random(100);
+					var rot = 0;
+					var offx = 0;
+					var offy = 0;
+
+					TILE* neighborw = stageGetTile(stage, i-1, j);
+					TILE* neighbore = stageGetTile(stage, i+1, j);
+					TILE* neighborn = stageGetTile(stage, i, j-1);
+					TILE* neighbors = stageGetTile(stage, i, j+1);
+					if (neighbors->value == 0)
+					{
+						rot = -90;
+						offy = 95;
+					}
+					else if (neighborn->value == 0)
+					{
+						rot = 90;
+						offy = -95;
+					}
+					else if (neighborw->value == 0)
+					{
+						rot = 0;
+						offx = -95;
+					}
+					else if (neighbore->value == 0)
+					{
+						rot = 180;
+						offx = 95;
+					}
+					else
+					{
+						r = 200;
+					}
+
+					if (r < 7)
+					{
+						ENTITY* desk = ent_create("desk.mdl", vec_add(vector(offx, offy, 0), &center), desk_buildup);
+						desk->skill1 = rot;
+					}
+					else if (r < 15)
+					{
+						ENTITY* rack = ent_create("rack_case.mdl", vec_add(vector(offx, offy, 0), &center), rack_buildup);
+						rack->skill1 = rot;
+					}
+					else if ((r > 96) && (r < 100))
+					{
+						ENTITY* screen = ent_create("screen.mdl", vec_add(vector(offx, offy, 0), &center), 0);
+						screen->pan = rot;
+						screen->material = BlinkingObjectMaterial;
+						set(screen, PASSABLE);
+					}
 				}
 			}
 		}
 	}
 	
-	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
+	ent->material = TeleporterEffectMaterial;
 	
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }
