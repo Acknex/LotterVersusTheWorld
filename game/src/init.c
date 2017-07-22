@@ -10,7 +10,6 @@
 
 var INIT__levelRunning = 0;
 
-STAGE* LEVEL__stage = NULL;
 
 void INIT_levelStart()
 {
@@ -74,6 +73,8 @@ void INIT_levelLoop()
 		updateMusic();
 		player_move();
 		update_camera();
+		
+		if(LEVEL__stage) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*16, 16);
 		wait(1);
 	}
 }

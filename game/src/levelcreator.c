@@ -172,7 +172,13 @@ void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
 				TILE * a = stageGetTile(stage, i+outlines[k+0], j+outlines[k+1]);
 				TILE * b = stageGetTile(stage, i+outlines[k+2], j+outlines[k+3]);
 				TILE * c = stageGetTile(stage, i+outlines[k+4], j+outlines[k+5]);
-				if(tile->value != a->value && a->value == b->value && b->value == c->value) {
+				
+				BOOL valid = FALSE;
+				if(!!tile->value != !!a->value && !!a->value == !!b->value && !!b->value == !!c->value) {
+					valid = TRUE;
+				}
+				
+				if(valid) {
 					VECTOR fo;
 					vec_set(&fo, &center);
 					fo.x += outlines[k+6];
