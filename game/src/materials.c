@@ -213,8 +213,8 @@ void ground_reflections()
 	pp_view = ReflectionView;
 	pp_stage = ReflectionView;
 		
-	pp_add(PPReflectionBlurHMaterial);
-	pp_add(PPReflectionBlurVMaterial);
+//	pp_add(PPReflectionBlurHMaterial);
+//	pp_add(PPReflectionBlurVMaterial);
 	
 	pp_stage.bmap = bmap_createblack(1024, 1024, 8888);
 	GroundMaterial.skin1 = pp_stage.bmap;
