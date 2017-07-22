@@ -68,7 +68,6 @@ float4 ps(out_ps In): COLOR
 	return a+(b*0.4) * saturate(length(a));
 }
 
-
 technique object
 {
 	pass one
