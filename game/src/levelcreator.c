@@ -268,16 +268,16 @@ void stage_load(STAGE * stage)
 	
 	entOutlines->flags |= PASSABLE;
 	
-	while(!player) { wait(1); }
-	
-	while(player)
-	{
-		draw_line3d(player.x, NULL, 100);
-		draw_line3d(player.x, COLOR_RED, 100);
-		draw_line3d(vector(player.x + 100, player.y, player.z), COLOR_RED, 100);
-		draw_line3d(player.x, NULL, 100);
-		draw_line3d(player.x, COLOR_GREEN, 100);
-		draw_line3d(vector(player.x, player.y + 100, player.z), COLOR_GREEN, 100);
-		wait(1);
-	}
+	//while(!player) { wait(1); }
+	//
+	//while(player)
+	//{
+	//	draw_line3d(player.x, NULL, 100);
+	//	draw_line3d(player.x, COLOR_RED, 100);
+	//	draw_line3d(vector(player.x + 100, player.y, player.z), COLOR_RED, 100);
+	//	draw_line3d(player.x, NULL, 100);
+	//	draw_line3d(player.x, COLOR_GREEN, 100);
+	//	draw_line3d(vector(player.x, player.y + 100, player.z), COLOR_GREEN, 100);
+	//	wait(1);
+	//}
 }
