@@ -18,20 +18,11 @@ TEXT* txtMarkers =
 	/*TypeWall 4*/             "",
 	/*TypeDestroyed 5*/        ".destroyed\n 0xDEAD",
 	/*TypeTurret 6*/           ".turret\n 0xBAFFBAFF",
-	/*TypeTurret 62*/          ".turret 2.0\n 0xBADA55",
-	".spikes",
-	".hole",
-	".enemy"
+	/*TypeTurret2 6*/          ".turret 2.0\n 0xBADA55",
+	/*TypeSpikes 8*/           ".spikes\n 0xBEEFED",
+	/*TypeHole 9*/             ".hole\n 0xAAAAAA",
+	/*TypeEnemy 10*/           ".boring standard enemy\n 0x4711"
 	);
 }
 
 #endif
-
-#define TypeDefault 0
-#define TypePlayerProjectile 1
-#define TypeEnemyProjectile 2
-#define TypePlayer 3
-#define TypeWall 4
-#define TypeDestroyed 5
-#define TypeTurret 6
-#define TypeTurret2 7
