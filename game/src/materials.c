@@ -76,9 +76,12 @@ MATERIAL *WallOutlineMaterial =
 	effect = "WallOutline.fx";
 }
 
+BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
+
 MATERIAL *WallLowerMaterial =
 {
 	effect = "WallLower.fx";
+	skin1 = WallLower01BMAP;
 }
 
 MATERIAL *GroundMaterial =
