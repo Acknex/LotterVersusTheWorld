@@ -3,6 +3,7 @@
 
 var vEmoHealthX = 0;
 var vPlayerHealth = 0;
+var vPlayerOldHealth = 0;
 
 FONT* fontHud = NULL;
 
