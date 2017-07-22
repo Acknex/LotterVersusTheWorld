@@ -295,7 +295,7 @@ VECTOR * stage_load(STAGE * stage)
 				switch(tile->value)
 				{
 					case 2: {
-						ent = ent_create("tile-floor-turret.mdl", &center, NULL);
+						ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
 						ent->material = GroundMaterial;
 						set(ent, POLYGON);
 						set(ent, FLAG1);
