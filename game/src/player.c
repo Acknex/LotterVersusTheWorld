@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "entity_defs.h"
 
 var anim_percentage = 0;
 var dist_ahead = 0;
@@ -87,4 +88,6 @@ void player_init() {
 	mouse_mode = 4;
 	player.z -= player.min_z;
 	player->trigger_range = 20;
+	
+	player.damage = 1;
 }
