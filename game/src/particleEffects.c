@@ -102,7 +102,7 @@ void p_granate_explode_fade(PARTICLE* p)
 	if(p.lifespan < 6) p.size = p.skill_a*p.lifespan/6.0;
 	else
 	{
-		int x = (p.lifespan-6)/(p.skill_b-6)+1;
+		float x = (p.lifespan-6)/(p.skill_b-6)*2+1;
 		p.size = p.skill_a*x*x;
 	}
 }
@@ -111,7 +111,7 @@ void p_granate_explode(PARTICLE* p)
 {
 	vec_randomize(p.vel_x,28);
 	p.vel_z += random(50);
-	vec_set(p.blue,vector(170,220,220));
+	vec_set(p.blue,vector(81,181,255));
 	vec_scale(p.blue,random(0.2)+0.8);
 	set(p,MOVE | BRIGHT);
 	p.lifespan = p.skill_b = 8+random(8);

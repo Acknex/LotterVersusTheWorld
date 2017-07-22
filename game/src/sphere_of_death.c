@@ -182,7 +182,7 @@ void SPHEREOD__loop()
 	SPHEREOD__die();
 }
 
-void SPHEREOD_die()
+void SPHEREOD__die()
 {
 	ptr_remove(me);
 }
