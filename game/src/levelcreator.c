@@ -5,6 +5,7 @@
 #include "turret.h"
 #include "entity_defs.h"
 #include "marker.h"
+#include "level_furniture.h"
 
 /*
 typedef struct {
@@ -351,7 +352,56 @@ VECTOR * stage_load(STAGE * stage)
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 					ent->type = 9;
 					MARKER_attach(ent);
-				}
+                                } else if(tile->value != 0) {
+                                        var r = random(100);
+                                        var rot = 0;
+                                        var offx = 0;
+                                        var offy = 0;
+
+                                        TILE* neighborw = stageGetTile(stage, i-1, j);
+                                        TILE* neighbore = stageGetTile(stage, i+1, j);
+                                        TILE* neighborn = stageGetTile(stage, i, j-1);
+                                        TILE* neighbors = stageGetTile(stage, i, j+1);
+                                        if (neighbors->value == 0)
+                                        {
+                                            rot = -90;
+                                            offy = 95;
+                                        }
+                                        else if (neighborn->value == 0)
+                                        {
+                                            rot = 90;
+                                            offy = -95;
+                                        }
+                                        else if (neighborw->value == 0)
+                                        {
+                                            rot = 0;
+                                            offx = -95;
+                                        }
+                                        else if (neighbore->value == 0)
+                                        {
+                                            rot = 180;
+                                            offx = 95;
+                                        }
+                                        else
+                                        {
+                                            r = 200;
+                                        }
+
+                                        if (r < 10)
+                                        {
+                                                ENTITY* desk = ent_create("desk.mdl", vec_add(vector(offx, offy, 0), &center), desk_buildup);
+                                                desk->skill1 = rot;
+                                        }
+                                        else if (r < 15)
+                                        {
+                                                ENTITY* rack = ent_create("rack_case.mdl", vec_add(vector(offx, offy, 0), &center), rack_buildup);
+                                                rack->skill1 = rot;
+                                        }
+                                        else if (r > 80)
+                                        {
+
+                                        }
+                                }
 			}
 		}
 	}
