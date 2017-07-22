@@ -92,6 +92,7 @@ void draw_str3d(STRING* str, VECTOR* vpos, var yOffset, COLOR* color)
 	}
 }
 
+STAGE* LEVEL__stage = NULL;
 
 	#include "levelgen.c"
 
