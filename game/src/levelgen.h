@@ -1,7 +1,7 @@
 
 int levelgenOffset2D[8] = { -1,0, 0,1, 1,0, 0,-1 };
 
-ENTITY * stageRenderEntity(STAGE* stage, int posX, int posY, int tileSize);
+ENTITY * stageRenderEntity(STAGE * stage);
 
 STAGE* stageCreate(int sizeX, int sizeY, var seed)
 {

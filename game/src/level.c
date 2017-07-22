@@ -12,6 +12,8 @@ void LEVEL_start()
 	//setup camera	
 	focus_camera(player);
 	show_camera();
+	
+	pp_bloom(0.9, 1.0);
 }
 
 void LEVEL_end()
