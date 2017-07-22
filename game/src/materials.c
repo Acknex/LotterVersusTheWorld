@@ -204,6 +204,7 @@ void ground_reflections()
 	GroundMaterial.skin1 = ReflectionView.bmap;
 	
 	set(ReflectionView, SHOW);
+	proc_mode = PROC_LATE;
 	
 	while(1)
 	{
