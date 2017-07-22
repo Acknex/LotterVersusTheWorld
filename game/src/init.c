@@ -22,7 +22,7 @@ void INIT_levelStart()
 	focus_camera(player);
 	show_camera();
 	
-	pp_bloom(0.5, 0.5);
+	pp_bloom(0.3, 2.0);
 }
 
 void INIT_levelEnd()
