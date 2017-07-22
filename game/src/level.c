@@ -3,9 +3,11 @@
 
 var LEVEL__running = 0;
 
+
 void LEVEL_start()
 {
 	LEVEL__running = 1;
+	
 	level_load("prototype.mdl");
 	//level_load("test_level_small.wmb");
 	player_init();
@@ -32,4 +34,14 @@ void LEVEL_loop()
 		update_camera();
 		wait(1);
 	}
+}
+
+void INIT_global()
+{
+	create_camera();	
+}
+
+void INIT_resize()
+{
+	//error("bling");
 }
