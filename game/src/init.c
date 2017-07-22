@@ -3,6 +3,7 @@
 #include "levelgen.h"
 #include "font.h"
 #include "sky.h"
+#include "music_player.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
@@ -10,7 +11,6 @@
 var INIT__levelRunning = 0;
 
 STAGE* LEVEL__stage = NULL;
-var music_handle = 0;
 
 void INIT_levelStart()
 {
@@ -33,7 +33,7 @@ void INIT_levelStart()
 	//skychange(); //because.
 	
 
-	music_handle = media_loop("media\\in_game1.mp3", NULL, 100);
+	startMusic("media\\in_game1.mp3", 4);
 
 	//this is debug hack for items
 	VECTOR* vecTemp;
@@ -50,7 +50,7 @@ void INIT_levelEnd()
 
 	INIT__levelRunning = 0;
 	
-	media_stop(music_handle);
+	stopMusic();
 	
 	wait(1);
 	
@@ -62,6 +62,7 @@ void INIT_levelLoop()
 {
 	while(INIT__levelRunning != 0)
 	{
+		updateMusic();
 		player_move();
 		update_camera();
 		wait(1);
