@@ -13,7 +13,7 @@ void LEVEL_start()
 	focus_camera(player);
 	show_camera();
 	
-	pp_bloom(0.9, 1.0);
+	pp_bloom(0.5, 0.5);
 }
 
 void LEVEL_end()
