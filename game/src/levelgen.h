@@ -21,6 +21,7 @@
 	void stage_unload();
 
 	STAGE* stageCreate(int sizeX, int sizeY, var seed, int level);
+	void stageDestroy(STAGE* stage);
 
 	TILE* stageGetTile(STAGE* stage, int i, int j);
 	
