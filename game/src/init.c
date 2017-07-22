@@ -101,4 +101,5 @@ void INIT_resize()
 {
 	pp_bloom_resize();
 	FONT_scale();
+	hud_ingame_align();
 }
