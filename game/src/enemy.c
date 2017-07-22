@@ -96,8 +96,7 @@ void ENEMY__projectileLoop()
 		}
 		else
 		{
-			COLOR* color = vector(255,255,255);
-			RICOCHET_create(color);
+			RICOCHET_create(hit.entity);
 			set(my, dead);
 		}
 		wait(1);

@@ -22,18 +22,31 @@ void RICOCHET__effect()
 	ptr_remove(my);
 }
 
-void RICOCHET_create()
-{
-	COLOR* color = vector(255, 128,255);
-	RICOCHET_create(color);
-}
-
-void RICOCHET_create(COLOR* color)
+void RICOCHET_create(ENTITY* ent)
 {
 	VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 	vec_normalize(v, 1);
 	vec_add(v.x, hit.x);
-	ENTITY* ricochet = ent_create("ricochet.tga", v, RICOCHET__effect);
+	ENTITY* ricochet;
+	
+	//walls get special ricochet
+	var vIsWall = 0;
+	if (ent != NULL)
+	{
+		if (ent->type == TypeWall)
+		{
+			vIsWall = 1;
+		}
+	}
+	
+	if (vIsWall != 0)
+	{
+		ricochet = ent_create("ricochet.tga", v, RICOCHET__effect);
+	}
+	else
+	{
+		ricochet = ent_create("tile-wall-text.png", v, RICOCHET__effect);
+	}
+	
 	vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));	
-	vec_set(ricochet->blue, color);
 }

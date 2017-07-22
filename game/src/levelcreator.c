@@ -2,6 +2,7 @@
 #include <DynamicModels.h>
 
 #include "materials.h"
+#include "entity_defs.h"
 
 /*
 typedef struct {
@@ -260,6 +261,7 @@ void stage_load(STAGE * stage)
 	entLowerWall->material = WallLowerMaterial;
 	entOutlines->material = WallOutlineMaterial;
 	
+	entUpperWall->type = TypeWall;
 	set(entGround, FLAG1);
 	set(entLowerWall, FLAG1);
 	set(entLava, FLAG1);
