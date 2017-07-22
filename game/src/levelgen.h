@@ -1,6 +1,10 @@
 
-int levelgenOffset2D[8] = { -1,0, 0,1, 1,0, 0,-1 };
+#ifndef LEVELGEN_H
+#define LEVELGEN_H
 
+#include "datatypes.h"
+
+int levelgenOffset2D[8] = { -1,0, 0,1, 1,0, 0,-1 };
 
 #define TILE_EMPTY 0
 
@@ -18,6 +22,9 @@ LEVELGENSTACK* levelgenStackCreate(int size)
 }
 
 ENTITY * stageRenderEntity(STAGE * stage);
+=======
+void stage_load(STAGE * stage);
+void stage_unload();
 
 STAGE* stageCreate(int sizeX, int sizeY, var seed)
 {
@@ -232,3 +239,6 @@ void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
 	}
 }
 
+#include "levelcreator.c"
+
+#endif

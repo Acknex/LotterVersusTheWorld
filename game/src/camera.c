@@ -38,10 +38,10 @@ void create_camera(int layer)
 	cam = view_create(layer);
 	cam->pan = CAMERA_PAN;
 	cam->tilt = CAMERA_TILT; 
-	cam->flags |= ISOMETRIC;
+	//cam->flags |= ISOMETRIC;
 
 	/* width = view.size_x * 2 * tan(view.arc/2); - from manual (view.arc) */
-	vViewWidth = CAMERA_REFSCRSIZEX * 2 * tanv(CAMERA_REFARC * 0.5);
+	//vViewWidth = CAMERA_REFSCRSIZEX * 2 * tanv(CAMERA_REFARC * 0.5);
 }
 
 void remove_camera()
@@ -62,14 +62,17 @@ void update_camera()
 		vec_set(vecPos, vector(-CAMERA_DIST, 0, 0));
 		vec_rotate(vecPos, cam->pan);
 		vec_add(vecPos, camera_focus_ent->x);
-		vec_set(cam->x, vecPos);
+		VECTOR tmp;
+		var fac = clamp(time_step, 0, 1) * CAMERA_SPEEDFAC;
+		vec_lerp(&tmp, cam->x, vecPos, fac);
+		vec_set(cam->x, tmp);
 
 		//vDistanceFactor += ((is_kart_accelerating(camera_focus_ent) > 0) * 0.05 - 0.02) * time_step;
-		vDistanceFactor = clamp(abs(vDistanceFactor), 0.28, 0.6);
+		//vDistanceFactor = clamp(abs(vDistanceFactor), 0.28, 0.6);
 
 		/* view.arc = 2*atan(width/(view.size_x * 2)); - from manual (view.arc) */
 		/* change camera arc by manipulating view size - delivers resolution independent result */
-		cam->arc = 2 * atanv(vViewWidth * 0.5 / (screen_size.x / vDistanceFactor));
+		//cam->arc = 2 * atanv(vViewWidth * 0.5 / (screen_size.x / vDistanceFactor));
 	}
 	
 }

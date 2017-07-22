@@ -1,6 +1,8 @@
 
 #include <DynamicModels.h>
 
+#include "materials.h"
+
 /*
 typedef struct {
 	float x,y,z;	// position in DirectX coordinates
@@ -11,27 +13,55 @@ typedef struct {
 	float tu4,tv4;  // 4th coordinate set, for additional data
 } D3DVERTEX;
 */
-	
-LPD3DXMESH stage_wallMesh, stage_groundMesh, stage_pillarMesh;
+
+LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
+
+MATERIAL * stageMtlLava = 
+{
+	effect = "Lava.fx";
+}
 
 void stageRenderInit()
 {
+	int i;
+	
 	ENTITY * ent = ent_create("tile-ground.mdl", vector(0,0,0), NULL);
 	stage_groundMesh = ent_getmesh(ent, 0, 0);
 	ent_remove(ent);
 	
-	ent = ent_create("tile-wall.mdl", vector(0,0,0), NULL);
-	stage_wallMesh = ent_getmesh(ent, 0, 0);
+	for(i = 0; i < 3; i++) {
+		ent = ent_create(str_printf(NULL, "tile-wall-upper-%02d.mdl", (i+1)), vector(0,0,0), NULL);
+		stage_upperWallMesh[i] = ent_getmesh(ent, 0, 0);
+		ent_remove(ent);
+	}
+	
+	ent = ent_create("tile-wall-lower.mdl", vector(0,0,0), NULL);
+	stage_lowerWallMesh = ent_getmesh(ent, 0, 0);
+	ent_remove(ent);
+	
+	ent = ent_create("tile-wall-upper-outline.mdl", vector(0,0,0), NULL);
+	stage_upperWallOutlineMesh = ent_getmesh(ent, 0, 0);
+	ent_remove(ent);
+	
+	ent = ent_create("tile-outline-post.mdl", vector(0,0,0), NULL);
+	stage_outlinePostMesh = ent_getmesh(ent, 0, 0);
 	ent_remove(ent);
 }
 
-ENTITY * stageRenderEntity(STAGE * stage)
+void stage_unload()
 {
-	DMDLSettings.flags |= DMDL_FIXNORMALS;
-	DynamicModel * model = dmdl_create();
-	
-	DYNAMIC_QUAD quad;
-	
+	int i;
+	stage_groundMesh->Release();
+	for(i = 0; i < 3; i++) {
+		(stage_upperWallMesh[0])->Release();
+	}
+	stage_lowerWallMesh->Release();
+	stage_upperWallOutlineMesh->Release();
+	stage_outlinePostMesh->Release();
+}
+
+void stage_loadGround(DynamicModel * model, STAGE * stage)
+{
 	int i,j;
 	TILE* tile;
 	VECTOR vColor;
@@ -40,7 +70,7 @@ ENTITY * stageRenderEntity(STAGE * stage)
 		for(j = 0; j < stage->size[1]; j++)
 		{
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 0) {
+			if(tile->value == 1) {
 				continue;
 			}
 			
@@ -52,11 +82,17 @@ ENTITY * stageRenderEntity(STAGE * stage)
 			dmdl_add_mesh(model, stage_groundMesh, &center, vector(0,0,0));
 		}
 	}
-	
+}
+
+void stage_loadUpperWall(DynamicModel * model, STAGE * stage)
+{
+	int i,j;
+	TILE* tile;
+	VECTOR vColor;
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 0) {
+			if(tile->value == 1) {
 				continue;
 			}
 			
@@ -74,23 +110,172 @@ ENTITY * stageRenderEntity(STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != 0) {
+				if(n->value != 1) {
 					continue;
 				}
-			
-				dmdl_add_mesh(model, stage_wallMesh, &center, vector(coords[3*k+2],0,0));
-				
+				dmdl_add_mesh(model, stage_upperWallMesh[random(3)], &center, vector(coords[3*k+2],0,0));
 			}
-		}	
+		}
 	}
+}
+
+
+void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
+{
+	int i,j,k;
+	TILE* tile;
+	VECTOR vColor;
+	for(i = 1; i < (stage->size[0] - 1); i++) {
+		for(j = 1; j < (stage->size[1] - 1); j++) {
+			tile = stageGetTile(stage, i, j);
+			
+			VECTOR center;
+			center.x = i * 200;
+			center.y = j * 200;
+			center.z = 0;
+			if(tile->value != 1) {
+				
+				int coords[] = {
+					 1,  0,   0,
+					 0,  1,  90
+					// -1,  0, 180,
+					//  0, -1, 270
+				};
+				for(k = 0; k < 2; k++) {
+					TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
+					if(n->value != 1) {
+						continue;
+					}
+					dmdl_add_mesh(model, stage_upperWallOutlineMesh, &center, vector(coords[3*k+2],0,0));
+				}
+			}
+			int outlines[] = {
+				 1,  0, // p0
+				 1, -1, // p1
+				 0, -1, // p2
+				100, -100,
+				
+				-1,  0,
+				-1,  1,
+				 0,  1,
+				-100, 100
+			};
+			
+			for(k = 0; k < 16; k += 8) {
+				TILE * a = stageGetTile(stage, i+outlines[k+0], j+outlines[k+1]);
+				TILE * b = stageGetTile(stage, i+outlines[k+2], j+outlines[k+3]);
+				TILE * c = stageGetTile(stage, i+outlines[k+4], j+outlines[k+5]);
+				if(tile->value != a->value && a->value == b->value && b->value == c->value) {
+					VECTOR fo;
+					vec_set(&fo, &center);
+					fo.x += outlines[k+6];
+					fo.y += outlines[k+7];
+					dmdl_add_mesh(model, stage_outlinePostMesh, &fo, vector(0,0,0));
+				}
+			}
+		}
+	}
+}
+
+void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
+{
+	int i,j;
+	TILE* tile;
+	VECTOR vColor;
+	for(i = 1; i < (stage->size[0] - 1); i++) {
+		for(j = 1; j < (stage->size[1] - 1); j++) {
+			tile = stageGetTile(stage, i, j);
+			if(tile->value == 1) {
+				continue;
+			}
+			
+			VECTOR center;
+			center.x = i * 200;
+			center.y = j * 200;
+			center.z = 0;
+			
+			int k;
+			int coords[] = {
+				 1,  0,   0,
+				 0,  1,  90,
+				-1,  0, 180,
+				 0, -1, 270
+			};
+			for(k = 0; k < 4; k++) {
+				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
+				if(n->value != 1) {
+					continue;
+				}
+				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));
+			}
+		}
+	}
+}
+
+ENTITY * stage_genEntity(STAGE * stage, void * foo)
+{
+	DynamicModel * model = dmdl_create();
+	
+	DYNAMIC_QUAD quad;
+	
+	void load(DynamicModel * model, STAGE * stage);
+	load = foo;
+	load(model, stage);
 	
 	LPD3DXMESH mesh = dmdl_create_mesh(model);
 	
 	dmdl_delete(model);
 	
-	ENTITY * ent = ent_create(CUBE_MDL, vector(0,0,0), NULL);
+	ENTITY * ent = ent_create("level_stub.mdl", vector(0,0,0), NULL);
+	ent_clone(ent);
+	
+	set(ent, POLYGON);
 	
 	ent_setmesh(ent, mesh, 0, 0);
 	
+	c_updatehull(ent, 0);
+	
 	return ent;
+}
+
+void stage_load(STAGE * stage)
+{
+	level_load(NULL);
+	
+	// Initialize models
+	stageRenderInit();
+	
+	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
+	entLava->material = stageMtlLava;
+	
+	DMDLSettings.flags |= DMDL_FIXNORMALS;
+	
+	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
+	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
+	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
+	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
+	
+	entGround->material    = GroundMaterial;
+	entUpperWall->material = WallMainMaterial;
+	entLowerWall->material = WallLowerMaterial;
+	entOutlines->material = WallOutlineMaterial;
+	
+	set(entGround, FLAG1);
+	set(entLowerWall, FLAG1);
+	set(entLava, FLAG1);
+	
+	entOutlines->flags |= PASSABLE;
+	
+	while(!player) { wait(1); }
+	
+	while(player)
+	{
+		draw_line3d(player.x, NULL, 100);
+		draw_line3d(player.x, COLOR_RED, 100);
+		draw_line3d(vector(player.x + 100, player.y, player.z), COLOR_RED, 100);
+		draw_line3d(player.x, NULL, 100);
+		draw_line3d(player.x, COLOR_GREEN, 100);
+		draw_line3d(vector(player.x, player.y + 100, player.z), COLOR_GREEN, 100);
+		wait(1);
+	}
 }

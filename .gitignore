@@ -3,3 +3,7 @@ acklog.txt
 *.raw
 *.wed
 ackerr.txt
+*.blend?
+/game/level/*.$$M
+/game/level/*.$$p
+/game/level/*.$$w

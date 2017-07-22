@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.0">
+  <asset>
+    <contributor>
+      <author></author>
+      <authoring_tool>FBX COLLADA exporter</authoring_tool>
+      <comments></comments>
+    </contributor>
+    <created>2017-07-22T06:59:02Z</created>
+    <modified>2017-07-22T06:59:02Z</modified>
+    <revision></revision>
+    <title></title>
+    <subject></subject>
+    <keywords></keywords>
+    <unit meter="1.000000"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_geometries>
+    <geometry id="Plane001-lib" name="Plane001Mesh">
+      <mesh>
+        <source id="Plane001-lib-Position">
+          <float_array id="Plane001-lib-Position-array" count="12">
+0.000033 100.000000 0.000000
+0.000000 -100.000000 0.000000
+0.000000 100.000000 200.000000
+-0.000033 -100.000000 200.000000
+</float_array>
+          <technique_common>
+            <accessor source="#Plane001-lib-Position-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Plane001-lib-Normal0">
+          <float_array id="Plane001-lib-Normal0-array" count="12">
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+-1.000000 0.000000 -0.000000
+</float_array>
+          <technique_common>
+            <accessor source="#Plane001-lib-Normal0-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Plane001-lib-UV0">
+          <float_array id="Plane001-lib-UV0-array" count="8">
+0.250000 0.000000
+0.500000 0.000000
+0.250000 1.000000
+0.500000 1.000000
+</float_array>
+          <technique_common>
+            <accessor source="#Plane001-lib-UV0-array" count="4" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Plane001-lib-Vertex">
+          <input semantic="POSITION" source="#Plane001-lib-Position"/>
+        </vertices>
+        <polygons count="2">
+          <input semantic="VERTEX" offset="0" source="#Plane001-lib-Vertex"/>
+          <input semantic="NORMAL" offset="1" source="#Plane001-lib-Normal0"/>
+          <input semantic="TEXCOORD" offset="2" set="0" source="#Plane001-lib-UV0"/>
+          <p>2 2 2 0 0 0 1 1 1</p>
+          <p>1 1 1 3 3 3 2 2 2</p>
+        </polygons>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="RootNode" name="RootNode">
+      <node id="Plane001" name="Plane001">
+        <matrix sid="matrix">1.000000 0.000000 0.000000 100.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000 0.000000 0.000000 0.000000 0.000000 1.000000</matrix>
+        <instance_geometry url="#Plane001-lib"/>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#RootNode"/>
+  </scene>
+</COLLADA>
+

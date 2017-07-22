@@ -1,1 +1,16 @@
 Distanzen: 1 quant = 1 cm
+
+TEXTURES
+Die RGB Kanäle werden einzeln benutzt und vom Code unterschiedlich eingefärbt.
+
+Gegner/Objekte
+
+	R Grobes Detail
+	G Mittleres Detail
+	B Feines Dateil
+
+Wall Lower
+
+	R Platinen-Muster
+	G Einzelne Platinen-Adern die später von Energie durchflossen werden
+	B Blurry Glow um halb-transparenz zu faken
