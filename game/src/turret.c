@@ -131,6 +131,7 @@ void TURRET__die()
 {
 	my->event = NULL;
 	my->animCounter = 0;
+	my->type = TypeDestroyed;
 	
 	while (my->animCounter < 100)
 	{
@@ -138,11 +139,17 @@ void TURRET__die()
 		my->animCounter = minv(100, my->animCounter);
 		ent_animate(me, "die", my->animCounter, 0);	
 		ent_bonerotate(me, "Bone1", vector(my->shootAngle, 0, 0));
+		MARKER_update(me);
 		wait(1);
 	}
-	
+
 	set(my, PASSABLE);
-	
+	while (1)
+	{
+		MARKER_update(me);
+		wait(1);
+	}
+		
 //	ptr_remove(me);
 }
 

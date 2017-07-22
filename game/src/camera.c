@@ -103,6 +103,7 @@ void focus_camera(ENTITY* ent)
  		camera_focus_ent = ent;
 		wait(1);
 	} while (camera_focus_ent == NULL);
+	vec_set(cam->x, camera_focus_ent->x);
 }
  
 VIEW* get_camera()
