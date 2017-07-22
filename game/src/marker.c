@@ -1,6 +1,13 @@
 #include "camera.h"
 #include "marker_cfg.h"
 
+var MARKER__show = 0;
+
+void MARKER_toggle()
+{
+	MARKER__show = 1 - MARKER__show;
+}
+
 void MARKER_attach(ENTITY* ent)
 {
 	if (ent != NULL)
@@ -24,6 +31,9 @@ void MARKER_detach(ENTITY* ent)
 
 void MARKER_update(ENTITY* ent)
 {
+	if (MARKER__show == 0)
+		return;
+	
 	if (ent == NULL || player == NULL)
 	{
 		return;
@@ -37,7 +47,7 @@ void MARKER_update(ENTITY* ent)
 		{
 			STRING* str = (txtMarkers->pstring)[ent->type];
 			//draw_text(".jetpack\n 0xC0FFEE", vecTemp.x, vecTemp.y, vector(255,255,255));
-			draw_text(str, vecTemp.x, vecTemp.y - 10, vector(255,255,255));
+			draw_text(str, vecTemp.x, vecTemp.y, vector(255,255,255));
 		}
 	}	
 }

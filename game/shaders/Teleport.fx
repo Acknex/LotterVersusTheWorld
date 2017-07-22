@@ -6,6 +6,7 @@
 #include <normal>
 
 float4 vecTime;
+float4 entSkill41;
 
 Texture mtlSkin1;
 sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
@@ -40,8 +41,8 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	float4 col1 = tex2D(sTexture,float2(atan2(In.localPos.x, In.localPos.z), 0.01 * In.localPos.y - 0.01 *  vecTime.w));
-	float4 col2 = tex2D(sTexture,float2(atan2(In.localPos.x, In.localPos.z) + 0.001 * vecTime.w, 0.01 * In.localPos.y - 0.015 *  vecTime.w));
+	float4 col1 = tex2D(sTexture,float2(atan2(In.localPos.x, In.localPos.z), 0.01 * In.localPos.y - 0.01 * entSkill41.x * vecTime.w));
+	float4 col2 = tex2D(sTexture,float2(atan2(In.localPos.x, In.localPos.z) + 0.001 * vecTime.w, 0.01 * In.localPos.y - 0.012 * entSkill41.x *  vecTime.w));
 	
 	float blendout = clamp(2.5 - 0.01 * In.localPos.y, 0, 1);
 	
