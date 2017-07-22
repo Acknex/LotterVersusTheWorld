@@ -42,7 +42,7 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	return 1.0 * pow(tex2D(sTexture, 10 * In.uv) * tex2D(sTexture, In.uv), 0.5);
+	return float4(pow(tex2D(sTexture, 10 * In.uv).rgb * tex2D(sTexture, In.uv).rgb, 0.5), 0.0);
 }
 
 
@@ -50,7 +50,6 @@ technique object
 {
 	pass one
 	{
-		sampler[0] = (sTexture);
 		VertexShader = compile vs_2_0 vs();
 		PixelShader = compile ps_2_0 ps();
 	}
