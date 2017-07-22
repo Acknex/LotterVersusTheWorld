@@ -24,6 +24,8 @@ void MARKER_detach(ENTITY* ent)
 
 void MARKER_update(ENTITY* ent)
 {
+	return;
+	
 	if (ent == NULL || player == NULL)
 	{
 		return;
