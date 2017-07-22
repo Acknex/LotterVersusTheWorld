@@ -63,7 +63,8 @@ void update_camera()
 		vec_rotate(vecPos, cam->pan);
 		vec_add(vecPos, camera_focus_ent->x);
 		VECTOR tmp;
-		vec_lerp(&tmp, cam->x, vecPos, 0.01);
+		var fac = clamp(time_step, 0, 1) * 0.3;
+		vec_lerp(&tmp, cam->x, vecPos, fac);
 		vec_set(cam->x, tmp);
 
 		//vDistanceFactor += ((is_kart_accelerating(camera_focus_ent) > 0) * 0.05 - 0.02) * time_step;

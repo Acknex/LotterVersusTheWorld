@@ -6,8 +6,8 @@ var LEVEL__running = 0;
 void LEVEL_start()
 {
 	LEVEL__running = 1;
-	//level_load("prototype.mdl");
-	level_load("test_level_small.wmb");
+	level_load("prototype.mdl");
+	//level_load("test_level_small.wmb");
 	player_init();
 	//setup camera	
 	focus_camera(player);
