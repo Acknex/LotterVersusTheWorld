@@ -78,11 +78,10 @@ float4 ps(out_ps In): COLOR
 	float4 b = tex2D(sLUT, float2(0.5 * saturate(highlight), 2.5/64.0));
 	float4 lavaColor = a+(b*0.4) * saturate(length(a));
 	
-	
-//	float4 lightColor = lerp(float4(, 0.0f), lavaColor, lavaColor.r);
-	float lavaBrightness = max(height + lavaColor.r * 0.2 - 0.6, 0) * 3.0;
-	color += lavaColor * lavaBrightness;
-	return float4(color, lineValue + lavaBrightness);
+	float lightBrightness = max(height - 0.4 + lavaColor.r * 0.08, 0) * 1.5;
+	float4 lightColor = float4(1.0, 0.7, 0.3, 0.5) * lightBrightness;
+	color += lightColor;
+	return float4(color, lineValue + lightBrightness);
 }
 
 
