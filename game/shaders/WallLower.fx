@@ -6,10 +6,12 @@
 #include <normal>
 
 Texture mtlSkin1;
+Texture ColorLUT_bmap;
 float4 vecTime;
 
 sampler sTexture = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; };
 sampler sDetails = sampler_state { Texture = <mtlSkin1>; MipFilter = Linear; AddressV = Clamp; };
+sampler sLUT = sampler_state { Texture = <ColorLUT_bmap>; MipFilter = Linear; };
 
 struct out_ps // Output to the pixelshader fragment
 {
@@ -34,6 +36,8 @@ float4 ps(out_ps In): COLOR
 	float height = -In.WorldPos.y*0.003;
 	float2 patternUV = 0.0013 * float2(In.WorldPos.x - In.WorldPos.z, In.WorldPos.y);
 	float lineValue = tex2D(sDetails, float2(patternUV.x, height)).a;
+	
+//	float3 color1 = tex2D(sLUT, );
 	
 	float3 color = lerp(float3(0.0, 0.1, 0.0), float3(0.4, 0.1, 0.0), tex2D(sTexture, patternUV).r);
 	color += lineValue * float3(0.7, 0.4, 0.0);
