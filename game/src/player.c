@@ -12,6 +12,12 @@ VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
 var playerVelY = 0;
 
+var handleSndEngineIdle = 0;
+var handleSndEngineThrust = 0;
+
+SOUND* snd_engine_idle = "sounds\\engine_idle.wav";
+SOUND* snd_engine_thrust = "sounds\\engine_thrust.wav";
+
 void player_move_old() {
 	
 	if (mouse_mode > 0)	
@@ -171,6 +177,10 @@ void player_move() {
 		c_ignore(4);
 		c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 		
+		var engineVolume = vec_length(vPlayerSpeed)/45;
+		snd_tune(handleSndEngineThrust, engineVolume*80, engineVolume*70, 0);
+		snd_tune(handleSndEngineIdle, (1-engineVolume)*100, 0, 0);
+		
 		if(player.near_teleport == 0) {
 			// Fancy mini-gravity
 			playerVelY -= 1.5 * time_step;
@@ -236,6 +246,9 @@ void player_init() {
 	player.emask |= ENABLE_SHOOT | ENABLE_SCAN;
 	player.event = player_event;
 	player->type = TypePlayer;
+	
+	handleSndEngineIdle = snd_loop(snd_engine_idle, 100, 0);
+	handleSndEngineThrust = snd_loop(snd_engine_thrust, 0, 0);
 }
 
 void player_event() {
