@@ -12,6 +12,8 @@
 #include "init.h"
 #include "weapon.h"
 #include "items.h"
+#include "hud.h"
+
 #define DEBUG
 
 #ifdef DEBUG

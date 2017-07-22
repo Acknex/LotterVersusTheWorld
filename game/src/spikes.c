@@ -120,7 +120,7 @@ void SPIKES__sleep()
 		snd_play(sndSpikesUp, 100, 0);
 		my->animCounter = 0;
 	}
-	//my->skill41 = floatv(clamp(0.5 * sinv(10 * total_ticks), 0, 1));
+	//my->skill41 = floatv(clamp(0.3 * sinv(10 * total_ticks), 0, 1));
 }
 
 void SPIKES__active()

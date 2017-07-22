@@ -12,6 +12,12 @@ VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
 var playerVelY = 0;
 
+var handleSndEngineIdle = 0;
+var handleSndEngineThrust = 0;
+
+SOUND* snd_engine_idle = "sounds\\engine_idle.wav";
+SOUND* snd_engine_thrust = "sounds\\engine_thrust.wav";
+
 void player_move_old() {
 	
 	if (mouse_mode > 0)	
@@ -53,10 +59,10 @@ void player_move_old() {
 	vec_rotate(vecDir, vector(view->pan, 0, 0));
 	
 	if (move_style == 0) {
-		c_ignore(4);
+		c_ignore(4,0);
 		c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 		} else {
-		c_ignore(4);
+		c_ignore(4,0);
 		c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 	}
 	
@@ -168,8 +174,12 @@ void player_move() {
 		//vec_lerp(vPlayerSpeed,vPlayerSpeed,temp,0.2*time_step);
 		vec_add(vPlayerSpeed,temp2);
 		
-		c_ignore(4);
+		c_ignore(4,0);
 		c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+		
+		var engineVolume = vec_length(vPlayerSpeed)/45;
+		snd_tune(handleSndEngineThrust, engineVolume*80, engineVolume*70, 0);
+		snd_tune(handleSndEngineIdle, (1-engineVolume)*100, 0, 0);
 		
 		if(player.near_teleport == 0) {
 			// Fancy mini-gravity
@@ -215,6 +225,7 @@ VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
 void player_init() {
 	player = ent_create("cbabe_maleHover.mdl", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
 	player->material = LotterMaterial;
+	player->health = 100;
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2.25);
@@ -236,6 +247,9 @@ void player_init() {
 	player.emask |= ENABLE_SHOOT | ENABLE_SCAN;
 	player.event = player_event;
 	player->type = TypePlayer;
+	
+	handleSndEngineIdle = snd_loop(snd_engine_idle, 100, 0);
+	handleSndEngineThrust = snd_loop(snd_engine_thrust, 0, 0);
 }
 
 void player_event() {
