@@ -1,6 +1,10 @@
 #include "entity_defs.h"
+#include "ricochet.h"
 
 #define bulletSpeed skill20
+#define bulletLifeTime skill21
+
+#define ENEMY_BULLETLIFETIME 32
 
 void ENEMY__projectileEvent();
 void ENEMY__projectileLoop();
@@ -11,8 +15,9 @@ action enemy_projectile()
 	my->bulletSpeed = your->bulletSpeed;
 	my->event = ENEMY__projectileEvent;
 	my->pan = your->pan;
-	set(my, FLAG2);
-	my->push = -1;
+	my->bulletLifeTime = ENEMY_BULLETLIFETIME;
+	vec_set(my->blue, vector(0,0,255));
+	set(my, LIGHT);
 	ENEMY__projectileLoop();
 }
 
@@ -23,7 +28,7 @@ void ENEMY_init()
 	my->z -= my->min_z;
 	my->health = 3;
 	my->damage = 1;
-	my->bulletSpeed = 5;
+	my->bulletSpeed = 30;
 }
 
 var ENEMY_hit(var vEventType)
@@ -49,7 +54,6 @@ var ENEMY_hit(var vEventType)
 
 void ENEMY__projectileEvent()
 {
-	error("MUH");
 	if ((event_type == EVENT_IMPACT) || (event_type == EVENT_SHOOT))
 	{
 		if (you != NULL)
@@ -65,19 +69,37 @@ void ENEMY__projectileEvent()
 			set (my, dead);
 		}
 	}
-	else
-	{
-		error("kacke");
-	}
 }
 
 void ENEMY__projectileLoop()
 {
-	var vFlags = IGNORE_FLAG2 | ACTIVATE_SHOOT;
+	var vFlags = IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT;
 	while (!is(my, dead))
 	{
+		my->bulletLifeTime -= time_step;
+		VECTOR* to = vector(16,0,0);
+		vec_rotate (to, my->pan);
+		vec_add(to, my->x);
 		
-		c_move(me, vector(my->bulletSpeed, 0, 0), nullvector, vFlags);
+		draw_line3d(my->x,NULL,100); // move to first corner   
+		draw_line3d(to,vector(0,0,255),100);
+		
+		var vDist = c_trace(my.x, to, vFlags);
+		if((vDist == 0) && (my->bulletLifeTime > 0)) 
+		{
+		
+			VECTOR* vecMove = vector(my->bulletSpeed, 0, 0);
+			vec_rotate(vecMove, my->pan);
+			vec_scale(vecMove, time_step);
+			//c_move(me, vector(my->bulletSpeed, 0, 0), nullvector, vFlags);
+			vec_add(my->x, vecMove);
+		}
+		else
+		{
+			COLOR* color = vector(255,255,255);
+			RICOCHET_create(color);
+			set(my, dead);
+		}
 		wait(1);
 	}
 	ptr_remove(me);
