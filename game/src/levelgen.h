@@ -72,7 +72,7 @@
 
 	ENTITY * stageRenderEntity(STAGE * stage);
 
-	void stage_load(STAGE * stage);
+	VECTOR * stage_load(STAGE * stage);
 	void stage_unload();
 
 	STAGE* stageCreate(int sizeX, int sizeY, var seed, int level)

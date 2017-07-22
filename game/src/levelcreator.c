@@ -2,6 +2,7 @@
 #include <DynamicModels.h>
 
 #include "materials.h"
+#include "turret.h"
 #include "entity_defs.h"
 
 /*
@@ -245,7 +246,7 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	return ent;
 }
 
-void stage_load(STAGE * stage)
+VECTOR * stage_load(STAGE * stage)
 {
 	level_load(NULL);
 	
@@ -307,18 +308,6 @@ void stage_load(STAGE * stage)
 	}
 	
 	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
-	ent_create(SPHERE_MDL, stageGetEntrancePos(stage, NULL, NULL, NULL), NULL);
 	
-	//while(!player) { wait(1); }
-	//
-	//while(player)
-	//{
-	//	draw_line3d(player.x, NULL, 100);
-	//	draw_line3d(player.x, COLOR_RED, 100);
-	//	draw_line3d(vector(player.x + 100, player.y, player.z), COLOR_RED, 100);
-	//	draw_line3d(player.x, NULL, 100);
-	//	draw_line3d(player.x, COLOR_GREEN, 100);
-	//	draw_line3d(vector(player.x, player.y + 100, player.z), COLOR_GREEN, 100);
-	//	wait(1);
-	//}
+	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }
