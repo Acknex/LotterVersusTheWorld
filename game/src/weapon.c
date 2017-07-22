@@ -5,7 +5,7 @@ void weapon_startup()
 	
 	while(1)
 	{
-		if(player && mouse_left) 
+		if((player != NULL) && mouse_left) 
 		{
 			player.skill44 = 1;
 			shoot();
