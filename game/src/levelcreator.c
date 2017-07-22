@@ -5,6 +5,7 @@
 #include "turret.h"
 #include "spikes.h"
 #include "hole.h"
+#include "teleporter.h"
 #include "entity_defs.h"
 #include "marker.h"
 #include "level_furniture.h"
@@ -396,9 +397,8 @@ screen->material = ObjectMaterial;
 		}
 	}
 	
-	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	ent->material = TeleporterEffectMaterial;
-	set(ent, PASSABLE);
 	
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }
