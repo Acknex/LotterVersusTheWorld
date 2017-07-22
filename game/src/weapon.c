@@ -136,67 +136,49 @@ void projectile()
 
 void granate()
 {
-	VECTOR offset;
-	VECTOR dir;
-	VECTOR from;
+	VECTOR vstart,temp, vTarget, midPos1, midPos2;
 	
-	my.flags |= LIGHT | PASSABLE;
-	my.red = 255;
-	my.green = 128;
-	my.blue = 255;
+	my.group = 2;
 	
-	VECTOR *mouse_from = vec_for_screen(vector(mouse_pos.x, mouse_pos.y, 1), get_camera());
-	VECTOR *mouse_to = vec_for_screen(vector(mouse_pos.x, mouse_pos.y, 5000), get_camera());
-	c_trace(mouse_from, mouse_to, USE_POLYGON);
-	VECTOR aim;
-	vec_set(aim, hit.x);
+	// Calculate grenate target
+	vec_set(vTarget,mouse_dir3d);
+	vec_scale(vTarget,1000);
+	float t = -mouse_pos3d.z/vTarget.z;
+	vec_scale(vTarget,t);
+	vec_add(vTarget,mouse_pos3d);
 	
-	vec_set(my.pan, vector(player.pan + weapon_angle_correction, 0, 0));
+	// Set start and two interpolated points
+	vec_set(vstart,my.x);
+	vec_lerp(midPos1,vstart,vTarget,0.4);
+	midPos1.z = 200;
+	vec_lerp(midPos2,vstart,vTarget,0.667);
+	midPos2.z = 200;
 	
-	vec_for_angle(dir, player.pan);
-	
-	
-	
-	var dist = vec_dist(aim, player.x);
-	vec_set(from, player.x);
-	
-	var height = 256;
-	
-	var i; for(i=0; i<dist; i+=dist/100) 
+	// Bezier interpolation
+	while(my.skill1 < 16 && me)
 	{
+		my.skill1 = minv(my.skill1+time_step,16);
+		float t = my.skill1/16.0;
+		float tinv = 1-t;
 		
-		var pz = -((4 * height) / pow(dist, 2)) * pow(i - dist / 2, 2) + height;
+		vec_set(my.x,vstart);
+		vec_scale(my.x,tinv*tinv*tinv);
 		
-		vec_set(offset, dir);
-		vec_scale(offset, i);
-		vec_add(offset, from);
-		draw_point3d(vector(offset.x, offset.y, pz), COLOR_RED, 100, 10);
+		vec_set(temp,midPos1);
+		vec_scale(temp,tinv*tinv*t*3);
+		vec_add(my.x,temp);
 		
-		draw_line3d(player.x, NULL, 100);
-		draw_line3d(player.x, COLOR_GREEN, 100);
-		draw_line3d(aim, COLOR_GREEN, 100);
+		vec_set(temp,midPos2);
+		vec_scale(temp,tinv*t*t*3);
+		vec_add(my.x,temp);
 		
-		draw_point3d(aim, COLOR_WHITE, 100, 20);
+		vec_set(temp,vTarget);
+		vec_scale(temp,t*t*t);
+		
+		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
-	
 	ent_remove(me);
-	
-	/*while(1)
-	{
-		vec_add(active, offset);
-		
-		vec_set(my.x, active);
-		
-		var z = pow(vec_dist(active, player.x) - dist, 2);
-		
-		
-		
-		draw_point3d(vector(active.x, active.y, z), COLOR_RED, 100, 10);
-		
-		wait(1);
-	}*/
-	
 }
 
 void shotgun()
