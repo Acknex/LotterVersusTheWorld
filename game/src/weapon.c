@@ -1,13 +1,10 @@
 void weapon_startup()
 {
-	
-	
-	
 	while(1)
 	{
 		if((player != NULL) && mouse_left) 
 		{
-			player.skill44 = 1;
+			player.skill44 = 20;
 			shoot();
 		}
 		wait(1);		
@@ -68,17 +65,15 @@ void projectile()
 		vec_set(to, dir);
 		vec_normalize(to, 1);
 		vec_set(offset, to);
-		vec_scale(to, 18);
-		vec_scale(offset, 12);
+		vec_scale(to, 72);
+		vec_scale(offset, 64);
 		vec_add(to, my.x);
 		vec_add(offset, my.x);
-		dist = c_trace(offset, to, IGNORE_ME | IGNORE_PASSABLE);
+		dist = c_trace(offset, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
-		/*
 		draw_line3d(to, NULL, 100);
 		draw_line3d(offset, COLOR_GREEN, 100);
 		draw_line3d(to, COLOR_GREEN, 100);
-		*/
 		
 		if(you == player)	{ break; }
 		

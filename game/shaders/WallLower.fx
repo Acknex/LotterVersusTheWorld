@@ -35,7 +35,7 @@ float4 ps(out_ps In): COLOR
 	float2 patternUV = 0.0013 * float2(In.WorldPos.x - In.WorldPos.z, In.WorldPos.y);
 	
 	float3 color = lerp(float3(0.0, 0.1, 0.0), float3(0.4, 0.1, 0.0), tex2D(sTexture, patternUV).r);
-	color += tex2D(sDetails, float2(In.uv.x, height)).a * float3(0.7, 0.4, 0.0) * 3.0;
+	color += tex2D(sDetails, float2(patternUV.x, height)).a * float3(0.7, 0.4, 0.0) * 3.0;
 	color += max(height - 0.5, 0) * float3(1.0, 0.0, 0.0);
 	return float4(color, 1.0);
 }
