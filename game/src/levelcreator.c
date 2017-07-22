@@ -338,18 +338,18 @@ VECTOR * stage_load(STAGE * stage)
 					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 8;
+					ent->type = TypeHole;
 					MARKER_attach(ent);
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
 					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
 					ent->material = GroundMaterial;
 					set(ent, POLYGON);
 					set(ent, FLAG1);
-					ent->type = 7;
+					ent->type = TypeSpikes;
 					MARKER_attach(ent);
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 9;
+					ent->type = TypeEnemy;
 					MARKER_attach(ent);
 				}
 			}
