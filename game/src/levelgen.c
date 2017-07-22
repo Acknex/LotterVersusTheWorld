@@ -571,6 +571,11 @@ void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
 				draw_text("E",posX+i*tileSize+4,posY+j*tileSize-1,COLOR_BLACK);
 				draw_text("E",posX+i*tileSize+3,posY+j*tileSize-2,COLOR_WHITE);
 			}
+			if(player) {
+				var i = player.x / 200;
+				var j = player.y / 200;
+				draw_quad(NULL, vector(posX+(i+0.5)*tileSize-2,posY+(j+0.5)*tileSize-2,0), NULL, vector(4,4,0), NULL, COLOR_WHITE, 100, 0);
+			}
 		}		
 	}
 }

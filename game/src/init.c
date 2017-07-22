@@ -63,7 +63,7 @@ void INIT_levelEnd()
 	wait(1);
 	
 	hide_camera();
-	//sky_active = 0;
+	sky_active = 1;
 }
 
 void INIT_levelLoop()
