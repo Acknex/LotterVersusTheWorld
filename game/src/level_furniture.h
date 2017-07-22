@@ -4,8 +4,8 @@
 action screenOnWall()
 {
 	my->skill41 = floatv(1);
-	screen->material = BlinkingObjectMaterial;
-	set(screen, PASSABLE);
+	my->material = BlinkingObjectMaterial;
+	set(me, PASSABLE);
 }
 
 action rack_tapewheel()
