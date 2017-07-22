@@ -7,6 +7,7 @@
 int levelgenOffset2D[8] = { -1,0, 0,1, 1,0, 0,-1 };
 
 void stage_load(STAGE * stage);
+void stage_unload();
 
 STAGE* stageCreate(int sizeX, int sizeY, var seed)
 {
