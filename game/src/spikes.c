@@ -4,8 +4,10 @@
 #define SPIKES_ANIMOPENSPEEDFAST 40
 #define SPIKES_ANIMCLOSESPEEDFAST 20
 #define SPIKES_ALTERNATIONTIME 64
+#define SPIKES_COOLDOWN 8
 
 #define spikesState skill25
+#define spikesCoolDown skill26
 
 #define SPIKESOPEN 0
 #define SPIKESCLOSE 1
@@ -75,13 +77,13 @@ void SPIKES__loop()
 
 void SPIKES__turnOn()
 {
-	MARKER_update(me);
+	//MARKER_update(me);
 	my->animCounter += SPIKES_ANIMOPENSPEED * time_step;
 	if (my->animCounter >= 100)
 	{
 		my->delayCounter = 0;
-		//my->event = SPIKES__event;
 		my->spikesState = SPIKESACTIVE;
+		my->spikesCoolDown = SPIKES_COOLDOWN;
 		reset(my, PASSABLE);	
 	}
 	my->animCounter = minv(100, my->animCounter);
@@ -92,7 +94,6 @@ void SPIKES__turnOn()
 void SPIKES__turnOff()
 {
 	MARKER_update(me);
-	//my->event = NULL;
 	my->animCounter += SPIKES_ANIMCLOSESPEED * time_step;
 	if (my->animCounter >= 100)
 	{
@@ -132,19 +133,20 @@ void SPIKES__active()
 		if (my->delayCounter > TURRET_ALTERNATIONTIME * 0.5)
 		{
 			my->animCounter -= SPIKES_ANIMCLOSESPEEDFAST * time_step;
-			if (my->animCounter <= 0)
-			{
-				//my->event = NULL;
-			}
 			my->animCounter = maxv(0, my->animCounter);
+			my->spikesCoolDown = 0;
 		}
 		else
 		{
 			my->animCounter += SPIKES_ANIMOPENSPEEDFAST * time_step;
 			if (my->animCounter >= 50)
 			{
-				SPIKES__shoot();
-				//my->event = SPIKES__event;
+				my->spikesCoolDown += time_step;
+				if (my->spikesCoolDown > SPIKES_COOLDOWN)
+				{
+					SPIKES__shoot();
+					my->spikesCoolDown -= SPIKES_COOLDOWN;
+				}
 			}
 			my->animCounter = minv(100, my->animCounter);
 			
@@ -163,5 +165,8 @@ void SPIKES__active()
 void SPIKES__shoot()
 {
 	var vMode = IGNORE_WORLD | IGNORE_MAPS | IGNORE_SPRITES | IGNORE_PASSABLE | IGNORE_ME | SCAN_ENTS;
-	c_scan(my->x,nullvector,vector(360, 0, 180), vMode);
+	VECTOR vecTemp;
+	vec_set(&vecTemp, my->x);
+	vecTemp.z += 50;
+	c_scan(&vecTemp,nullvector,vector(360, 0, 180), vMode);
 }

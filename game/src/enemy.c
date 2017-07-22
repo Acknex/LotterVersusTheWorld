@@ -156,7 +156,7 @@ action enemy_bat()
 		{
 			if(LEVEL__stage)
 			{
-				var flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20);
+				var flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20, 1);
 				//if(flood > 999) vec_set(curTarget,my.x);
 				//draw_num3d(flood,my.x,-80,COLOR_WHITE);
 			}
