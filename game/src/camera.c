@@ -63,7 +63,7 @@ void update_camera()
 		vec_rotate(vecPos, cam->pan);
 		vec_add(vecPos, camera_focus_ent->x);
 		VECTOR tmp;
-		var fac = clamp(time_step, 0, 1) * 0.3;
+		var fac = clamp(time_step, 0, 1) * CAMERA_SPEEDFAC;
 		vec_lerp(&tmp, cam->x, vecPos, fac);
 		vec_set(cam->x, tmp);
 
