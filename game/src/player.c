@@ -74,8 +74,12 @@ void player_move() {
 	
 	//transform with camera angle
 	vec_rotate(vecDir, vector(view->pan, 0, 0));
-	//c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
-	c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+	
+	if (move_style == 0) {
+		c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+	} else {
+		c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+	}
 	
 	//#ifdef DEBUG
 		DEBUG_VAR(dist_ahead, 260);
