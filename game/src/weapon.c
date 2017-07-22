@@ -73,7 +73,7 @@ void projectile()
 	{
 		t += time_step / 16; //Dead after timer if projectile is shot into the wild
 		
-		vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, dir.z * time_step) );
+		
 		
 		my.flags |= LIGHT;
 		my.red = 255;
@@ -89,6 +89,8 @@ void projectile()
 		vec_add(offset, my.x);
 		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
+		
+		
 		draw_line3d(to, NULL, 100);
 		draw_line3d(offset, COLOR_GREEN, 100);
 		draw_line3d(to, COLOR_GREEN, 100);
@@ -96,7 +98,10 @@ void projectile()
 		if(you == player)	{ break; }
 		
 		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
-		{ 
+		{
+			
+			
+			 
 			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 			vec_normalize(v, 1);
 			vec_add(v.x, hit.x);
@@ -122,6 +127,10 @@ void projectile()
 		else if (dist != 0 || t > weapon_lifetime)
 		{
 			break;
+		}
+		else
+		{
+			vec_add(my.x, vector(dir.x * time_step, dir.y * time_step, dir.z * time_step) );
 		}
 		wait(1);
 	}
