@@ -3,8 +3,9 @@
 #define PRAGMA_PATH "src"
 #define PRAGMA_PATH "shaders"
 
-#include "camera.h" //bloom does not include camera.h...
-#include "bloom.h"
+#include "player.h"
+#include "camera.h"
+#include "materials.h"
 #include "level.h"
 
 #define DEBUG
