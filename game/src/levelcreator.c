@@ -70,7 +70,7 @@ void stage_loadGround(DynamicModel * model, STAGE * stage)
 		for(j = 0; j < stage->size[1]; j++)
 		{
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 1) {
+			if(tile->value == TILE_EMPTY) {
 				continue;
 			}
 			
@@ -92,7 +92,7 @@ void stage_loadUpperWall(DynamicModel * model, STAGE * stage)
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 1) {
+			if(tile->value == TILE_EMPTY) {
 				continue;
 			}
 			
@@ -110,7 +110,7 @@ void stage_loadUpperWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != 1) {
+				if(n->value != TILE_EMPTY) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_upperWallMesh[random(3)], &center, vector(coords[3*k+2],0,0));
@@ -133,7 +133,7 @@ void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
 			center.x = i * 200;
 			center.y = j * 200;
 			center.z = 0;
-			if(tile->value != 1) {
+			if(tile->value != TILE_EMPTY) {
 				
 				int coords[] = {
 					 1,  0,   0,
@@ -143,7 +143,7 @@ void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
 				};
 				for(k = 0; k < 2; k++) {
 					TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-					if(n->value != 1) {
+					if(n->value != TILE_EMPTY) {
 						continue;
 					}
 					dmdl_add_mesh(model, stage_upperWallOutlineMesh, &center, vector(coords[3*k+2],0,0));
@@ -185,7 +185,7 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 	for(i = 1; i < (stage->size[0] - 1); i++) {
 		for(j = 1; j < (stage->size[1] - 1); j++) {
 			tile = stageGetTile(stage, i, j);
-			if(tile->value == 1) {
+			if(tile->value == TILE_EMPTY) {
 				continue;
 			}
 			
@@ -203,7 +203,7 @@ void stage_loadLowerWall(DynamicModel * model, STAGE * stage)
 			};
 			for(k = 0; k < 4; k++) {
 				TILE * n = stageGetTile(stage, i + coords[3*k+0], j + coords[3*k+1]);
-				if(n->value != 1) {
+				if(n->value != TILE_EMPTY) {
 					continue;
 				}
 				dmdl_add_mesh(model, stage_lowerWallMesh, &center, vector(coords[3*k+2],0,0));

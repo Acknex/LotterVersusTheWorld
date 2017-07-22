@@ -70,11 +70,54 @@ void pp_bloom(float threshold, float strength)
 
 
 BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
+BMAP * WallMainTextImage = "#1024x256x32";
+FONT * WallMainTextFont = "Courier#15b";
+
+TEXT * WallMainText = 
+{
+	pos_x = 0;
+	pos_y = 0;
+	blue = 0;
+	red = 0;
+	green = 255;
+	font = WallMainTextFont;
+	flags = SHOW;
+	strings = 20;
+}
+
+function WallMainText_startup()
+{
+	WallMainText.target_map = WallMainTextImage;
+	// WallMainText.size_x = bmap_width(WallMainTextImage);
+	WallMainText.size_y = bmap_height(WallMainTextImage);
+	str_cpy(delimit_str, "");
+	txt_load(WallMainText, "wallpaper.txt");
+	
+	while(1)
+	{
+		int idx = random(WallMainText.strings);
+		
+		STRING * str = (WallMainText.pstring)[idx];
+		
+		int idx = random(str_len(str));
+		
+		str_setchr(str, 1 + idx, 0x20 + integer(random(128-0x20)));
+		
+		//draw_quad(
+		//	WallMainText.target_map,
+		//	NULL, NULL,
+		//	NULL, NULL,
+		//	NULL, 100,
+		//	0);
+		wait(3);
+	}
+}
 
 MATERIAL *WallMainMaterial =
 {
 	effect = "WallMain.fx";
 	skin1 = WallMainAtlas;
+	skin2 = WallMainTextImage;
 }
 
 MATERIAL *WallOutlineMaterial =
