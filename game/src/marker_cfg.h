@@ -21,7 +21,8 @@ TEXT* txtMarkers =
 	/*TypeTurret2 7*/          ".turret 2.0\n 0xBADA55",
 	/*TypeSpikes 8*/           ".spikes\n 0xBEEFED",
 	/*TypeHole 9*/             ".hole\n 0xAAAAAA",
-	/*TypeEnemy 10*/           ".boring standard enemy\n 0xD00FD00F"
+	/*TypeEnemy 10*/           ".boring standard enemy\n 0x4711",
+	/*TypeEnemy 11*/           ".retrovirus\n 0xBADD00D"
 	);
 }
 
