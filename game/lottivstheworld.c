@@ -5,6 +5,7 @@
 #define PRAGMA_PATH "shaders"
 #define PRAGMA_PATH "graphics"
 
+#include "mouse.h"
 #include "player.h"
 #include "camera.h"
 #include "materials.h"
