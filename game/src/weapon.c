@@ -83,8 +83,6 @@ void projectile()
 	my.tilt = 90;
 	my.pan += 90;
 	
-	
-	
 	vec_scale(my.scale_x, weapon_projectile_scale);
 	c_setminmax(me);
 	
@@ -108,17 +106,10 @@ void projectile()
 		vec_set(offset, to);
 		vec_scale(to, 16 * weapon_projectile_scale);
 		vec_add(to, my.x);
-		//vec_scale(offset, -16);
-		//vec_add(offset, my.x);
+		
 		c_ignore(3);
 		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
-		
-		/*
-		draw_line3d(to, NULL, 100);
-		draw_line3d(offset, COLOR_GREEN, 100);
-		draw_line3d(to, COLOR_GREEN, 100);
-		*/
 		if(you == player)	{ break; }
 		
 		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
@@ -178,16 +169,23 @@ void granate_explosion(PARTICLE *p)
 {
 	p->flags = MOVE | BRIGHT;
 	p->size = 16;
-	p->vel_x = 10 - random(20);
-	p->vel_y = 10 - random(20);
-	p->vel_z = 10;
-	p->lifespan = 20;
+	p->vel_x = 80 - random(160);
+	p->vel_y = 80 - random(160);
+	p->vel_z = 80;
+	p->lifespan = 500;
+	p->red = 255;
+	p->green = 255;
+	p->blue = 128;
 	p->event = granate_exp_event;
 }
 
 void explosion(ENTITY *ent)
 {
-	effect(granate_explosion, 80,  ent.x, nullvector);
+	int i; for(i = 0; i < 20; i++)
+	{
+		effect(granate_explosion, 120,  ent.x, nullvector);
+		wait(1);
+	}
 }
 
 void granate()
@@ -195,7 +193,8 @@ void granate()
 	VECTOR vstart,temp, vTarget, midPos1, midPos2;
 	
 	my.group = 2;
-	
+	my.type = TypePlayerProjectile;
+	my.damage = 3;
 	my.flags |= (PASSABLE |FLAG2);
 	
 	// Calculate grenate target
@@ -212,13 +211,12 @@ void granate()
 	vec_lerp(midPos2,vstart,vTarget,0.667);
 	midPos2.z = 200;
 	
-	my.damage = 3;
 	
 	// Bezier interpolation
-	while(my.skill1 < 16 && me)
+	while(my.skill80 < 16 && me)
 	{
-		my.skill1 = minv(my.skill1+time_step,16);
-		float t = my.skill1/16.0;
+		my.skill80 = minv(my.skill80+time_step,16);
+		float t = my.skill80/16.0;
 		float tinv = 1-t;
 		
 		vec_set(my.x,vstart);
@@ -238,8 +236,8 @@ void granate()
 		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
-	//explosion(me);
-	c_scan(my.x, nullvector, vector(360, 0, 16), ACTIVATE_SHOOT);
+	explosion(me);
+	c_scan(my.x, nullvector, vector(360, 0, 5000), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
 
