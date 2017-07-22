@@ -1,5 +1,9 @@
 #include "camera.h"
+#include "datatypes.h"
+#include "levelgen.h"
 #include "entity_defs.h"
+
+STAGE* LEVEL__stage = NULL;
 
 var anim_percentage = 0;
 var dist_ahead = 0;
@@ -68,15 +72,19 @@ void player_move() {
 		}		
 	} else {
 		anim_percentage += 5*time_step; 
-		ent_animate(player,"idle",anim_percentage,ANM_CYCLE);
+		ent_animate(player,"stand",anim_percentage,ANM_CYCLE);
 	}
 }
 
+
+VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
+
 void player_init() {
-	player = ent_create("cbabe.MDL", vector(100,100,0), NULL);
+	player = ent_create("cbabe_male.mdl", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
+
 	
 	// Adapt scale
-	vec_scale(player.scale_x, 2);
+	//vec_scale(player.scale_x, 2);
 	
 	// Adapt bounding box
 	c_setminmax(player);
@@ -90,4 +98,18 @@ void player_init() {
 	player->trigger_range = 20;
 	
 	player.damage = 1;
+	
+	player.emask |= EVENT_SHOOT;
+	player.event = player_event;
+}
+
+void player_event() {
+	switch(event_type) {
+		case EVENT_SHOOT:
+			my.health -=your.damage;
+			if (my.health <= 0) {
+				printf("You are DEAD!");
+			}
+		break;
+	}
 }

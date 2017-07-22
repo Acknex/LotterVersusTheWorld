@@ -9,9 +9,9 @@
 
 #define TILE_FLAG_EXIT (1<<0)
 #define TILE_FLAG_ENTRANCE (1<<1)
-#define TILE_FLAG_TRAP_SPIKES (1<<2)
-#define TILE_FLAG_TRAP_HOLE (1<<3)
-#define TILE_FLAG_ENEMYSPAWN (1<<4)
+#define TILE_FLAG_ENEMYSPAWN (1<<2)
+#define TILE_FLAG_TRAP_SPIKES (1<<3)
+#define TILE_FLAG_TRAP_HOLE (1<<4)
 #define TILE_FLAG_TRAP_TURRET (1<<5)
 
 
@@ -48,7 +48,8 @@ struct _STAGE
 	TILE* tiles;
 	LEVELGENSTACK* workingStack;
 	int numEnemies;
-	VECTOR *enemyData;
+	VECTOR *enemyPositions;
+	int* enemyData;
 	int floodExitMax;
 };
 

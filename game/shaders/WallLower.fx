@@ -40,7 +40,8 @@ out_ps vs(
 
 float4 ps(out_ps In): COLOR
 {
-	float height = -In.WorldPos.y*0.003;
+	//float height = -In.WorldPos.y*0.003;
+	float height = -In.WorldPos.y*0.002;
 	float2 patternUV = 0.0013 * float2(In.WorldPos.x - In.WorldPos.z, In.WorldPos.y);
 	float lineValue = tex2D(sDetails, float2(patternUV.x, height)).a;
 	

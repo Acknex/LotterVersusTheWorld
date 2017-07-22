@@ -25,6 +25,13 @@ MATERIAL * stageMtlLava =
 	effect = "Lava.fx";
 }
 
+BOOL stageTileHasNoGround(TILE * tile)
+{
+	return (tile->flags & TILE_FLAG_TRAP_SPIKES)
+		&& (tile->flags & TILE_FLAG_TRAP_HOLE)
+		&& (tile->flags & TILE_FLAG_TRAP_TURRET);
+}
+
 void stageRenderInit()
 {
 	int i;
@@ -78,7 +85,7 @@ void stage_loadGround(DynamicModel * model, STAGE * stage)
 				continue;
 			}
 			
-			if(tile->value == 1)
+			if(!stageTileHasNoGround(tile->value))
 			{
 				VECTOR center;
 				center.x = i * 200;
@@ -172,7 +179,13 @@ void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
 				TILE * a = stageGetTile(stage, i+outlines[k+0], j+outlines[k+1]);
 				TILE * b = stageGetTile(stage, i+outlines[k+2], j+outlines[k+3]);
 				TILE * c = stageGetTile(stage, i+outlines[k+4], j+outlines[k+5]);
-				if(tile->value != a->value && a->value == b->value && b->value == c->value) {
+				
+				BOOL valid = FALSE;
+				if(!!tile->value != !!a->value && !!a->value == !!b->value && !!b->value == !!c->value) {
+					valid = TRUE;
+				}
+				
+				if(valid) {
 					VECTOR fo;
 					vec_set(&fo, &center);
 					fo.x += outlines[k+6];
@@ -253,11 +266,6 @@ VECTOR * stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
-	{
-		TILE * tile = stageGetTile(stage, 1, 4);
-		tile->value = 2;
-	}
-	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	
@@ -292,16 +300,18 @@ VECTOR * stage_load(STAGE * stage)
 				center.y = j * 200;
 				center.z = 0;
 				
-				switch(tile->value)
-				{
-					case 2: {
-						ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
-						ent->material = GroundMaterial;
-						set(ent, POLYGON);
-						set(ent, FLAG1);
-						ent_animate(ent, "closed", 0, 0);
-						break;
-					}
+				if(tile->flags & TILE_FLAG_TRAP_TURRET) {
+					ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
+					ent->material = GroundMaterial;
+					set(ent, POLYGON);
+					set(ent, FLAG1);
+					ent_animate(ent, "closed", 0, 0);
+				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
+					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
+					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
+				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
+					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 				}
 			}
 		}
