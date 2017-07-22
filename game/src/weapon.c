@@ -160,12 +160,12 @@ void projectile()
 	ptr_remove(me);
 }
 
-void granate_exp_event(PARTICLE *p)
+void granate_exp_event(PARTICLE *p) //PLATZHALTER
 {
 	
 }
 
-void granate_explosion(PARTICLE *p)
+void granate_explosion(PARTICLE *p) // PLATZHALTER
 {
 	p->flags = MOVE | BRIGHT;
 	p->size = 16;
@@ -179,13 +179,9 @@ void granate_explosion(PARTICLE *p)
 	p->event = granate_exp_event;
 }
 
-void explosion(ENTITY *ent)
+void explosion(ENTITY *ent) // PLATZHALTER !!
 {
-	int i; for(i = 0; i < 20; i++)
-	{
-		effect(granate_explosion, 120,  ent.x, nullvector);
-		wait(1);
-	}
+	effect(granate_explosion, 120,  ent.x, nullvector);
 }
 
 void granate()
@@ -237,7 +233,7 @@ void granate()
 		wait(1);
 	}
 	explosion(me);
-	c_scan(my.x, nullvector, vector(360, 0, 5000), SCAN_ENTS | IGNORE_ME);
+	c_scan(my.x, nullvector, vector(360, 0, 130), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
 
