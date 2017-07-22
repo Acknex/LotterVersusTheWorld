@@ -10,7 +10,6 @@
 
 var INIT__levelRunning = 0;
 
-
 void INIT_levelStart()
 {
 	INIT__levelRunning = 1;
@@ -40,12 +39,12 @@ void INIT_levelStart()
 	//skychange(); //because.
 	
 
-	startMusic("media\\in_game1.mp3", 4);
+	startMusic("media\\in_game1.mp3", 4, 1);
 
 	//this is debug hack for items
-	VECTOR* vecTemp;
-	vecTemp = vector(175,175, 25);
-	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
+//	VECTOR* vecTemp;
+//	vecTemp = vector(175,175, 25);
+//	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
 //	vecTemp = vector(725,900, 50);
 //	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
 //	you.material = ObjectMaterial;
