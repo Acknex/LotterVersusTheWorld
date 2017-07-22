@@ -170,11 +170,13 @@ MATERIAL *WallOutlineMaterial =
 }
 
 BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
+BMAP *WallLowerLavaBMAP = "graphics/lava.png";
 
 MATERIAL *WallLowerMaterial =
 {
 	effect = "WallLower.fx";
 	skin1 = WallLower01BMAP;
+	skin2 = WallLowerLavaBMAP;
 }
 
 MATERIAL *ObjectMaterial = 

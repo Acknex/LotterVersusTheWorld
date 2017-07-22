@@ -35,18 +35,19 @@ out_ps vs(
 	inPos.y += 10 * sin(0.005 * inPos.x + vecTime.w*0.032);
 	inPos.y -= 10 * cos(0.005 * inPos.z + vecTime.w*0.028);
 	
+	Out.WorldPos = mul(matWorld, float4(inPos.xyz, 1.0));
+	
 	float fCycle = vecTime.w*0.05;
 	float fAmp = 0.002;
 	float fMod = 1+25;
-	inTexCoord0.x += fAmp*sin(inTexCoord0.y*fMod + fCycle);
-	inTexCoord0.y -= fAmp*sin(inTexCoord0.x*fMod + fCycle);
+	Out.uv = Out.WorldPos.xz*0.0001;
+	Out.uv.x += fAmp*sin(Out.uv.y*fMod + fCycle);
+	Out.uv.y -= fAmp*sin(Out.uv.x*fMod + fCycle);
 	
-	inPos.y += 5 * sin(inTexCoord0.x);
-	inPos.y -= 5 * cos(inTexCoord0.y);
+	inPos.y += 5 * sin(Out.uv.x);
+	inPos.y -= 5 * cos(Out.uv.y);
 	
 	Out.Pos = DoTransform(inPos);
-	Out.uv = inTexCoord0;
-	Out.WorldPos = mul(matWorld, float4(inPos.xyz, 1.0));
 	return Out;
 }
 
@@ -58,8 +59,8 @@ float4 ps(out_ps In): COLOR
 	float fac3 = tex2D(sTexture, 1 * In.uv + float2(0.00035 * vecTime.w, 0)).r;
 	fac = clamp(fac * (fac2 * 2) * (fac3 * 4),0,1);
 	
-	float hl0 = tex2D(sTexture, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0001 * vecTime.w)).g;
-	float hl1 = tex2D(sTexture, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).g;
+	float hl0 = 1.0 - tex2D(sTexture, 2 * In.uv + float2(0.0008 * vecTime.w, -0.0001 * vecTime.w)).r;
+	float hl1 = 1.0 - tex2D(sTexture, 2 * In.uv + float2(0.0012 * vecTime.w,  0.0003 * vecTime.w)).r;
 	
 	float highlight = hl0 * hl1;
 	
