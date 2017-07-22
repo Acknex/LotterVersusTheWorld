@@ -11,7 +11,6 @@
 
 var INIT__levelRunning = 0;
 
-
 void INIT_levelStart()
 {
 	INIT__levelRunning = 1;
@@ -41,7 +40,7 @@ void INIT_levelStart()
 	//skychange(); //because.
 	
 
-	startMusic("media\\in_game1.mp3", 4);
+	startMusic("media\\in_game1.mp3", 4, 1);
 
 	//this is debug hack for items
 	VECTOR* vecTemp;
