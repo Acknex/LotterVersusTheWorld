@@ -24,8 +24,7 @@ void SPIKES__active();
 void SPIKES__sleep();
 void SPIKES__shoot();
 
-SOUND* sndSpikesUp = "turret_up.wav";
-SOUND* sndSpikesDown = "turret_down.wav";
+SOUND* sndSpikesUp = "spikes_up.wav";
 
 action enemy_spikes()
 {
@@ -156,7 +155,6 @@ void SPIKES__active()
 	}
 	else
 	{
-		snd_play(sndSpikesDown, 100, 0);
 		my->spikesState = SPIKESCLOSE;
 		my->animCounter = 100 - my->animCounter ;
 	}

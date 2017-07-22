@@ -150,6 +150,7 @@ void player_move() {
 	if(player.pause_control == 0)
 	{
 		static VECTOR vPlayerSpeed;
+
 		vec_set(temp,vector(sign(key_w-key_s+key_cuu-key_cud),sign(key_a-key_d+key_cul-key_cur),0));
 		VIEW* view = get_camera();
 		vec_rotate(temp,vector(view->pan,0,0));
