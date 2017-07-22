@@ -72,7 +72,7 @@ void pp_bloom(float threshold, float strength)
 BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
 BMAP * WallMainTextImage = "tile-wall-text.png";
 FONT * WallMainTextFont = "Courier#15b";
-BMAP *ColorLUT = "color_lut-01.dds";
+BMAP *ColorLUT = "color-lut_01.dds";
 
 TEXT * WallMainText = 
 {
