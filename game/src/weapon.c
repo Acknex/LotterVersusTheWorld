@@ -4,7 +4,7 @@ void weapon_startup()
 	{
 		if((player != NULL) && mouse_left) 
 		{
-			player.skill44 = 20;
+			player.skill44 = 2;
 			shoot();
 		}
 		wait(1);		
@@ -77,16 +77,15 @@ void projectile()
 		my.red = 255;
 		my.green = 128;
 		my.blue = 255;
-		my.lightrange = 16;
 		
 		vec_set(to, dir);
 		vec_normalize(to, 1);
 		vec_set(offset, to);
-		vec_scale(to, 72);
-		vec_scale(offset, 64);
+		vec_scale(to, 128 * 0.6);
+		vec_scale(offset, 0 * 0.6);
 		vec_add(to, my.x);
 		vec_add(offset, my.x);
-		dist = c_trace(offset, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
+		dist = c_trace(my.x, to, IGNORE_ME | IGNORE_PASSABLE | ACTIVATE_SHOOT);
 		
 		draw_line3d(to, NULL, 100);
 		draw_line3d(offset, COLOR_GREEN, 100);
@@ -94,7 +93,7 @@ void projectile()
 		
 		if(you == player)	{ break; }
 		
-		if((dist != 0 || t > 5) && player.skill44 == 0 ) 
+		if((dist != 0 || t > weapon_lifetime) && player.skill44 == 0 ) 
 		{ 
 			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
 			vec_normalize(v, 1);
@@ -118,7 +117,7 @@ void projectile()
 			my.pan += 90;
 			my.skill50 += 1;
 		} 
-		else if (dist != 0 || t > 5)
+		else if (dist != 0 || t > weapon_lifetime)
 		{
 			break;
 		}

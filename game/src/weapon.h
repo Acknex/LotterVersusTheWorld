@@ -8,6 +8,7 @@
 	var weapon_angle_correction = 0;
 	var weapon_projectile_spawn_offset = 16;
 	var weapon_cooldown_time = 0.12;
+	var weapon_lifetime = 5;
 	
 	//Player skill43 is active cooldown timer
 	//Player skill44 is possible projectile bounce count
