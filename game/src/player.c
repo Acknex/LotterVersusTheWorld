@@ -239,7 +239,7 @@ void player_init() {
 	
 	mouse_mode = 4;
 	player.z = 150;
-	player->trigger_range = 20;
+	player->trigger_range = 50;
 	
 	player.damage = 1;
 	

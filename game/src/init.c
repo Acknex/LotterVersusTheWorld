@@ -4,10 +4,10 @@
 #include "font.h"
 #include "sky.h"
 #include "music_player.h"
+#include "quest.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
-#include "quest.h" //temp
 
 var INIT__levelRunning = 0;
 
@@ -24,6 +24,13 @@ void INIT_levelStart()
 	stageAddExitAndEntrance(LEVEL__stage);
 	stageCreateEnemyData(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
+
+	QUEST_init();	
+	VECTOR* vecTemp;
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.85, 0.1);
+	ent_create("warlock.mdl", vecTemp, questmaster);
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.9, 0.1);
+	ent_create(CUBE_MDL, vecTemp, questitem);
 	
 	sky_color.red = 0;
 	sky_color.green = 0;
@@ -43,9 +50,6 @@ void INIT_levelStart()
 	startMusic("media\\in_game1.mp3", 4, 1);
 
 	//this is debug hack for items
-	VECTOR* vecTemp;
-	vecTemp = vector(0,0, 25);
-	ent_create("warghost.mdl", vecTemp, questmaster);
 //	VECTOR* vecTemp;
 //	vecTemp = vector(175,175, 25);
 //	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
