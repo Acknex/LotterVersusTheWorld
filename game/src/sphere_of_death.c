@@ -62,13 +62,13 @@ void SPHEREOD__loop()
 			myTarget.z = my.z;
 			curTarget.z = my.z;
 			VECTOR temp,temp2,vspeed;
-			my.skill35 = 10+random(5);
+			my.skill35 = 20+random(5);
 			my.skill37 = random(360); // slight pan movement variations
 			
 			var flood = FLOOD_VALUE_MAX;
 			if(LEVEL__stage)
 			{
-				flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20, 1);
+				flood = stageGetTargetFromFlood(LEVEL__stage,my.x,myTarget,curTarget,FLOOD_PLAYER,20, 0);
 			}
 			
 			var speed = minv(vec_length(temp),my.skill35)*time_step;
@@ -82,17 +82,32 @@ void SPHEREOD__loop()
 			
 			c_move(me,nullvector,vspeed,IGNORE_PASSABLE | IGNORE_SPRITES | IGNORE_PUSH | IGNORE_WORLD);
 			
-			if(flood < 2)
+			int myX, myY;
+			int pX, pY;
+			stageGetIndicesFromPos(LEVEL__stage, my.x, &myX, &myY);
+			stageGetIndicesFromPos(LEVEL__stage, player.x, &pX, pY);
+			if(flood < 3 && (pX == myX || pY == myY))
 			{
 				my->sphere_state = SOD_OPEN;
 				my->sphere_anim_open = 0;
+				while(my.tilt < 0)
+				{
+					my.tilt += 360;
+				}
 			}
-			DEBUG_VAR(flood, 500);
 		}
-		else if(my->sphere_state == SOD_SEARCH)
+		else if(my->sphere_state == SOD_OPEN)
 		{
-			my->sphere_anim_open = minv(my->sphere_anim_open + time_step, 100);
-			ent_animate(my, "open", my->sphere_anim_open, 0);
+			if(my.tilt > 0)
+			{
+				my.tilt -= minv(my.tilt, 20*time_step);
+				
+			}
+			else {
+				DEBUG_VAR(my->sphere_anim_open, 500);
+				my->sphere_anim_open = minv(my->sphere_anim_open + 20*time_step, 100);
+				ent_animate(my, "open", my->sphere_anim_open, 0);
+			}
 		}
 		wait(1);	
 	}
