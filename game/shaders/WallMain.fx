@@ -41,8 +41,8 @@ float4 ps(out_ps In): COLOR
 	//float ioffset = 7 * floor((In.WorldPos.x - 100) / 200) + floor((In.WorldPos.z - 100) / 200);
 	//float toff = 0.03 * vecTime.w;
 	//
- //   toff *= 2.3;
- //  	toff -= 0.3;
+	//   toff *= 2.3;
+	//  	toff -= 0.3;
 	//toff -= frac(toff);
 	//
 	//ioffset += toff;
