@@ -14,7 +14,7 @@ typedef struct {
 } D3DVERTEX;
 */
 
-LPD3DXMESH stage_groundMesh, stage_upperWallMesh, stage_lowerWallMesh, stage_upperWallOutlineMesh;
+LPD3DXMESH stage_groundMesh, stage_upperWallMesh, stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 
 MATERIAL * stageMtlLava = 
 {
@@ -38,6 +38,10 @@ void stageRenderInit()
 	ent = ent_create("tile-wall-upper-outline.mdl", vector(0,0,0), NULL);
 	stage_upperWallOutlineMesh = ent_getmesh(ent, 0, 0);
 	ent_remove(ent);
+	
+	ent = ent_create("tile-outline-post.mdl", vector(0,0,0), NULL);
+	stage_outlinePostMesh = ent_getmesh(ent, 0, 0);
+	ent_remove(ent);
 }
 
 void stage_unload()
@@ -46,6 +50,7 @@ void stage_unload()
 	stage_upperWallMesh->Release();
 	stage_lowerWallMesh->Release();
 	stage_upperWallOutlineMesh->Release();
+	stage_outlinePostMesh->Release();
 }
 
 void stage_loadGround(DynamicModel * model, STAGE * stage)
@@ -108,7 +113,7 @@ void stage_loadUpperWall(DynamicModel * model, STAGE * stage)
 }
 
 
-void stage_loadUpperWallOutline(DynamicModel * model, STAGE * stage)
+void stage_loadWallOutline(DynamicModel * model, STAGE * stage)
 {
 	int i,j;
 	TILE* tile;
@@ -138,6 +143,16 @@ void stage_loadUpperWallOutline(DynamicModel * model, STAGE * stage)
 					continue;
 				}
 				dmdl_add_mesh(model, stage_upperWallOutlineMesh, &center, vector(coords[3*k+2],0,0));
+			}
+			
+			TILE * a = stageGetTile(stage, i+0, j-1);
+			TILE * b = stageGetTile(stage, i+1, j+0);
+			if(a->value == 1 && b->value == 1) {
+				VECTOR fo;
+				vec_set(&fo, &center);
+				fo.x += 100;
+				fo.y -= 100;
+				dmdl_add_mesh(model, stage_outlinePostMesh, &fo, vector(coords[3*k+2],0,0));
 			}
 		}
 	}
@@ -220,10 +235,12 @@ void stage_load(STAGE * stage)
 	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
-	ENTITY * entOutlines = stage_genEntity(stage, stage_loadUpperWallOutline);
+	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
 	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;
 	entLowerWall->material = WallLowerMaterial;
 	entOutlines->material = WallOutlineMaterial;
+	
+	entOutlines->flags |= PASSABLE;
 }
