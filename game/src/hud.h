@@ -2,6 +2,9 @@
 #define HUD_H
 
 var vEmoHealthX = 0;
+var vPlayerHealth = 0;
+
+FONT* fontHud = NULL;
 
 BMAP* bmapEmoHealth = "emohealthsmall.tga";
 PANEL* panEmoHealth = NULL;
