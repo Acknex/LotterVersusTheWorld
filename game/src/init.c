@@ -63,7 +63,7 @@ void INIT_levelEnd()
 	wait(1);
 	
 	hide_camera();
-	//sky_active = 0;
+	sky_active = 1;
 }
 
 void INIT_levelLoop()
@@ -74,7 +74,7 @@ void INIT_levelLoop()
 		player_move();
 		update_camera();
 		
-		if(LEVEL__stage) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*16, 16);
+		if(LEVEL__stage) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*8, 8);
 		wait(1);
 	}
 }
