@@ -2,7 +2,7 @@
 #define TURRET_SHOOTDELAY 8
 #define TURRET_TURNSPEED 5
 
-#define delayCounter skill21
+#define delayCounter skill22
 
 #include "enemy.h"
 
