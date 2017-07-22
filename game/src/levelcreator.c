@@ -261,6 +261,36 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	return ent;
 }
 
+action enemy_hole()
+{
+	set(me, POLYGON);
+	set(me, FLAG1);
+	my.type = 9;
+	
+	while(me)
+	{
+		my.skill41 = floatv(0.5 + 0.5 * sinv(total_ticks));
+		ent_animate(me, "activate", total_ticks, ANM_CYCLE);
+		MARKER_update(me);
+		wait(1);
+	}
+}
+
+action enemy_spikes()
+{
+	set(me, POLYGON);
+	set(me, FLAG1);
+	my.type = 8;
+	
+	while(me)
+	{
+		my.skill41 = floatv(0.5 + 0.5 * sinv(total_ticks));
+		ent_animate(me, "open", 50 + 50 * sinv(10 * total_ticks), ANM_CYCLE);
+		MARKER_update(me);
+		wait(1);
+	}
+}
+
 VECTOR * stage_load(STAGE * stage)
 {
 	level_load(NULL);
@@ -337,19 +367,14 @@ VECTOR * stage_load(STAGE * stage)
 					ent_animate(ent, "closed", 0, 0);
 					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 8;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-hole.mdl", &center, enemy_hole);
+					ent->material = TurretMaterial;
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					ent = ent_create("tile-floor-spikes.mdl", &center, NULL);
-					ent->material = GroundMaterial;
-					set(ent, POLYGON);
-					set(ent, FLAG1);
-					ent->type = 7;
-					MARKER_attach(ent);
+					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
+					ent->material = TurretMaterial;
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
 					ent = ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
-					ent->type = 9;
+					ent->type = 10;
 					MARKER_attach(ent);
 				}
 			}
