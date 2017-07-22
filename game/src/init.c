@@ -18,7 +18,7 @@ void INIT_levelStart()
 	//level_load("prototype_wmb.wmb");
 	//level_load("prototype.mdl");
 	//level_load("test_level_small.wmb");
-	LEVEL__stage = stageCreate(32,32,8172.607,0);
+	LEVEL__stage = stageCreate(32,32,0,0); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
 	stageAddExitAndEntrance(LEVEL__stage);

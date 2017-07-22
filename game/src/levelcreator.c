@@ -25,6 +25,14 @@ MATERIAL * stageMtlLava =
 	effect = "Lava.fx";
 }
 
+BOOL stageTileHasNoGround(TILE * tile)
+{
+	if(!tile) return FALSE;
+	return (tile->flags & TILE_FLAG_TRAP_SPIKES)
+		&& (tile->flags & TILE_FLAG_TRAP_HOLE)
+		&& (tile->flags & TILE_FLAG_TRAP_TURRET);
+}
+
 void stageRenderInit()
 {
 	int i;
@@ -78,7 +86,7 @@ void stage_loadGround(DynamicModel * model, STAGE * stage)
 				continue;
 			}
 			
-			if(tile->value == 1)
+			if(!stageTileHasNoGround(tile))
 			{
 				VECTOR center;
 				center.x = i * 200;
@@ -259,11 +267,6 @@ VECTOR * stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
-	{
-		TILE * tile = stageGetTile(stage, 1, 4);
-		tile->value = 2;
-	}
-	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	
@@ -305,11 +308,11 @@ VECTOR * stage_load(STAGE * stage)
 					set(ent, FLAG1);
 					ent_animate(ent, "closed", 0, 0);
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
-					
+					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
-					
+					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 				} else if(tile->flags & TILE_FLAG_ENEMYSPAWN) {
-					
+					ent_create(CUBE_MDL, vec_add(vector(0, 0, 32), &center), NULL);
 				}
 			}
 		}
