@@ -9,6 +9,7 @@
 var INIT__levelRunning = 0;
 
 STAGE* LEVEL__stage = NULL;
+var music_handle = 0;
 
 void INIT_levelStart()
 {
@@ -33,6 +34,8 @@ void INIT_levelStart()
 	//this is debug hack for items
 	VECTOR* vecTemp = vector(175,175, 50);
 	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
+	
+	music_handle = media_loop("media\\in_game1.mp3", NULL, 100);
 }
 
 void INIT_levelEnd()
@@ -42,6 +45,8 @@ void INIT_levelEnd()
 	// stage_remove(LEVEL__stage);
 
 	INIT__levelRunning = 0;
+	
+	media_stop(music_handle);
 	
 	wait(1);
 	
