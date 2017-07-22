@@ -45,7 +45,7 @@ void RICOCHET_create(ENTITY* ent)
 	}
 	else
 	{
-		ricochet = ent_create("tile-wall-text.png", v, RICOCHET__effect);
+		ricochet = ent_create("ricochet_red.tga", v, RICOCHET__effect);
 	}
 	
 	vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));	

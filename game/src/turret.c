@@ -42,7 +42,7 @@ void TURRET__loop()
 
 void TURRET__shoot()
 {
-	VECTOR* vecDist = vector(50, 0, 0);
+	VECTOR* vecDist = vector(30, 0, 0);
 	vec_rotate(vecDist, my->pan);
 	vec_add (vecDist, my->x);
 	ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	
