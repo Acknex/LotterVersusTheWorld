@@ -53,7 +53,7 @@ void projectile()
 	
 	vec_set(my.pan, vector(player.pan + weapon_angle_correction, 0, 0));
 	
-	my.flags |= (PASSABLE);
+	my.flags |= (PASSABLE | FLAG2);
 	my.type = TypePlayerProjectile;
 	
 	VECTOR dir;
@@ -138,13 +138,34 @@ void projectile()
 	ptr_remove(me);
 }
 
+void granate_exp_event(PARTICLE *p)
+{
+	
+}
+
+void granate_explosion(PARTICLE *p)
+{
+	p->flags = MOVE | BRIGHT;
+	p->size = 16;
+	p->vel_x = 10 - random(20);
+	p->vel_y = 10 - random(20);
+	p->vel_z = 10;
+	p->lifespan = 20;
+	p->event = granate_exp_event;
+}
+
+void explosion(ENTITY *ent)
+{
+	effect(granate_explosion, 80,  ent.x, nullvector);
+}
+
 void granate()
 {
 	VECTOR vstart,temp, vTarget, midPos1, midPos2;
 	
 	my.group = 2;
 	
-	my.flags |= PASSABLE;
+	my.flags |= (PASSABLE |FLAG2);
 	
 	// Calculate grenate target
 	vec_set(vTarget,mouse_dir3d);
@@ -184,6 +205,8 @@ void granate()
 		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
 		wait(1);
 	}
+	explosion(me);
+	c_scan(my.x, nullvector, vector(360, 0, 16), ACTIVATE_SHOOT);
 	ent_remove(me);
 }
 
