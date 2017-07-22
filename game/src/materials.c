@@ -114,7 +114,13 @@ MATERIAL *ObjectMaterial =
 MATERIAL *HologramMaterial =
 {
 	effect = "Hologram.fx";
-	flags = PASS_SOLID;
+	flags = TRANSLUCENT;
+}
+
+MATERIAL *HexMaterial =
+{
+	effect = "Hex.fx";
+	flags = TRANSLUCENT;
 }
 
 function WallMainText_startup()

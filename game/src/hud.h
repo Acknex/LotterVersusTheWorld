@@ -7,6 +7,7 @@ var vPlayerHealth = 0;
 FONT* fontHud = NULL;
 
 BMAP* bmapEmoHealth = "emohealthsmall.tga";
+BMAP* bmapHealthHud = "healthHud.tga";
 PANEL* panEmoHealth = NULL;
 
 void hud_ingame_init();
