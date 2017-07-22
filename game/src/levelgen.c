@@ -90,9 +90,17 @@ STAGE* stageCreate(int sizeX, int sizeY, var seed, int level)
 	stageNew->enemyData = NULL;
 	stageNew->floodExitMax = 0;
 	
-	
 	return stageNew;
 }
+
+void stageDestroy(STAGE* stage)
+{
+	if(stage->enemyPositions) sys_free(stage->enemyData);
+	if(stage->enemyData) sys_free(stage->enemyData);
+	sys_free(stage->tiles);
+	sys_free(stage);
+}
+
 
 TILE* stageGetTile(STAGE* stage, int i, int j)
 {
@@ -104,10 +112,10 @@ VECTOR* stageGetPosFromIndices(STAGE* stage, VECTOR* vpos, int x, int y)
 {
 	if(vpos)
 	{
-		vec_set(vpos,vector(x*200,y*200,0));
+		vec_set(vpos,vector(x*200-100,y*200-100,0));
 		return vpos;
 	}
-	return vector(x*200,y*200,0);
+	return vector(x*200-100,y*200-100,0);
 }
 
 VECTOR* stageGetExitPos(STAGE* stage, VECTOR* vpos, int *px, int *py)
@@ -338,6 +346,7 @@ void stageDoFlood(STAGE* stage, int startX, int startY, int floodId, int floodMa
 		i2 = (workingStack->values)[workingStack->stackCurrent*2+0];
 		j2 = (workingStack->values)[workingStack->stackCurrent*2+1];
 		tile = stageGetTile(stage,i2,j2);
+		if(tile->flood[floodId] >= floodMax) break;
 		for(k = 0; k < 4; k++)
 		{
 			i3 = i2+levelgenOffset2D[k*2+0];
@@ -571,10 +580,9 @@ void stageDraw(STAGE* stage, int posX, int posY, int tileSize)
 				draw_text("E",posX+i*tileSize+4,posY+j*tileSize-1,COLOR_BLACK);
 				draw_text("E",posX+i*tileSize+3,posY+j*tileSize-2,COLOR_WHITE);
 			}
-			if(player) {
-				var i = player.x / 200;
-				var j = player.y / 200;
-				draw_quad(NULL, vector(posX+(i+0.5)*tileSize-2,posY+(j+0.5)*tileSize-2,0), NULL, vector(4,4,0), NULL, COLOR_WHITE, 100, 0);
+			if(tile->flood[FLOOD_PLAYER] < 9999)
+			{
+				draw_text(str_printf(NULL,"%2d",tile->flood[FLOOD_PLAYER]),posX+i*tileSize+0,posY+j*tileSize-2,COLOR_WHITE);
 			}
 		}		
 	}

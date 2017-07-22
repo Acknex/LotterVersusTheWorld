@@ -52,9 +52,9 @@ void INIT_levelStart()
 
 void INIT_levelEnd()
 {
-	// TODO: @superku: stageRemove or similar!
 	stage_unload(); // destroy all meshes
-	// stage_remove(LEVEL__stage);
+	stageDestroy(LEVEL__stage);
+	LEVEL__stage = NULL;
 
 	INIT__levelRunning = 0;
 	
@@ -63,7 +63,7 @@ void INIT_levelEnd()
 	wait(1);
 	
 	hide_camera();
-	sky_active = 1;
+	//sky_active = 0;
 }
 
 void INIT_levelLoop()
@@ -74,7 +74,7 @@ void INIT_levelLoop()
 		player_move();
 		update_camera();
 		
-		if(LEVEL__stage) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*8, 8);
+		if(LEVEL__stage) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);
 	}
 }
