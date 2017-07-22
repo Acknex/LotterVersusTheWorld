@@ -12,10 +12,8 @@ float4 vecSkill1;
 
 float4 threshold(float2 Tex : TEXCOORD0) : COLOR0 
 {
-   float4 color = tex2D( g_samSrcColor, Tex.xy);
-   float luminance = color.a;//dot(float4(0.299, 0.587, 0.114, 0.0), color);
-   if(luminance < vecSkill1.x) color = 0.0;
-	return color;
+	float4 color = tex2D( g_samSrcColor, Tex.xy);
+	return color * color.a;
 }
 
 technique PostProcess 
