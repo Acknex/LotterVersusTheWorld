@@ -20,7 +20,14 @@ action teleporter_out()
 			player.pan += 0.1 * portloader * time_step;
 			portloader += 0.5 * time_step;
 			if(portloader >= 75) {
+				player.pan += 0.1 * portloader * time_step;
 				player.pause_control = 1;
+				var alpha = (portloader - 75) * 4;
+				draw_quad(
+					NULL,
+					NULL, NULL,
+					screen_size, NULL,
+					COLOR_BLACK, alpha, 0);
 			}
 			if(portloader >= 100) {
 				INIT_levelEnd();
