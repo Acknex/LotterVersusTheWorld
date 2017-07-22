@@ -132,7 +132,7 @@ void player_move() {
 	vec_add(to, mouse_pos3d);
 	you = player;
 	c_trace(mouse_pos3d, to, IGNORE_YOU | IGNORE_FLAG2);
-	draw_point3d(target, COLOR_WHITE, 100, 16);
+	//draw_point3d(target, COLOR_WHITE, 100, 16);
 	
 	vec_diff(temp,target,player.x);
 	if(!player.near_teleport && vec_to_angle(temp2,temp) > 8)
@@ -147,25 +147,11 @@ void player_move() {
 		vec_set(player.x, target);
 	}
 	
-	int i;
-	for(i = 0; i < 2; i++)
-	{
-		if(!player.skill[28+i])
-		{
-			you = ent_create("hoverboardGlow.mdl",player,NULL);
-			your.material = HoveboardGlowMaterial;
-			set(you,PASSABLE | UNLIT | TRANSLUCENT);
-			player.skill[28+i] = you;
-		}
-		you = player.skill[28+i];
-		STRING* str = str_printf(NULL,"Bone%d",(int)(22+i));
-		vec_for_bone(your.x,player,str);
-		ang_for_bone(your.pan,player,str);
-	}
 	if(player.pause_control == 0)
 	{
 		static VECTOR vPlayerSpeed;
-		vec_set(temp,vector(key_w-key_s,key_a-key_d,0));
+
+		vec_set(temp,vector(sign(key_w-key_s+key_cuu-key_cud),sign(key_a-key_d+key_cul-key_cur),0));
 		VIEW* view = get_camera();
 		vec_rotate(temp,vector(view->pan,0,0));
 		if(temp.x || temp.y) vec_normalize(temp,45);
@@ -202,6 +188,33 @@ void player_move() {
 		ent_bonerotate(player,"Bone1",vector(0,sinv(total_ticks*8)*10,0));
 		ent_bonerotate(player,"Bone4",vector(0,sinv(total_ticks*8)*10,0));
 	}
+	int i;
+	for(i = 0; i < 2; i++)
+	{
+		if(!player.skill[28+i])
+		{
+			you = ent_create("hoverboardGlow.mdl",player,NULL);
+			your.material = HoveboardGlowMaterial;
+			set(you,PASSABLE | UNLIT | TRANSLUCENT);
+			player.skill[28+i] = you;
+		}
+		you = player.skill[28+i];
+		STRING* str = str_printf(NULL,"Bone%d",(int)(22+i));
+		vec_for_bone(your.x,player,str);
+		ang_for_bone(your.pan,player,str);
+		VECTOR temp,temp2;
+		vec_set(temp,vector(0,0,-1));
+		vec_rotate(temp,your.pan);
+		vec_set(temp2,temp);
+		vec_scale(temp2,10);
+		vec_add(temp2,your.x);
+		your.skill21 += time_step;
+		if(your.skill21 > 0.5)
+		{
+			your.skill21 -= 0.5;
+			effect(p_hoverboard_smoke,3,temp2,temp);
+		}
+	}
 	
 	MARKER_update(player);
 	if(LEVEL__stage) 
@@ -225,6 +238,7 @@ VECTOR* stageGetEntrancePos(STAGE* stage, VECTOR* vpos, int *px, int *py);
 void player_init() {
 	player = ent_create("cbabe_maleHover.mdl", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
 	player->material = LotterMaterial;
+	player->health = 100;
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2.25);

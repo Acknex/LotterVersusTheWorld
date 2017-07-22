@@ -136,47 +136,37 @@ void projectile()
 		}
 		else if ( (you || !dist) && (my.skill21 < player.weapon_bouncing) )
 		{
-			VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
-			vec_normalize(v, 1);
-			vec_add(v.x, hit.x);
-			ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
-			vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
-			vec_set(vTarget, bounce);
-			vec_to_angle(my.pan, vTarget);
-			my.tilt = 90;
-			my.pan += 90;
-			my.skill21 += 1;
-			my.z += 10;
-			t = weapon_lifetime - 0.5;
+			if(you)
+			{
+				if(you.type == TypeDefault || you.type == TypeWall)
+				{
+					VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+					vec_normalize(v, 1);
+					vec_add(v.x, hit.x);
+					ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+					vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+					vec_set(vTarget, bounce);
+					vec_to_angle(my.pan, vTarget);
+					my.tilt = 90;
+					my.pan += 90;
+					my.skill21 += 1;
+					my.z += 10;
+					t = weapon_lifetime - 0.5;
+				} 
+				else 
+				{
+					VECTOR* v = vector(hit.nx, hit.ny, hit.nz);
+					vec_normalize(v, 1);
+					vec_add(v.x, hit.x);
+					ENTITY* ricochet = ent_create("ricochet.tga", v, ricochet_effect);
+					vec_to_angle(ricochet->pan, vector(hit.nx, hit.ny, hit.nz));
+					break;
+				}
+			}
 		}
 		wait(1);
 	}
 	ptr_remove(me);
-}
-
-void granate_exp_event(PARTICLE *p) //PLATZHALTER
-{
-	
-}
-
-void granate_explosion(PARTICLE *p) // PLATZHALTER
-{
-	p->flags = MOVE | BRIGHT;
-	p->size = 16;
-	p->vel_x = 80 - random(160);
-	p->vel_y = 80 - random(160);
-	p->vel_z = 80;
-	p->lifespan = 500;
-	p->red = 255;
-	p->green = 255;
-	p->blue = 128;
-	p->event = granate_exp_event;
-}
-
-void explosion(ENTITY *ent) // PLATZHALTER !!
-{
-	snd_play(sndGrenadeExplode, 100, 0);
-	effect(granate_explosion, 120,  ent.x, nullvector);
 }
 
 void granate()
@@ -228,6 +218,7 @@ void granate()
 		wait(1);
 	}
 	effect(p_granate_explode,200,my.x,nullvector);
+	snd_play(sndGrenadeExplode, 100, 0);
 	c_scan(my.x, nullvector, vector(360, 0, 200), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }

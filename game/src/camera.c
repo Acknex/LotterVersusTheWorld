@@ -53,6 +53,7 @@ void remove_camera()
 	}	
 }
 
+
 void update_camera()
 {
 	VECTOR vecPos;
