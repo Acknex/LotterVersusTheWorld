@@ -113,7 +113,6 @@ action questitem()
 			break;
 			
 	}
-	error("meep1");
 	set(my, TRANSLUCENT);
 	my->alpha = 0;
 	my->material = HologramMaterial;
@@ -128,7 +127,6 @@ action questitem()
 		wait(1);
 		my->alpha += 10* time_step;
 	}
-	error("meep2");
 	my->alpha = 100;
 	reset(my, TRANSLUCENT);
 	my->event = QUEST__itemEvent;
@@ -142,13 +140,13 @@ action questitem()
 	teleporter_enable();
 }
 
-void questspawn()
+/*void questspawn()
 {
 	you = ent_create("warlock.mdl", player.x, questmaster);
 	you.x+= 100;
 }
 void my_startup(){on_x= questspawn;}
-
+*/
 
 void QUEST_init()
 {

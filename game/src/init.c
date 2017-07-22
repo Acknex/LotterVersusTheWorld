@@ -4,7 +4,9 @@
 #include "font.h"
 #include "sky.h"
 #include "music_player.h"
-#include "hud.h"#include "quest.h"
+#include "hud.h"
+#include "quest.h"
+
 #include "items.h" //temp
 #include "turret.h" //temp
 
