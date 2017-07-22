@@ -51,7 +51,7 @@ float4 ps(out_ps In): COLOR
 	
 	float4 col1 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 15.5/64.0));
 	float4 col2 = tex2D(sLUT, float2(0.5 * saturate(ColorVariation_flt), 16.5/64.0));
-	float3 attributes = tex2D(sTexture, In.worldPos.xz / 200);
+	float3 attributes = tex2D(sTexture, In.worldPos.xz / 200 + 0.5);
 	
 	attributes += tex2D(sDetails, In.uv);
 	
@@ -60,10 +60,7 @@ float4 ps(out_ps In): COLOR
 		col2 * attributes.g;
 	
 	float4 reflection = tex2D(sReflection, texcoords);
-	float fresnel = abs(normalize(vecViewPos.xyz - In.worldPos).y);
-	fresnel = max(pow(fresnel, 0.5), 0.5);
-	return float4(lerp(reflection, float4(floorcol.rgb, 0.0), saturate(fresnel)).rgb, 0.0)
-		+ float4(1,0,1,1) * attributes.b;
+	return float4(/*lerp(*/reflection.rgb * 0.6 + floorcol.rgb/*, 0.6).rgb*/, 0.0) + float4(1,0,1,1) * attributes.b;
 }
 
 
