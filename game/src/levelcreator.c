@@ -2,6 +2,7 @@
 #include <DynamicModels.h>
 
 #include "materials.h"
+#include "turret.h"
 #include "entity_defs.h"
 
 /*
@@ -245,7 +246,7 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 	return ent;
 }
 
-void stage_load(STAGE * stage)
+VECTOR * stage_load(STAGE * stage)
 {
 	level_load(NULL);
 	
@@ -253,7 +254,7 @@ void stage_load(STAGE * stage)
 	stageRenderInit();
 	
 	{
-		TILE * tile = stageGetTile(stage, 2, 4);
+		TILE * tile = stageGetTile(stage, 1, 4);
 		tile->value = 2;
 	}
 	
@@ -294,9 +295,11 @@ void stage_load(STAGE * stage)
 				switch(tile->value)
 				{
 					case 2: {
-						ent = ent_create("tile-floor-turret.mdl", &center, NULL);
+						ent = ent_create("tile-floor-turret.mdl", &center, enemy_turret);
 						ent->material = GroundMaterial;
 						set(ent, POLYGON);
+						set(ent, FLAG1);
+						ent_animate(ent, "closed", 0, 0);
 						break;
 					}
 				}
@@ -304,16 +307,7 @@ void stage_load(STAGE * stage)
 		}
 	}
 	
-	//while(!player) { wait(1); }
-	//
-	//while(player)
-	//{
-	//	draw_line3d(player.x, NULL, 100);
-	//	draw_line3d(player.x, COLOR_RED, 100);
-	//	draw_line3d(vector(player.x + 100, player.y, player.z), COLOR_RED, 100);
-	//	draw_line3d(player.x, NULL, 100);
-	//	draw_line3d(player.x, COLOR_GREEN, 100);
-	//	draw_line3d(vector(player.x, player.y + 100, player.z), COLOR_GREEN, 100);
-	//	wait(1);
-	//}
+	ent_create(SPHERE_MDL, stageGetExitPos(stage, NULL, NULL, NULL), NULL);
+	
+	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }

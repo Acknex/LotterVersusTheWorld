@@ -19,8 +19,11 @@ void INIT_levelStart()
 	//level_load("prototype_wmb.wmb");
 	//level_load("prototype.mdl");
 	//level_load("test_level_small.wmb");
-	LEVEL__stage = stageCreate(32,32,137.1);
+	LEVEL__stage = stageCreate(32,32,8172.607,0);
 	stageFill(LEVEL__stage);
+	stageConnect(LEVEL__stage);
+	stageAddExitAndEntrance(LEVEL__stage);
+	stageCreateEnemyData(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
 	
 	sky_color.red = 0;

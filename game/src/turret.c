@@ -14,6 +14,8 @@ void TURRET__event();
 
 action enemy_turret()
 {
+	my->scale_x *= 2;
+	my->scale_y *= 2;
 	my->scale_z *= 5;
 	ENEMY_init();
 	my->delayCounter = 0;
@@ -25,6 +27,11 @@ action enemy_turret()
 
 void TURRET__loop()
 {
+	while(player == NULL)
+	{
+		wait(1);
+	}
+	
 	while (!is(my, dead))
 	{
 		MARKER_update(me);
@@ -56,7 +63,6 @@ void TURRET__shoot()
 
 void TURRET__event()
 {
-	error("BÄM");
 	var vDamageDealt = ENEMY_hit(event_type);
 }
 
