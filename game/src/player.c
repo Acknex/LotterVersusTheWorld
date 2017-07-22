@@ -53,10 +53,10 @@ void player_move_old() {
 	vec_rotate(vecDir, vector(view->pan, 0, 0));
 	
 	if (move_style == 0) {
-		c_ignore(4);
+		c_ignore(4,0);
 		c_move(player, nullvector, vecDir, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 		} else {
-		c_ignore(4);
+		c_ignore(4,0);
 		c_move(player, vector(dist_ahead * time_step, 0, 0), nullvector, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 	}
 	
@@ -168,7 +168,7 @@ void player_move() {
 		//vec_lerp(vPlayerSpeed,vPlayerSpeed,temp,0.2*time_step);
 		vec_add(vPlayerSpeed,temp2);
 		
-		c_ignore(4);
+		c_ignore(4,0);
 		c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 		
 		if(player.near_teleport == 0) {
