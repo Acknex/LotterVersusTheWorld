@@ -32,7 +32,7 @@ void MARKER_update(ENTITY* ent)
 		{
 			STRING* str = (txtMarkers->pstring)[ent->type];
 			//draw_text(".jetpack\n 0xC0FFEE", vecTemp.x, vecTemp.y, vector(255,255,255));
-			draw_text(str, vecTemp.x, vecTemp.y, vector(255,255,255));
+			draw_text(str, vecTemp.x, vecTemp.y - 10, vector(255,255,255));
 		}
 	}	
 }
