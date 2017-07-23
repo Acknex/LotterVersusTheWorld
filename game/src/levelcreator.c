@@ -343,7 +343,6 @@ VECTOR * stage_load(STAGE * stage)
 				else if(tile->flags & TILE_FLAG_TRAP_SPUTNIK) {
 					ent = ent_create("Sputnik.mdl", vec_add(vector(0, 0, 80), &center), enemy_sputnik);
 					ent->type = TypeEnemy;
-					MARKER_attach(ent);
 				} else if(tile->value != 0) {
 					var r = random(100);
 					var rot = 0;

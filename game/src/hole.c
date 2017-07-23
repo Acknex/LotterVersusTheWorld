@@ -6,7 +6,7 @@ action enemy_hole()
 	set(me, FLAG1);
 	my.type = 9;
 	
-	while(me)
+	while(1)
 	{
 		my.skill41 = floatv(0.5 + 0.5 * sinv(total_ticks));
 		ent_animate(me, "activate", total_ticks, ANM_CYCLE);
