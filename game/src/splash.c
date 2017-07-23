@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "sky.h"
 #include "music_player.h"
+#include "mouse.h"
 
 
 void SPLASH__init()
@@ -81,7 +82,19 @@ void SPLASH__animEnd()
 		wait(1);
 	}
 	
+	mouse_init_game();	
 	
+	while(SPLASH__menuPanel->alpha < 50 && SPLASH__inSplash == 1)
+	{
+		if(key_any == 1 || SPLASH__inSplash == 0) break;
+		SPLASH__menuPanel->alpha += 2 * time_step;
+		wait(1);
+	}
+	
+	if(SPLASH__inSplash == 1)
+	{
+		SPLASH__menuPanel->alpha = 50;
+	}	
 }
 
 void SPLASH__setupLevel()
@@ -128,7 +141,12 @@ void SPLASH__setupLevel()
 	set(SPLASH__logoPanel, SHOW);
 	
 	// Init Menu
-	
+	SPLASH__menuPanel = pan_create(NULL, 2);
+	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 0, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__startGame, NULL, NULL);
+	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 32, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__exitGame, NULL, NULL);
+	SPLASH__menuPanel->alpha = 0;
+	set(SPLASH__menuPanel, TRANSLUCENT);
+	set(SPLASH__menuPanel, SHOW);	
 	
 	SPLASH__reposition();
 	
@@ -145,31 +163,72 @@ void SPLASH__setupLevel()
 // Someone smarter than me please put this into a logical place inside the global resize function
 void SPLASH__reposition()
 {
-	if(SPLASH__inSplash && SPLASH__logoPanel != NULL && SPLASH__logoBmap != NULL)
+	if(SPLASH__inSplash)
 	{
-		var ratio = screen_size.x / 1920;
-		var logoWidth = bmap_width(SPLASH__logoBmap);
-		var logoHeight = bmap_height(SPLASH__logoBmap);
-		SPLASH__logoY = (screen_size.y / 2) - ((logoHeight * ratio) / 2);
-		SPLASH__logoPanel->scale_x = ratio;
-		SPLASH__logoPanel->scale_y = ratio;
-		SPLASH__logoPanel->pos_x = (screen_size.x / 2) - ((logoWidth * ratio) / 2); 
-		//SPLASH__logoPanel->pos_y = SPLASH__logoY; 
-		SPLASH__logoPanel->pos_y = screen_size.y; 
+		if(SPLASH__logoPanel != NULL && SPLASH__logoBmap != NULL && SPLASH__menuPanel != NULL)
+		{
+			var ratio = screen_size.x / 1920;
+			var logoWidth = bmap_width(SPLASH__logoBmap);
+			var logoHeight = bmap_height(SPLASH__logoBmap);
+			SPLASH__logoY = (screen_size.y / 2) - ((logoHeight * ratio) / 2);
+			SPLASH__logoPanel->scale_x = ratio;
+			SPLASH__logoPanel->scale_y = ratio;
+			SPLASH__logoPanel->pos_x = (screen_size.x / 2) - ((logoWidth * ratio) / 2); 
+			//SPLASH__logoPanel->pos_y = SPLASH__logoY; 
+			SPLASH__logoPanel->pos_y = screen_size.y; 
+			
+			SPLASH__menuPanel->pos_x = (screen_size.x / 2) - (64);
+			SPLASH__menuPanel->pos_y = SPLASH__logoY + logoHeight;
+			
+		}
 	}
 }
 
 void SPLASH__initMenu()
 {
-	
+	// Guess I didn't need this?
 }
 
 void SPLASH__startGame()
 {
+	remove_camera();
+	SPLASH__housekeeping();	
 	
+	wait(1);
+	
+	INIT_start();
+	wait(1);
+	INIT_levelStart();
+	INIT_levelLoop();	
+}
+
+void SPLASH__exitGame()
+{
+	sys_exit("");
 }
 
 void SPLASH__housekeeping()
 {
+	SPLASH__inSplash = 0;
+	ptr_remove(SPLASH__logoPanel);
+	ptr_remove(SPLASH__menuPanel);
+	ptr_remove(SPLASH__logoBmap);
+	ptr_remove(SPLASH__menuStartOffBmap);
+	ptr_remove(SPLASH__menuStartOnBmap);
+	ptr_remove(SPLASH__menuExitOffBmap);
+	ptr_remove(SPLASH__menuExitOnBmap);
+	ent_remove(SPLASH__cube);
+	ent_remove(SPLASH__beam);
+	ent_remove(SPLASH__lotti);
 	
+	SPLASH__logoPanel = NULL;
+	SPLASH__menuPanel = NULL;	
+	SPLASH__logoBmap = NULL;
+	SPLASH__menuStartOffBmap = NULL;
+	SPLASH__menuStartOnBmap = NULL;
+	SPLASH__menuExitOffBmap = NULL;
+	SPLASH__menuExitOnBmap = NULL;
+	SPLASH__cube = NULL;
+	SPLASH__beam = NULL;
+	SPLASH__lotti = NULL;
 }

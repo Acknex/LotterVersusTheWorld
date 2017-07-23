@@ -13,6 +13,7 @@
 #include "weapon.h"
 #include "items.h"
 #include "hud.h"
+#include "splash.h"
 
 #define DEBUG
 
@@ -34,9 +35,10 @@ void main()
 	on_resize = INIT_resize;
 	INIT_start();
 	wait(1);
-	INIT_levelStart();
 	INIT_globalLoop();
-	INIT_levelLoop();
+	SPLASH__init();
+	//INIT_levelStart();
+	//INIT_levelLoop();
 	
 	on_h = MARKER_toggle;
 	on_exit = INIT_exit;
