@@ -12,8 +12,7 @@
 #include "init.h"
 #include "weapon.h"
 #include "items.h"
-#include "hud.h"
-
+#include "splash.h"
 #define DEBUG
 
 #ifdef DEBUG
@@ -30,15 +29,18 @@ void main()
 {
 	max_entities = 20000;
 	d3d_antialias = 0;
-	video_mode = 12;
+	//video_aspect = 1.777;
+	//video_mode = 12;
+	video_set(1280,720,0,0);
+	
 	on_resize = INIT_resize;
 	INIT_start();
 	wait(1);
-	INIT_levelStart();
 	INIT_globalLoop();
-	INIT_levelLoop();
+	SPLASH__init();
+	//INIT_levelStart();
+	//INIT_levelLoop();
 	
-	on_h = MARKER_toggle;
 	on_exit = INIT_exit;
 	on_close = quitGame;
 
