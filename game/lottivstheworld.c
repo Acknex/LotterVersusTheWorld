@@ -27,6 +27,10 @@ void quitGame()
 	sys_exit("");
 }
 
+void hack() {
+	diag("\nframe");
+}
+
 void main() 
 {
 	max_entities = 20000;

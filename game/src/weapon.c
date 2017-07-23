@@ -2,34 +2,6 @@ SOUND* sndPlayerShot = "sounds\\player_shot.wav";
 SOUND* sndGrenadeThrow = "sounds\\grenade_throw.wav";
 SOUND* sndGrenadeExplode = "sounds\\grenade_explode.wav";
 
-void weapon_startup()
-{
-	var shootingHandle = 0;
-	while(1)
-	{
-		if((player != NULL) && mouse_left) 
-		{
-			if(shootingHandle == 0)
-			{
-				shootingHandle = snd_loop(sndPlayerShot, 50, 0);
-			}
-			player.weapon_bouncing = 2;
-			player.group = 3;
-			shoot(1);
-		}
-		if(!mouse_left && shootingHandle != 0) 
-		{
-			snd_stop(shootingHandle);
-			shootingHandle = 0;
-		}
-		if((player != NULL) && mouse_right)
-		{
-			shoot(2);
-		}
-		wait(1);		
-	}
-}
-
 #include "camera.h"
 void ricochet_effect()
 {
@@ -251,7 +223,6 @@ void cooldown_granate()
 
 void shoot(int wp_type)
 {
-	
 	VECTOR spawn;
 	vec_for_vertex(spawn, player, 2139);
 	

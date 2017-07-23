@@ -2,6 +2,10 @@
 
 int p_event_do_wall_collision(PARTICLE* p)
 {
+	if(LEVEL__stage == NULL) {
+		p.lifespan = 0;
+		return;
+	}
 	if(p.z < 0 && p.vel_z < 0)
 	{
 		p.vel_x *= 0.8;

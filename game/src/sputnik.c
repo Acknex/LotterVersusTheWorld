@@ -132,6 +132,7 @@ action enemy_sputnik()
 				if(attacking >= 100)
 				{
 					attacking = -25;
+					attacked = 0;
 				}
 				attacking += 10 * time_step;
 			}
@@ -145,7 +146,7 @@ action enemy_sputnik()
 				ent_animate(me, "idle", 10 * total_ticks, ANM_CYCLE);
 			}
 			attacking += time_step;
-			if(attacking > 0) { attacking = 0; attacked = 0; }
+			if(attacking > 0) { attacking = 0; }
 		}
 		
 		enemy_do_hit_flash(my);
