@@ -51,6 +51,21 @@ MATERIAL *PPDesyncMaterial =
 	effect = "Desync.fx";
 }
 
+MATERIAL *PPRingOfImpendingDoom =
+{
+	effect = "RingOfImpendingDoom.fx";
+}
+
+void pp_ring_startup()
+{
+	PPRingOfImpendingDoom.skill3 = floatv(10);
+		
+	PPRingOfImpendingDoom.skill5 = floatv(1.0);
+	PPRingOfImpendingDoom.skill6 = floatv(0.0);
+	PPRingOfImpendingDoom.skill7 = floatv(0.0);
+	PPRingOfImpendingDoom.skill8 = floatv(1.0);
+}
+
 void pp_bloom_resize()
 {
 	if(pp_isBloomEnabled)
@@ -97,6 +112,7 @@ void pp_bloom_start(float strength)
 	pp_add(PPBlurVMaterial);
 	pp_add(PPBloomMixMaterial);
 	pp_add(PPDesyncMaterial);
+	pp_add(PPRingOfImpendingDoom);
 	
 	pp_isBloomEnabled = 1;
 	pp_bloom_resize();

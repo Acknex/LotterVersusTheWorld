@@ -1,4 +1,5 @@
 #include "weapon.h"
+#include "materials.h"
 
 STRING * dialogMessage = "Hallo, Welt";
 
@@ -94,6 +95,15 @@ void hud_ingame_align() {
 	if (panEmoHealth) {
 		panEmoHealth.pos_x = 10;
 		panEmoHealth.pos_y = screen_size.y - bmap_height(bmapHealthHud);
+		
+		
+		PPRingOfImpendingDoom.skill1 = floatv(
+			  (panEmoHealth.pos_x + 0.5 * bmap_width(bmapHealthHud))
+			/ screen_size.x);
+		PPRingOfImpendingDoom.skill2 = floatv(
+			  (panEmoHealth.pos_y + 0.5 * bmap_height(bmapHealthHud))
+			/ screen_size.y);
+		
 	}
 	if (panDialog) {
 		panDialog.pos_x = screen_size.x / 2 - bmap_width(panDialog.bmap) / 2;
@@ -120,12 +130,26 @@ void show_blood_hit() {
 	ColorVariation = 0;
 }
 
+void hud_red_ring_ping()
+{
+	// TODO: Play a sound
+	var s;
+	for(s = 0; s < 6; s += 0.6 * time_step) {
+		PPRingOfImpendingDoom.skill3 = floatv(s);
+		wait(1);
+	}
+	PPRingOfImpendingDoom.skill3 = floatv(10);
+}
+
 void hud_ingame_update() {
 	if (!player) return;
 	
 	vPlayerHealth = player.health;
 	if (vPlayerHealth < vPlayerOldHealth) {
 		show_blood_hit();
+		if(vPlayerOldHealth > 20 && vPlayerHealth <= 20) {
+			hud_red_ring_ping();
+		}
 	}
 	vPlayerOldHealth = vPlayerHealth;
 	
