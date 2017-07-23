@@ -26,7 +26,10 @@
 ENTITY* camera_focus_ent = NULL;
 VIEW* cam;
 var vDistanceFactor;
+var camShakeTime = 0;
+var camShakeTimeTarget = 0;
 var vViewWidth;
+VECTOR cameraTarget = vector(0,0,0);
 
 void create_camera()
 {
@@ -65,8 +68,19 @@ void update_camera()
 		vec_add(vecPos, camera_focus_ent->x);
 		VECTOR tmp;
 		var fac = clamp(time_step, 0, 1) * CAMERA_SPEEDFAC;
-		vec_lerp(&tmp, cam->x, vecPos, fac);
-		vec_set(cam->x, tmp);
+		vec_lerp(&tmp, cameraTarget.x, vecPos, fac);
+		vec_set(cameraTarget.x, tmp);
+		
+		vec_set(cam->x, cameraTarget.x);
+		camShakeTime = minv(camShakeTimeTarget, camShakeTime + time_step/16);
+		if(camShakeTime < camShakeTimeTarget)
+		{
+			var shakeFactor = (camShakeTimeTarget-camShakeTime)/camShakeTimeTarget;
+			tmp.x = sin(camShakeTime*4000)*shakeFactor*30;
+			tmp.y = sin(camShakeTime*6000)*shakeFactor*30;
+			tmp.z = sin(camShakeTime*8000)*shakeFactor*30;
+			vec_add(cam->x, tmp.x);
+		}
 
 		//vDistanceFactor += ((is_kart_accelerating(camera_focus_ent) > 0) * 0.05 - 0.02) * time_step;
 		//vDistanceFactor = clamp(abs(vDistanceFactor), 0.28, 0.6);
@@ -78,6 +92,11 @@ void update_camera()
 	
 }
 
+void shake_cam(var time)
+{
+	camShakeTimeTarget = time;
+	camShakeTime = 0;
+}
 void show_camera()
 {
 	if (cam != NULL)

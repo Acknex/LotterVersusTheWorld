@@ -47,7 +47,14 @@ void ITEM_fade()
 	
 	vec_set(&vecDist, &my->x);
 	vec_sub(&vecDist, &player->x);
-	while (my->scale_x > 0)
+	set(me, TRANSLUCENT);
+	while(my->alpha > 0)
+	{
+		wait(1);
+		my->alpha -= 7 * time_step;	
+	}
+	my->alpha = 0;
+/*	while (my->scale_x > 0)
 	{
 		//scale down item
 		my->scale_x = maxv(my->scale_x - 0.1 * time_step, 0);
@@ -60,8 +67,8 @@ void ITEM_fade()
 		vec_scale(&my->x, my->scale_x);
 		vec_add(&my->x, &player->x);
 		wait(1);
-	}
-	ptr_remove(me);
+	}*/
+	//ptr_remove(me);
 }
 
 void ITEM_collect()

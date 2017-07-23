@@ -20,10 +20,12 @@ TEXT* txtMarkers =
 	/*TypeTurret 6*/           ".turret\n 0xBAFFBAFF",
 	/*TypeTurret2 7*/          ".turret 2.0\n 0xBADA55",
 	/*TypeSpikes 8*/           ".spikes\n 0xBEEFED",
-	/*TypeHole 9*/             ".hole\n 0xAAAAAA",
+	/*TypeHole 9*/             ".hole\n 0xC0FFEE",
 	/*TypeEnemy 10*/           ".boring standard enemy\n 0x4711",
 	/*TypeEnemy 11*/           ".retrovirus\n 0xBADD00D",
 	/*TypeEnemy 12*/           ".sphere\n 0xDEADBA11"
+	/*TypeQuestmaster 13*/     ".questmaster\n 0x1337"
+	/*TypeQuestItem 14*/       ".questitem\n 0x1337"
 	);
 }
 
