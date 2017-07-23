@@ -13,6 +13,7 @@ VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
 var playerVelY = 0;
 var shootingHandle = 0;
+var jumpbuttonHit = 0;
 
 var desyncTimer = 0;
 
@@ -208,13 +209,24 @@ void player_move() {
 		snd_tune(handleSndEngineIdle, (1-engineVolume)*100, 0, 0);
 		
 		if(player.near_teleport == 0) {
+		
+			if(!jumpbuttonHit && key_space && player.z <= 190) {
+				playerVelY = 10;
+			}
+			jumpbuttonHit = key_space;
+		
 			// Fancy mini-gravity
-			playerVelY -= 1.5 * time_step;
 			player.z += playerVelY * time_step;
 			if(player.z <= 190) {
-				playerVelY *= -0.3;
+				playerVelY = abs(0.3 * playerVelY);
 				player.z = 190;
+				if(abs(playerVelY) < 0.05) {
+					playerVelY = 0;
+				}
+			} else {
+				playerVelY -= 1.5 * time_step;
 			}
+			DEBUG_VAR(playerVelY, 16);
 		}
 		var len = vec_length(vPlayerSpeed);
 		if(HIT_TARGET && len > 15)
