@@ -12,6 +12,8 @@ VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
 var playerVelY = 0;
 
+var desyncTimer = 0;
+
 var handleSndEngineIdle = 0;
 var handleSndEngineThrust = 0;
 
@@ -230,6 +232,9 @@ void player_move() {
 			stageDoFlood(LEVEL__stage, playerX, playerY, FLOOD_PLAYER, 12, 0);
 		}
 	}
+	
+	desyncTimer = maxv(0, desyncTimer - time_step/16);
+	pp_desync(floatv(desyncTimer/0.4*20));
 }
 
 
@@ -270,6 +275,7 @@ void player_event() {
 		case EVENT_SHOOT:
 		case EVENT_SCAN:
 		my.health -=your.damage;
+		desyncTimer = 0.4; // 0.4 second desync
 		if (my.health <= 0) {
 			printf("You are DEAD!");
 		}

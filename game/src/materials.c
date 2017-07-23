@@ -12,6 +12,13 @@ MATERIAL *LotterMaterial =
 	flags = PASS_SOLID;
 }
 
+MATERIAL *LotterSplashMaterial =
+{
+	effect = "LotterSplash.fx";
+	flags = AUTORELOAD;
+	flags = PASS_SOLID;
+}
+
 MATERIAL *HoveboardGlowMaterial =
 {
 	effect = "hoverboardGlow.fx";
@@ -38,6 +45,11 @@ MATERIAL *PPBlurVMaterial =
 	effect = "Blur.fx";
 }
 
+MATERIAL *PPDesyncMaterial =
+{
+	effect = "Desync.fx";
+}
+
 void pp_bloom_resize()
 {
 	if(pp_isBloomEnabled)
@@ -48,6 +60,11 @@ void pp_bloom_resize()
 		PPBloomMixMaterial.skin1 = bmap_createblack(screen_size.x, screen_size.y, 8888);
 		BloomImageView.bmap = PPBloomMixMaterial.skin1;
 	}
+}
+
+void pp_desync(float strength)
+{
+	PPDesyncMaterial.skill1 = strength;
 }
 
 void pp_bloom(float strength)
@@ -67,6 +84,8 @@ void pp_bloom(float strength)
 		pp_view = cam;
 		pp_stage = cam;
 		
+		pp_desync(0);
+		
 		BloomImageView = cam;
 		pp_bloom_resize();
 		
@@ -74,6 +93,7 @@ void pp_bloom(float strength)
 		pp_add(PPBlurHMaterial);
 		pp_add(PPBlurVMaterial);
 		pp_add(PPBloomMixMaterial);
+		pp_add(PPDesyncMaterial);
 	}
 }
 
