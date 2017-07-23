@@ -251,9 +251,8 @@ void player_init() {
 	// Adapt bounding box
 	c_setminmax(player);
 	wait(1);
-	vec_set(player.min_x, vector(-30, -30, -70));
+	vec_set(player.min_x, vector(-30, -30, -188));
 	vec_set(player.max_x, vector(30, 30, 12));
-	
 	move_friction = 0.1;
 	
 	mouse_mode = 4;
@@ -262,7 +261,7 @@ void player_init() {
 	
 	player.damage = 1;
 	
-	player.emask |= ENABLE_SHOOT | ENABLE_SCAN;
+	player.emask |= ENABLE_SHOOT | ENABLE_SCAN | ACTIVATE_SHOOT;
 	player.event = player_event;
 	player->type = TypePlayer;
 	

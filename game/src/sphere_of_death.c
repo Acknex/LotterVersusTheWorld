@@ -162,10 +162,11 @@ void SPHEREOD__loop()
 				var randomOffset = random(360);
 				var i = 0;
 				for(i = 0; i < count; ++i) {
-					VECTOR* vecDist = vector(-30, 0, 0);
+					VECTOR* vecDist = vector(-40, 0, 0);
 					ANGLE* angRot = vector(i/count*360+randomOffset, 0, 0);
 					vec_rotate(vecDist, angRot);
 					vec_add (vecDist, my.x);
+					vecDist.z += 15;
 					ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	
 					ent->pan = i/count*360+randomOffset;	
 				}
