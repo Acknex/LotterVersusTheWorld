@@ -28,6 +28,8 @@
 #define TypeEnemy 10
 #define TypeBat 11
 #define TypeSphereOfDeath 12
+#define TypeQuestmaster 13
+#define TypeQuestitem 14
 
 
 #define TypeMaxNumber 13 //adjust and never exceed

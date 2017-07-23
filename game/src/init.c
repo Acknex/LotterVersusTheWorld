@@ -30,7 +30,7 @@ void INIT_levelStart()
 	VECTOR* vecTemp;
 	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.85, 0.1);
 	ent_create("warlock.mdl", vecTemp, questmaster);
-	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.9, 0.1);
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.25, 0.1);
 	ent_create(CUBE_MDL, vecTemp, questitem);
 	
 	sky_color.red = 0;
