@@ -290,7 +290,8 @@ void player_move() {
 		shoot(2);
 	}
 	
-	MARKER_update(player);
+	//mark only enemies and items. no projectiles, no player
+	//MARKER_update(player);
 	if(LEVEL__stage) 
 	{
 		static int playerX = 0;

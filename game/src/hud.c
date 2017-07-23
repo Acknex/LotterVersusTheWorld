@@ -1,7 +1,8 @@
 #include "weapon.h"
 #include "materials.h"
 
-STRING * dialogMessage = "Hallo, Welt";
+STRING * dialogMessage = "#500";
+SOUND* sndDialog = "dialog.wav";
 
 FONT* fontDialog = "Arial#30b";
 
@@ -12,6 +13,7 @@ PANEL * panDialog =
 	alpha = 80;
 	flags = OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y;
 	layer = 10;
+	scale_y = 0.01;
 }
 
 void hud_ingame_init() {
@@ -35,6 +37,7 @@ void hud_ingame_init() {
 	if (!panDialog) {
 		panDialog = pan_create(NULL, 2);
 		panDialog.bmap = bmapDialog;
+		panDialog.scale_y = 0.01;
 		pan_setdigits(panDialog, 0, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, &dialogMessage);
 		panDialog.alpha = 80;
 		set(panDialog, OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y);
@@ -62,26 +65,34 @@ void hide_death_screen()
 
 void show_dialog(char * _text) {
 	proc_mode = PROC_GLOBAL;
-	str_cpy(dialogMessage, _text);
+//	str_cpy(dialogMessage, _text);
 	if (panDialog) {
 		proc_kill(4);
-		panDialog.scale_y = 0;
+		panDialog.scale_y = 0.01;
 		set(panDialog, SHOW);
-		while(panDialog.scale_y < 1) {
-			panDialog.scale_y += 0.1 * time_step;
+		snd_play(sndDialog,100,0);
+		while(panDialog.scale_y < 1) 
+		{
 			wait(1);
+		//	panDialog.scale_y += 0.1 * time_step;
+			panDialog.scale_y = minv(panDialog.scale_y + 0.1 * time_step, 100);
 		}
-		panDialog.scale_y = 1;
+		str_cpy(dialogMessage, _text);
+		//panDialog.scale_y = 1;
 		// pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, dialogMessage);
-		wait(-2);
+		wait(-3);
 		// pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "", fontDialog, 1, vDummy);
-		while(panDialog.scale_y > 0) {
-			wait(1);
-			panDialog.scale_y -= 0.1 * time_step;
-		}
-		panDialog.scale_y = 0;
-		reset(panDialog, SHOW);
 		str_cpy(dialogMessage, "");
+		while(panDialog.scale_y > 0.01) 
+		{
+			wait(1);
+			//panDialog.scale_y -= 0.1 * time_step;
+			panDialog.scale_y = maxv(0.01, panDialog.scale_y - 0.1 * time_step);
+			
+		}
+		//panDialog.scale_y = 0;
+		reset(panDialog, SHOW);
+//		str_cpy(dialogMessage, "");
 	}
 }
 

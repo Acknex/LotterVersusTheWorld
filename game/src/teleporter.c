@@ -2,15 +2,18 @@
 #include "init.h"
 
 ENTITY * teleporterEntity = NULL;
+ENTITY * teleporterSocket = NULL;
 
 void teleporter_enable()
 {
 	reset(teleporterEntity, INVISIBLE);
+	teleporterSocket->type = TypeTeleporterEnabled;
 }
 
 void teleporter_disable()
 {
 	set(teleporterEntity, INVISIBLE);
+	teleporterSocket->type = TypeTeleporterDisabled;
 }
 
 function teleport_effect(PARTICLE * p)
@@ -27,6 +30,8 @@ action teleporter_out()
 {
 	teleporterEntity = me;
 	you = ent_create("Teleport.mdl", my.x, NULL);
+	teleporterSocket = you;
+	teleporterSocket->type = TypeTeleporterDisabled;
 	set(me,  PASSABLE | FLAG2 | INVISIBLE);
 	set(you, PASSABLE | FLAG2);
 	while(!player) wait(1);
@@ -36,6 +41,7 @@ action teleporter_out()
 	var portloader = 0;
 	while(1)
 	{
+		MARKER_update(teleporterSocket);
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
 		if(!is(me, INVISIBLE) && dist < 70) // ist höhenabhängig!
 		{

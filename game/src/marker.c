@@ -24,6 +24,11 @@ void MARKER_update(ENTITY* ent)
 	if (MARKER__show == 0 || MARKER__enable == 0)
 		return;
 	
+	//quick hack: only show when hovering with mouse
+	//dumb solution but rewriting everything is more work
+	if(mouse_ent == NULL || mouse_ent != ent)
+		return;
+		
 	if (ent == NULL || player == NULL)
 	{
 		return;

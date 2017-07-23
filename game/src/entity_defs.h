@@ -30,6 +30,8 @@
 #define TypeSphereOfDeath 12
 #define TypeQuestmaster 13
 #define TypeQuestitem 14
+#define TypeTeleporterDisabled 15
+#define TypeTeleporterEnabled 16
 
 
-#define TypeMaxNumber 15 //adjust and never exceed
+#define TypeMaxNumber 17 //adjust and never exceed

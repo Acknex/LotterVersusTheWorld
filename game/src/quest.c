@@ -10,6 +10,7 @@ var QUEST__id = 0;
 
 void QUEST__masterEvent();
 void QUEST__itemEvent();
+void QUEST__droptofloor();
 
 #include "entity_defs.h"
 #include "materials.h"
@@ -27,11 +28,11 @@ TEXT* txtQuestTasks =
 	strings = 5;
 		
 	string(	
-	/* 0 */  "Grab a jetpack",
-	/* 1 */ 	"Compile with Acknex3",
-	/* 2 */  "Obtain Acknex2 sources",
-	/* 3 */  "Retrieve a racecar",
-	/* 4 */  "A wild Lottifant appeared"
+	/* 0 */ "Grab a jetpack",
+	/* 1 */ "Compile with Acknex3",
+	/* 2 */ "Obtain Acknex2 sources",
+	/* 3 */ "Retrieve a racecar",
+	/* 4 */ "A wild Lottifant appeared"
 	);
 }
 
@@ -41,18 +42,19 @@ action questmaster()
 {
 	my->type = TypeQuestmaster;
 	vec_scale(my->scale_x, 2.5);
+	wait(1);
 	//my->event = QUEST__masterEvent;
 	my->material = HologramMaterial;
 	//my->emask |= ENABLE_TRIGGER;
 	//my->trigger_range = 80;
-	my->z = 80;
-	my->pan = -135;
+	my->z = 150;
+	QUEST__droptofloor();
 	set(me, PASSABLE);
 	while(player == NULL)
 	{
 		wait(1);
 	}
-	while(my->textTimer < TEXTDURATION)
+	while(QUEST__started == 0)
 	{
 		MARKER_update(me);
 		VECTOR vecTemp;
@@ -65,7 +67,6 @@ action questmaster()
 			str_cpy(strQuestMessage, "New Mission obtained:\n");
 			str_cat(strQuestMessage, (txtQuestTasks->pstring)[QUEST__id]);
 			show_dialog(strQuestMessage);
-			break;
 		}
 		else
 		{
@@ -73,19 +74,21 @@ action questmaster()
 			vec_sub(vecTemp, my->x);
 			ANGLE angTemp;
 			vec_to_angle(angTemp, vecTemp);
-			my->pan = angTemp.pan;
+			my->pan = my->pan*0.3 + angTemp.pan*0.7;
 		}
 		wait(1);
 		my->animCounter = cycle(my->animCounter += 2 * time_step,0,100);
 		ent_animate(me, "stand", my->animCounter, ANM_CYCLE);
 	}
-	while(my->alpha > 0)
+	wait(-2);
+	while(my->scale_z > 0)
 	{
 		MARKER_update(me);
 		wait(1);
-		my->alpha -= 7 * time_step;
+		my->scale_z -= 0.15 * time_step;
+		QUEST__droptofloor();
 	}
-	my->alpha = 0;
+	my->scale_z = 0;
 	wait(1);
 	ptr_remove(me);
 }
@@ -153,7 +156,10 @@ action questitem()
 		
 		if ((vec_dist2d(my.x, player.x) < 80) || (cheats_enabled && key_q)) // We collided with it ;)
 		{
-			show_dialog("Mission accomplished!\nTeleporter enabled.");
+			str_cpy(strQuestMessage, "Mission completed!");
+			//str_cat(strQuestMessage, (txtQuestTasks->pstring)[QUEST__id]);
+			str_cat(strQuestMessage, "\nTeleporter enabled.");
+			show_dialog(strQuestMessage);
 			snd_play(sndQuestDone, 100, 0);
 			break;
 		}
@@ -197,4 +203,13 @@ var QUEST_isSolved()
 var QUEST_isStarted()
 {
 	return QUEST__started;
+}
+
+void QUEST__droptofloor()
+{
+	VECTOR to;
+	vec_set(to, my->x);
+	to.z -= 300;
+	var dist = c_trace(my->x, to, IGNORE_ME | IGNORE_PASSABLE);
+	my.z -= dist+my->min_z;
 }
