@@ -6,6 +6,9 @@ void ITEM_fade();
 void ITEM_collect();
 void ITEM_update();
 
+#define is_collected  FLAG4
+
+
 #include "itembase.c"
 
 #endif
