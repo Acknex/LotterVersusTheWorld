@@ -1,6 +1,7 @@
 SOUND* snd_sputnik_attack1 = "sputnik_attack1.wav";
 SOUND* snd_sputnik_attack2 = "sputnik_attack2.wav";
 SOUND* snd_sputnik_attack3 = "sputnik_attack3.wav";
+SOUND* snd_sputnik_death = "sputnik_death.wav";
 
 void sputnik_attack_sound() {
 	var i = integer(random(3));
@@ -173,6 +174,6 @@ action enemy_sputnik()
 		wait(1);
 	}
 	effect(p_bat_explode,100,my.x,nullvector);
-	snd_play(sndBatDeath, 100, 0);
+	snd_play(snd_sputnik_death, 100, 0);
 	ptr_remove(me);
 }
