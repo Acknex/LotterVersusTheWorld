@@ -2,6 +2,7 @@
 #include "ricochet.h"
 #include "marker.h"
 #include "font.h"
+#include "cheats.h"
 
 #define bulletSpeed skill20
 #define bulletLifeTime skill21
@@ -288,7 +289,7 @@ action enemy_hex()
 	
 	my->material = HexMaterial;
 	
-	while(my.health > 0)
+	while(my.health > 0 && !(cheats_enabled && key_k))
 	{
 		VECTOR dir;
 		vec_diff(dir, player.x, my.x);

@@ -27,8 +27,20 @@ action teleporter_out()
 	while(1)
 	{
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
-		if(!is(me, INVISIBLE) && dist < 50) // ist höhenabhängig!
+		if(!is(me, INVISIBLE) && dist < 70) // ist höhenabhängig!
 		{
+			if(dist > 5)
+			{
+				var force = 10 * pow(dist / 50, 1);
+				
+				VECTOR dir;
+				vec_diff(dir, my.x, player.x);
+				dir.z = 0;
+				vec_normalize(dir, force * time_step);
+			
+				vec_add(player.x, dir);
+			}
+			
 			player.near_teleport = 1;
 			player.z += time_step;
 			player.pan += 0.1 * portloader * time_step;

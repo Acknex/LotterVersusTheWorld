@@ -56,7 +56,7 @@ action questmaster()
 	{
 		MARKER_update(me);
 		VECTOR vecTemp;
-		if (vec_dist2d(my.x, player.x) < 80) // We collided with it ;)
+		if ((vec_dist2d(my.x, player.x) < 80) || (cheats_enabled && key_q)) // We collided with it ;)
 		{
 			QUEST__started = 1;
 			set(my, PASSABLE);		
@@ -151,7 +151,7 @@ action questitem()
 		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
 		VECTOR vecTemp;
 		
-		if (vec_dist2d(my.x, player.x) < 80) // We collided with it ;)
+		if ((vec_dist2d(my.x, player.x) < 80) || (cheats_enabled && key_q)) // We collided with it ;)
 		{
 			show_dialog("Mission accomplished!\nTeleporter enabled.");
 			snd_play(sndQuestDone, 100, 0);
@@ -176,15 +176,16 @@ action questitem()
 void my_startup(){on_x= questspawn;}
 */
 
-void QUEST_init()
-{
-	QUEST__id = integer(random(5));
-}
-
 void QUEST_reset()
 {
 	QUEST__solved = 0;
 	QUEST__started = 0;
+}
+
+void QUEST_init()
+{
+	QUEST_reset();
+	QUEST__id = integer(random(5));
 }
 
 var QUEST_isSolved()
