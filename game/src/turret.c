@@ -278,6 +278,7 @@ void TURRET__shoot()
 	vec_add (vecDist, &vecPos);
 	snd_play(sndTurretShot, 100, 0);
 	ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	
+	ent->damage = 9;
 	ent->pan = my->shootAngle;	
 }
 
