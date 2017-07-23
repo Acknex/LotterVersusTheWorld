@@ -109,12 +109,29 @@ void INIT_levelLoop()
 	while(INIT__levelRunning != 0)
 	{
 		//updateMusic();
+		if(player && player->health <= 0)
+			break;
 		player_move();
 		update_camera();
 		hud_ingame_update();
 		
 		if(LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);
+	}
+	if(player && player->health <= 0)
+	{
+		var fade = 0;
+		show_death_screen(0);
+		while(1)
+		{
+			show_death_screen(fade);
+			fade = minv(fade+2*time_step, 100);
+			if(fade > 80 && key_any)
+				break;
+			wait(1);
+		}
+		hide_death_screen();
+		INIT_levelEnd();
 	}
 }
 

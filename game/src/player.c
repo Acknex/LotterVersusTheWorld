@@ -117,7 +117,9 @@ void player_move_old() {
 }
 
 void player_move() {
-	
+	if(player->health <= 0)
+		return;
+		
 	if (mouse_mode > 0)	
 	{ 
 		mouse_pos.x = mouse_cursor.x;    
@@ -217,6 +219,28 @@ void player_move() {
 			effect(p_hoverboard_smoke,3,temp2,temp);
 		}
 	}
+	/* SHOOOTING */
+	
+	var shootingHandle = 0;
+	if(mouse_left) 
+	{
+		if(shootingHandle == 0)
+		{
+			shootingHandle = snd_loop(sndPlayerShot, 50, 0);
+		}
+		player.weapon_bouncing = 2;
+		player.group = 3;
+		shoot(1);
+	}
+	if(!mouse_left && shootingHandle != 0) 
+	{
+		snd_stop(shootingHandle);
+		shootingHandle = 0;
+	}
+	if(mouse_right)
+	{
+		shoot(2);
+	}
 	
 	MARKER_update(player);
 	if(LEVEL__stage) 
@@ -244,6 +268,8 @@ void player_init() {
 	player = ent_create("cbabe_maleHover.mdl", stageGetEntrancePos(LEVEL__stage, NULL, NULL, NULL), NULL);
 	player->material = LotterMaterial;
 	player->health = 100;
+	player->weapon_bouncing = 2;
+	player->group = 3;
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2.25);
@@ -274,11 +300,11 @@ void player_event() {
 		case EVENT_SHOOT:
 		case EVENT_SCAN:
 		my.health -=your.damage;
+		my.health = 0; // TODO: remove
 		desyncTimer = 0.4; // 0.4 second desync
 		if (my.health <= 0) {
-			printf("You are DEAD!");
+			pp_desync(0);
 		}
-		
 		break;
 		
 	}
