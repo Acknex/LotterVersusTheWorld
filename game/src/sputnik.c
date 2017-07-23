@@ -57,9 +57,9 @@ action enemy_sputnik()
 				//draw_line3d2(my.x,curTarget,COLOR_RED,75);
 				//draw_line3d2(curTarget,myTarget,COLOR_GREEN,75);
 			}	
-			my.skill31 += 12*time_step;
-			my.skill31 %= 360;
-			my.z = 64+16*sinv(my.skill31);
+			//my.skill31 += 12*time_step;
+			//my.skill31 %= 360;
+			my.z = 64;
 			if(!(my.eflags&CLIPPED))
 			{
 				vec_set(temp2,nullvector);
@@ -147,6 +147,7 @@ action enemy_sputnik()
 			if(attacking > 0) { attacking = 0; attacked = 0; }
 		}
 		
+		enemy_do_hit_flash(my);
 		wait(1);
 	}
 	effect(p_bat_explode,100,my.x,nullvector);

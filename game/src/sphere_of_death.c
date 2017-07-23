@@ -182,6 +182,7 @@ void SPHEREOD__loop()
 				my->sphere_state = SOD_SEARCH;
 			}
 		}
+		enemy_do_hit_flash(my);
 		wait(1);	
 	}
 	SPHEREOD__die();

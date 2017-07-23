@@ -12,6 +12,20 @@ void ENEMY__projectileLoop();
 
 SOUND* sndBatDeath = "sounds\\bat_destroyed.wav";
 
+
+void enemy_do_hit_flash(ENTITY* ent)
+{
+	ent.skill44 = fixv(ent.skill44);
+	ent.skill44 = maxv(ent.skill44-0.75*time_step,0);
+	ent.skill44 = floatv(ent.skill44);
+	if(ent.skill43 != ent.health)
+	{
+		ent.skill43 = ent.health;
+		ent.skill44 = floatv(1);
+	}
+}
+
+
 action enemy_projectile()
 {
 	my->emask |= ENABLE_IMPACT | ENABLE_SHOOT | ENABLE_ENTITY;
@@ -107,7 +121,6 @@ void ENEMY__projectileLoop()
 	my->event = NULL;
 	ptr_remove(me);
 }
-
 
 void enemy_bat_fade()
 {
@@ -215,6 +228,7 @@ action enemy_bat()
 		}
 		else my.skill38 = 0;
 		MARKER_update(me);
+		enemy_do_hit_flash(my);
 		
 		wait(1);
 	}
