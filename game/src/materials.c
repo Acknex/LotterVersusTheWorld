@@ -12,6 +12,13 @@ MATERIAL *LotterMaterial =
 	flags = PASS_SOLID;
 }
 
+MATERIAL *LotterSplashMaterial =
+{
+	effect = "LotterSplash.fx";
+	flags = AUTORELOAD;
+	flags = PASS_SOLID;
+}
+
 MATERIAL *HoveboardGlowMaterial =
 {
 	effect = "hoverboardGlow.fx";
