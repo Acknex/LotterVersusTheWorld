@@ -11,6 +11,7 @@
 #define weapon_cooldown skill16
 #define weapon_bouncing skill17
 #define weapon_granade_cooldown skill18
+#define markerCounter skill19
 
 
 //skill20-40: for individual use, do not define here

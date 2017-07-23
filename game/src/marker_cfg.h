@@ -21,11 +21,11 @@ TEXT* txtMarkers =
 	/*TypeHole 9*/             ".hole\n 0x1337",
 	/*TypeEnemy 10*/           ".sputnik\n 0xAFFE",
 	/*TypeEnemy 11*/           ".retrovirus\n 0xBADD00D",
-	/*TypeEnemy 12*/           ".sphere\n 0xDEADBA11",
+	/*TypeEnemy 12*/           ".sphere of death\n 0xDEADBA11",
 	/*TypeQuestmaster 13*/     ".questmaster\n 0xFAB1E",
 	/*TypeQuestItem 14*/       ".questitem\n 0xC0FFEE",
-	/*TypeTeleporterDisabled 15*/      ".broken teleporter\n 0xDEADC0DE",
-	/*TypeTeleporterEnabled 16*/      ".active teleporter\n 0xC001C001"
+	/*TypeTeleporterDisabled 15*/      ".teleporter .broken\n 0xDEADC0DE",
+	/*TypeTeleporterEnabled 16*/      ".teleporter .active\n 0xC001C001"
 	);
 }
 
