@@ -25,6 +25,7 @@ void SPLASH__reposition();
 int SPLASH__cancelAnim();
 void SPLASH__initMenu();
 void SPLASH__startGame();
+void SPLASH__exitGame();
 void SPLASH__housekeeping();
 
 
