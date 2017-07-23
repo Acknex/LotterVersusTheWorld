@@ -4,6 +4,9 @@ void hud_ingame_init() {
 	if (!fontHud) {
 		fontHud = font_create("Arial#20b");
 	}
+	if (!fontDialog) {
+		fontDialog = font_create("Arial#40b");
+	}
 	if (!panEmoHealth) {
 		panEmoHealth = pan_create(NULL, 1);
 		panEmoHealth.bmap = bmapHealthHud;
@@ -15,13 +18,52 @@ void hud_ingame_init() {
 		set(panEmoHealth, OUTLINE | TRANSLUCENT | CENTER_X);
 	}
 	
+	if (!panDialog) {
+		panDialog = pan_create(NULL, 2);
+		panDialog.bmap = bmapDialog;
+		pan_setdigits(panDialog, 0, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "", fontDialog, 1, vDummy);
+		panDialog.alpha = 80;
+		set(panDialog, OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y);
+	}
+	
 	hud_ingame_align();
+}
+
+void show_dialog(STRING* _text) {
+	if (panDialog) {
+		panDialog.scale_y = 0;
+		set(panDialog, SHOW);
+		while(panDialog.scale_y < 1) {
+			panDialog.scale_y +=0.1 * time_step;
+			wait(1);
+		}
+		panDialog.scale_y = 1;
+		pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, _text, fontDialog, 1, vDummy);
+		wait(-2);
+		pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "", fontDialog, 1, vDummy);
+		while(panDialog.scale_y > 0) {
+			panDialog.scale_y -=0.1 * time_step;
+			wait(1);
+		}
+		panDialog.scale_y = 0;
+		reset(panDialog, SHOW);
+	}
+}
+
+void hide_dialog() {
+	if (panDialog) {
+		reset(panDialog, SHOW);
+	}
 }
 
 void hud_ingame_align() {
 	if (panEmoHealth) {
 		panEmoHealth.pos_x = 10;
 		panEmoHealth.pos_y = screen_size.y - bmap_height(bmapHealthHud);
+	}
+	if (panDialog) {
+		panDialog.pos_x = screen_size.x / 2 - bmap_width(panDialog.bmap) / 2;
+		panDialog.pos_y = screen_size.y / 2 - bmap_height(panDialog.bmap) / 2;
 	}
 }
 
@@ -74,6 +116,11 @@ void hud_ingame_update() {
 	if (player.weapon_granade_cooldown > weapon_grenade_cooldown_time / 6 * 5) {
 		vBombCooldown = bmap_width(bmapBombSlots) / 6 * 5;
 	}
+	
+	if (key_l) {
+		while(key_l) wait(1);
+		show_dialog("Quest gestartet!");
+	}
 }
 
 void hud_ingame_show() {
@@ -82,4 +129,5 @@ void hud_ingame_show() {
 
 void hud_ingame_hide() {
 	reset(panEmoHealth, SHOW);
+	reset(panDialog, SHOW);
 }

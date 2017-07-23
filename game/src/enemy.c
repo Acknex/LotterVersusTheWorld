@@ -93,8 +93,9 @@ void ENEMY__projectileLoop()
 	while (!is(my, dead))
 	{
 		my->bulletLifeTime -= time_step;
-		VECTOR* to = vector(-12,0,0);
+		VECTOR* to = vector(-my->bulletSpeed,0,0);
 		vec_rotate (to, my->pan);
+		vec_scale (to, time_step);
 		vec_add(to, my->x);
 		
 		//draw_line3d(my->x,NULL,100); // move to first corner   
