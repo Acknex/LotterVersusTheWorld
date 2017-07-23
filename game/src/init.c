@@ -54,6 +54,8 @@ void INIT_levelStart()
 	player_init();
 	diag("\npost-player-init");
 	
+	wait(1);
+
 	//setup camera	
 	create_camera();
 	focus_camera(player);

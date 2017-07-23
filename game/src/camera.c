@@ -29,7 +29,7 @@ var vDistanceFactor;
 var camShakeTime = 0;
 var camShakeTimeTarget = 0;
 var vViewWidth;
-VECTOR cameraTarget = vector(0,0,0);
+VECTOR cameraTarget;
 
 void create_camera()
 {
@@ -60,7 +60,7 @@ void remove_camera()
 void update_camera()
 {
 	VECTOR vecPos;
-	
+
 	if ((camera_focus_ent != NULL) && (cam != NULL))
 	{
 		vec_set(vecPos, vector(-CAMERA_DIST, 0, 0));
@@ -118,14 +118,10 @@ void hide_camera()
 void focus_camera(ENTITY* ent)
 {
 	camera_focus_ent = ent;
-	/*
-	do
-	{
- 		camera_focus_ent = ent;
-		wait(1);
-	} while (camera_focus_ent == NULL);
-	*/
-	if(camera_focus_ent) vec_set(cam->x, camera_focus_ent->x);
+	if(camera_focus_ent) {
+		vec_set(cam->x, camera_focus_ent->x);
+		vec_set(cameraTarget, camera_focus_ent->x);
+	}
 }
  
 VIEW* get_camera()
