@@ -140,7 +140,7 @@ void player_hit_sound() {
 
 void hit_player(var dmg)
 {
-	if(player != NULL)
+	if(player != NULL && player->health > 0)
 	{
 		player->health -= dmg;
 		player_hit_sound();
@@ -148,6 +148,8 @@ void hit_player(var dmg)
 		if (player->health <= 0) 
 		{
 			pp_desync(0);
+			snd_stop(handleSndEngineIdle);
+			snd_stop(handleSndEngineThrust);
 		}
 	}
 }
