@@ -2,6 +2,7 @@
 #include "datatypes.h"
 #include "levelgen.h"
 #include "entity_defs.h"
+#include "cheats.h"
 
 //STAGE* LEVEL__stage = NULL;
 
@@ -148,7 +149,7 @@ void player_move() {
 		player.pan += clamp(diff*0.35,-diffAlignSpeed,diffAlignSpeed)*time_step;
 	}
 	
-	if(mouse_middle) {
+	if(mouse_middle && cheats_enabled) {
 		vec_set(player.x, target);
 	}
 	
