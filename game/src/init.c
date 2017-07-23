@@ -30,7 +30,7 @@ void INIT_levelStart()
 	//level_load("test_level_small.wmb");
 	diag("\npre-create");
 
-	LEVEL__stage = stageCreate(32,32,0,INIT__currentHardness++); // 8172.607
+	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
 	stageAddExitAndEntrance(LEVEL__stage);
