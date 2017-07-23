@@ -16,6 +16,8 @@
 	
 	STRING *str_weapon_code = "::";
 	
+	BMAP *projectile_skin = "#32x32x32";
+	
 	FONT *monoid = "Monoid#32b";
 	
 	TEXT *txt_fragment =
