@@ -1,5 +1,5 @@
 
-#include <DynamicModels.h>
+#include "DynamicModels.h"
 
 #include "materials.h"
 #include "turret.h"
@@ -10,6 +10,10 @@
 #include "entity_defs.h"
 #include "marker.h"
 #include "level_furniture.h"
+
+#define PRAGMA_BIND "tile-wall-upper-01.mdl"
+#define PRAGMA_BIND "tile-wall-upper-02.mdl"
+#define PRAGMA_BIND "tile-wall-upper-03.mdl"
 
 LPD3DXMESH stage_groundMesh, stage_upperWallMesh[3], stage_lowerWallMesh, stage_upperWallOutlineMesh, stage_outlinePostMesh;
 

@@ -1,6 +1,6 @@
-SOUND* sndPlayerShot = "sounds\\player_shot.wav";
-SOUND* sndGrenadeThrow = "sounds\\grenade_throw.wav";
-SOUND* sndGrenadeExplode = "sounds\\grenade_explode.wav";
+SOUND* sndPlayerShot = "player_shot.wav";
+SOUND* sndGrenadeThrow = "grenade_throw.wav";
+SOUND* sndGrenadeExplode = "grenade_explode.wav";
 
 #include "camera.h"
 

@@ -1,4 +1,5 @@
 #include <mtlView.c>
+#include "cheats.h"
 
 static BOOL pp_isBloomEnabled = false;
 VIEW *BloomImageView = NULL;
@@ -118,7 +119,7 @@ float ColorVariation = 0.0;
 
 function ColorLUT_Bounce()
 {
-	while(key_p)
+	while(key_p && cheats_enabled)
 	{
 		ColorVariation = 0.5 + 0.5 * sinv(4 * total_ticks);
 		wait(1);
@@ -143,7 +144,10 @@ MATERIAL *HexMaterial =
 	flags = TRANSLUCENT;
 }
 //
-//function WallMainText_startup()
+function Materials_startup()
+{
+	on_p = ColorLUT_Bounce;
+}
 //{
 //	// WallMainText.size_x = bmap_width(WallMainTextImage);
 //	WallMainText.size_y = bmap_height(WallMainTextImage);
@@ -153,7 +157,6 @@ MATERIAL *HexMaterial =
 //	wait(1);
 //	bmap_to_mipmap(WallMainTextImage);
 //	
-//	on_p = ColorLUT_Bounce;
 //	
 //	while(1)
 //	{
@@ -211,8 +214,8 @@ MATERIAL *WallOutlineMaterial =
 	flags = PASS_SOLID;
 }
 
-BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
-BMAP *WallLowerLavaBMAP = "graphics/lava.png";
+BMAP *WallLower01BMAP = "tile-wall-lower_01.dds";
+BMAP *WallLowerLavaBMAP = "lava.png";
 
 MATERIAL *WallLowerMaterial =
 {

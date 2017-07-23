@@ -2,6 +2,7 @@
 #include "datatypes.h"
 #include "levelgen.h"
 #include "entity_defs.h"
+#include "cheats.h"
 
 //STAGE* LEVEL__stage = NULL;
 
@@ -18,8 +19,8 @@ var desyncTimer = 0;
 var handleSndEngineIdle = 0;
 var handleSndEngineThrust = 0;
 
-SOUND* snd_engine_idle = "sounds\\engine_idle.wav";
-SOUND* snd_engine_thrust = "sounds\\engine_thrust.wav";
+SOUND* snd_engine_idle = "engine_idle.wav";
+SOUND* snd_engine_thrust = "engine_thrust.wav";
 
 void player_move_old() {
 	
@@ -148,7 +149,7 @@ void player_move() {
 		player.pan += clamp(diff*0.35,-diffAlignSpeed,diffAlignSpeed)*time_step;
 	}
 	
-	if(mouse_middle) {
+	if(mouse_middle && cheats_enabled) {
 		vec_set(player.x, target);
 	}
 	

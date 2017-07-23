@@ -18,8 +18,8 @@ void SPHEREOD__turnOn();
 #define SOD_CLOSE 3
 #define SOD_WAIT 4
 
-SOUND* snd_sphere_activate = "sounds\\sphere_activate.wav";
-SOUND* snd_sphere_stomp = "sounds\\sphere_stomp.wav";
+SOUND* snd_sphere_activate = "sphere_activate.wav";
+SOUND* snd_sphere_stomp = "sphere_stomp.wav";
 
 void sphere_stomp_effect()
 {
