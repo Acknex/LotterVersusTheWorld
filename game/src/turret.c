@@ -26,6 +26,7 @@
 #include "enemy.h"
 #include "marker.h"
 #include "entity_defs.h"
+#include "stats.h"
 
 void TURRET__init();
 void TURRET__loop();
@@ -226,6 +227,8 @@ void TURRET__die()
 	my->event = NULL;
 	my->animCounter = 0;
 	my->type = TypeDestroyed;
+	
+	stats_addKill(STATENEMY_TURRET);	
 	
 	while (my->animCounter < 100)
 	{

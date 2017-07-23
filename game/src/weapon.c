@@ -3,6 +3,7 @@ SOUND* sndGrenadeThrow = "grenade_throw.wav";
 SOUND* sndGrenadeExplode = "grenade_explode.wav";
 
 #include "camera.h"
+#include "Annoying.h"
 
 void ricochet_effect()
 {

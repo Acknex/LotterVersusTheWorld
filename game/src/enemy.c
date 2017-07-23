@@ -3,6 +3,7 @@
 #include "marker.h"
 #include "font.h"
 #include "cheats.h"
+#include "stats.h"
 
 #define bulletSpeed skill20
 #define bulletLifeTime skill21
@@ -290,6 +291,7 @@ action enemy_bat()
 	effect(p_bat_explode,100,my.x,nullvector);
 	snd_play(sndBatDeath, 100, 0);
 	ptr_remove(me);
+	stats_addKill(STATENEMY_BAT);
 }
 
 action enemy_hex()

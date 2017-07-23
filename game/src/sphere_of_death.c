@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include "marker.h"
+#include "stats.h"
 
 void SPHEREOD__init();
 void SPHEREOD__loop();
@@ -207,6 +208,7 @@ void SPHEREOD__die()
 {
 	effect(p_sphere_explode,200,my.x,nullvector);
 	ptr_remove(me);
+	stats_addKill(STATENEMY_SPHEREOD);
 }
 
 void SPHEREOD__shoot()

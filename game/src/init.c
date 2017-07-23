@@ -7,6 +7,7 @@
 #include "hud.h"
 #include "quest.h"
 #include "cheats.h"
+#include "stats.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
@@ -28,6 +29,8 @@ function INIT_levelRestartCheat()
 void INIT_levelStart()
 {
 	on_r = INIT_levelRestartCheat;
+	
+	stats_reset();
 	
 	INIT__levelRunning = 1;
 
@@ -101,6 +104,10 @@ void INIT_levelEnd()
 	
 	wait(1);
 	
+	if(stats_finalize()) {
+		error("You got a new highscore.\nAlso: Replace this error with something useful.");
+	}
+	
 	remove_camera();
 	
 	wait(-1);
@@ -152,6 +159,7 @@ void INIT_globalLoop()
 
 void INIT_start()
 {
+	stats_init();
 	FONT_create();
 	//create_camera();	
 }

@@ -27,6 +27,7 @@ SOUND* snd_player_hit1 = "player_hit1.wav";
 SOUND* snd_player_hit2 = "player_hit2.wav";
 SOUND* snd_player_hit3 = "player_hit3.wav";
 
+/*
 void player_move_old() {
 	
 	if (mouse_mode > 0)	
@@ -122,6 +123,7 @@ void player_move_old() {
 		}
 	}
 }
+*/
 
 void player_hit_sound() {
 	var i = integer(random(3));
@@ -226,7 +228,6 @@ void player_move() {
 			} else {
 				playerVelY -= 1.5 * time_step;
 			}
-			DEBUG_VAR(playerVelY, 16);
 		}
 		var len = vec_length(vPlayerSpeed);
 		if(HIT_TARGET && len > 15)
