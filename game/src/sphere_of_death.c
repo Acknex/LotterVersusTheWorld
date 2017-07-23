@@ -18,6 +18,9 @@ void SPHEREOD__turnOn();
 #define SOD_CLOSE 3
 #define SOD_WAIT 4
 
+SOUND* snd_sphere_activate = "sounds\\sphere_activate.wav";
+SOUND* snd_sphere_stomp = "sounds\\sphere_stomp.wav";
+
 void sphere_stomp_effect()
 {
 	var t = 0;
@@ -144,6 +147,7 @@ void SPHEREOD__loop()
 			{
 				my->sphere_state = SOD_JUMP;
 				my->sphere_anim_up = 0;
+				snd_play(snd_sphere_activate, 30, 0);
 			}
 		}
 		else if(my->sphere_state == SOD_JUMP)
@@ -154,6 +158,7 @@ void SPHEREOD__loop()
 			{
 				my->sphere_state = SOD_CLOSE;
 				my->sphere_anim_open = 0;
+				snd_play(snd_sphere_stomp, 100, 0);
 				ENTITY* ricochet = ent_create("ricochet_blue.tga", vector(my.x, my.y, my.z - 22), sphere_stomp_effect);
 				vec_to_angle(ricochet->pan, vector(0, 0, 1));
 			}
@@ -184,6 +189,7 @@ void SPHEREOD__loop()
 
 void SPHEREOD__die()
 {
+	effect(p_sphere_explode,200,my.x,nullvector);
 	ptr_remove(me);
 }
 

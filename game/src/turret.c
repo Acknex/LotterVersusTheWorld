@@ -72,7 +72,6 @@ void TURRET__init()
 {
 	ENEMY_init();
 	my->delayCounter = 0;
-	my->event = TURRET__event;
 	my->type = TypeTurret;
 	my->turretState = TURRETSLEEP;
 	set(my, PASSABLE | POLYGON | FLAG1);
@@ -250,11 +249,13 @@ void TURRET__die()
 
 void TURRET__sleep()
 {
+	my->event = NULL;
 	if (vec_dist(player->x, my->x) < TURRET_ATTACKRANGE)
 	{
 		my->turretState = TURRETOPEN;
 		snd_play(sndTurretUp, 100, 0);
 		my->animCounter = 0;
+		my->event = TURRET__event;
 	}
 	
 	my->skill41 = floatv(clamp(0.5 * sinv(10 * total_ticks), 0, 1));

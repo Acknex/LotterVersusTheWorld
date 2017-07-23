@@ -39,7 +39,7 @@ out_ps vs(
 	Out.Pos = DoTransform(inPos);
 	Out.uv = inTexCoord0;
 	Out.worldPos = mul(matWorld, inPos);
-	Out.normal = mul(matWorld, float4(inNormal, 0.0));
+	Out.normal = mul(matWorldView, float4(inNormal, 0.0));
 	return Out;
 }
 
@@ -47,9 +47,9 @@ float4 ps(out_ps In): COLOR
 {
 	float3 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (20.5)/64.0)).rgb;
 	
-	float3 camDir = normalize(vecViewPos - In.worldPos);
-	float fresnel = dot(camDir, normalize(In.normal));
+	float fresnel = -In.normal.z;
 	fresnel *= fresnel;
+	fresnel = 1.0-fresnel;
 	return float4(a * fresnel, fresnel);
 }
 
