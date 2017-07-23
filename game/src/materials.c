@@ -68,6 +68,12 @@ void pp_desync(float strength)
 	PPDesyncMaterial.skill1 = strength;
 }
 
+
+void pp_bloom_stop()
+{
+	pp_isBloomEnabled = 0;
+}
+
 void pp_bloom_start(float strength)
 {
 	PPBloomMixMaterial.skill1 = floatv(strength);
@@ -91,6 +97,9 @@ void pp_bloom_start(float strength)
 	pp_add(PPBlurVMaterial);
 	pp_add(PPBloomMixMaterial);
 	pp_add(PPDesyncMaterial);
+	
+	pp_isBloomEnabled = 1;
+	pp_bloom_resize();
 }
 
 

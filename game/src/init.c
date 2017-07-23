@@ -90,7 +90,7 @@ void INIT_levelEnd()
 	
 	wait(1);
 	
-	diag_status();
+	pp_bloom_stop();
 	
 	level_load(NULL);
 	
