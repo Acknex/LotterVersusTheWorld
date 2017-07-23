@@ -1,5 +1,18 @@
 #include "weapon.h"
 
+STRING * dialogMessage = "Hallo, Welt";
+
+FONT* fontDialog = "Arial#30b";
+
+PANEL * panDialog = 
+{
+	digits(200,50, "%s", fontDialog, 1, dialogMessage));
+	bmap = bmapDialog;
+	alpha = 80;
+	flags = OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y;
+	layer = 10;
+}
+
 void hud_ingame_init() {
 	if (!fontHud) {
 		fontHud = font_create("Arial#20b");
@@ -21,7 +34,7 @@ void hud_ingame_init() {
 	if (!panDialog) {
 		panDialog = pan_create(NULL, 2);
 		panDialog.bmap = bmapDialog;
-		pan_setdigits(panDialog, 0, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "", fontDialog, 1, vDummy);
+		pan_setdigits(panDialog, 0, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, &dialogMessage);
 		panDialog.alpha = 80;
 		set(panDialog, OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y);
 	}
@@ -45,24 +58,28 @@ void hide_death_screen()
 {
 	reset(panPlayerDead, SHOW);
 }
-void show_dialog(STRING* _text) {
+
+void show_dialog(char * _text) {
+	proc_mode = PROC_GLOBAL;
+	str_cpy(dialogMessage, _text);
 	if (panDialog) {
 		panDialog.scale_y = 0;
 		set(panDialog, SHOW);
 		while(panDialog.scale_y < 1) {
-			panDialog.scale_y +=0.1 * time_step;
+			panDialog.scale_y += 0.1 * time_step;
 			wait(1);
 		}
 		panDialog.scale_y = 1;
-		pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, _text, fontDialog, 1, vDummy);
+		// pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, dialogMessage);
 		wait(-2);
-		pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "", fontDialog, 1, vDummy);
+		// pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "", fontDialog, 1, vDummy);
 		while(panDialog.scale_y > 0) {
-			panDialog.scale_y -=0.1 * time_step;
 			wait(1);
+			panDialog.scale_y -= 0.1 * time_step;
 		}
 		panDialog.scale_y = 0;
 		reset(panDialog, SHOW);
+		str_cpy(dialogMessage, "");
 	}
 }
 
