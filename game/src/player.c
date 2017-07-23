@@ -22,6 +22,10 @@ var handleSndEngineThrust = 0;
 SOUND* snd_engine_idle = "engine_idle.wav";
 SOUND* snd_engine_thrust = "engine_thrust.wav";
 
+SOUND* snd_player_hit1 = "player_hit1.wav";
+SOUND* snd_player_hit2 = "player_hit2.wav";
+SOUND* snd_player_hit3 = "player_hit3.wav";
+
 void player_move_old() {
 	
 	if (mouse_mode > 0)	
@@ -115,6 +119,22 @@ void player_move_old() {
 			playerY = y;		
 			stageDoFlood(LEVEL__stage, playerX, playerY, FLOOD_PLAYER, 12, 0);
 		}
+	}
+}
+
+void player_hit_sound() {
+	var i = integer(random(3));
+	if(i == 0)
+	{
+		snd_play(snd_player_hit1, 100, 0);
+	}
+	else if(i == 1)
+	{
+		snd_play(snd_player_hit2, 100, 0);
+	}
+	else if(i == 2)
+	{
+		snd_play(snd_player_hit3, 100, 0);
 	}
 }
 
@@ -300,6 +320,7 @@ void player_event() {
 		case EVENT_SCAN:
 		//my.health = 0; // TODO: remove
 		my.health -=your.damage;
+		player_hit_sound();
 		desyncTimer = 0.4; // 0.4 second desync
 		if (my.health <= 0) {
 			pp_desync(0);
