@@ -224,6 +224,7 @@ void TURRET__die()
 	
 	while (my->animCounter < 100)
 	{
+		effect(p_spark, 1, my.x, vector(6,6,6));
 		my->animCounter += TURRET_ANIMDIESPEED * time_step;
 		my->animCounter = minv(100, my->animCounter);
 		ent_animate(me, "die", my->animCounter, 0);	
@@ -236,7 +237,7 @@ void TURRET__die()
 	while (1)
 	{
 		if(random(100) < 5) {
-		
+			effect(p_spark, 1, my.x, vector(6,6,6));
 			my->skill41 = floatv(0.0);
 		} else {
 			my->skill41 = floatv(1.0);
@@ -285,3 +286,32 @@ void TURRET__event()
 	var vDamageDealt = ENEMY_hit(event_type);
 }
 
+// effects
+var p_spark_size_factor = 2;
+
+void p_spark_fade(PARTICLE* p)
+{
+	p.vel_x *=1-0.09 * time_step;
+	p.vel_z -=3 * time_step;
+	p.x +=0.8 * p.vel_x * time_step;
+	p.y -= 2 * time_step;
+	p.z += 0.8 * p.vel_z*time_step;
+}
+
+void p_spark(PARTICLE* p) {
+	p.skill_a = random(360);
+	p.skill_b = 17 + random(12);
+	p.vel_x = sinv(p.skill_a) * p.skill_b;
+	p.vel_z = cosv(p.skill_a) * p.skill_b;
+	vec_set(p.blue, vector(255, 140, 160 * random(80)));
+	if (random(2) > 1) {
+		set(p,BEAM);
+	} else {
+		set(p,STREAK);
+	}
+	p.bmap = bmapSpark;
+	p.size = (1 + random(2)) * p_spark_size_factor;
+	p.alpha = 100;
+	p.lifespan = 4+random(3);
+	p.event = p_spark_fade;
+}
