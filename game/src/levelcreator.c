@@ -401,6 +401,7 @@ VECTOR * stage_load(STAGE * stage)
 			}
 		}
 	}
+	
 	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	ent->material = TeleporterEffectMaterial;
 	

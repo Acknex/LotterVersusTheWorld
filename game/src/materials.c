@@ -101,20 +101,20 @@ void pp_bloom(float strength)
 
 BMAP * WallMainAtlas = "tile-wall-atlas_01.dds";
 BMAP * WallMainTextImage = "tile-wall-text.png";
-FONT * WallMainTextFont = "Courier#15b";
+//FONT * WallMainTextFont = "Courier#15b";
 BMAP *ColorLUT = "color-lut_01.dds";
 float ColorVariation = 0.0;
 
-TEXT * WallMainText = 
-{
-	pos_x = 0;
-	pos_y = 0;
-	blue = 0;
-	red = 0;
-	green = 255;
-	// font = WallMainTextFont;
-	strings = 20;
-}
+//TEXT * WallMainText = 
+//{
+//	pos_x = 0;
+//	pos_y = 0;
+//	blue = 0;
+//	red = 0;
+//	green = 255;
+//	// font = WallMainTextFont;
+//	strings = 20;
+//}
 
 function ColorLUT_Bounce()
 {
@@ -142,52 +142,52 @@ MATERIAL *HexMaterial =
 	effect = "Hex.fx";
 	flags = TRANSLUCENT;
 }
-
-function WallMainText_startup()
-{
-	// WallMainText.size_x = bmap_width(WallMainTextImage);
-	WallMainText.size_y = bmap_height(WallMainTextImage);
-	str_cpy(delimit_str, "");
-	txt_load(WallMainText, "wallpaper.txt");
-	
-	wait(1);
-	bmap_to_mipmap(WallMainTextImage);
-	
-	on_p = ColorLUT_Bounce;
-	
-	while(1)
-	{
-		int idx = random(WallMainText.strings);
-		
-		STRING * str = (WallMainText.pstring)[idx];
-		
-		int idx = random(str_len(str));
-		
-		str_setchr(str, 1 + idx, 0x20 + integer(random(128-0x20)));
-		
-//		bmap_rendertarget(WallMainTextImage, 0, 0);
 //
-//		draw_quad(
-//			NULL,
-//			NULL, NULL,
-//			vector(bmap_width(WallMainTextImage), bmap_height(WallMainTextImage), 0), NULL,
-//			COLOR_RED, 100, 0);
-//		draw_obj(WallMainText);
-//
-//		bmap_rendertarget(NULL, 0, 0);
+//function WallMainText_startup()
+//{
+//	// WallMainText.size_x = bmap_width(WallMainTextImage);
+//	WallMainText.size_y = bmap_height(WallMainTextImage);
+//	str_cpy(delimit_str, "");
+//	txt_load(WallMainText, "wallpaper.txt");
+//	
+//	wait(1);
+//	bmap_to_mipmap(WallMainTextImage);
+//	
+//	on_p = ColorLUT_Bounce;
+//	
+//	while(1)
+//	{
+//		int idx = random(WallMainText.strings);
 //		
-//		bmap_to_mipmap(WallMainTextImage);
-		
-		
-		//draw_quad(
-		//	WallMainText.target_map,
-		//	NULL, NULL,
-		//	NULL, NULL,
-		//	NULL, 100,
-		//	0);
-		wait(3);
-	}
-}
+//		STRING * str = (WallMainText.pstring)[idx];
+//		
+//		int idx = random(str_len(str));
+//		
+//		str_setchr(str, 1 + idx, 0x20 + integer(random(128-0x20)));
+//		
+////		bmap_rendertarget(WallMainTextImage, 0, 0);
+////
+////		draw_quad(
+////			NULL,
+////			NULL, NULL,
+////			vector(bmap_width(WallMainTextImage), bmap_height(WallMainTextImage), 0), NULL,
+////			COLOR_RED, 100, 0);
+////		draw_obj(WallMainText);
+////
+////		bmap_rendertarget(NULL, 0, 0);
+////		
+////		bmap_to_mipmap(WallMainTextImage);
+//		
+//		
+//		//draw_quad(
+//		//	WallMainText.target_map,
+//		//	NULL, NULL,
+//		//	NULL, NULL,
+//		//	NULL, 100,
+//		//	0);
+//		wait(3);
+//	}
+//}
 
 BMAP * TeleporterEffectTexture = "teleport.png";
 

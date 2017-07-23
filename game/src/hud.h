@@ -14,12 +14,19 @@ BMAP* bmapEmoHealth = "emohealthsmall.tga";
 BMAP* bmapHealthHud = "healthHud.tga";
 BMAP* bmapBombSlots = "bombSlots.tga";
 BMAP* bmapDialog = "dialog.tga";
+BMAP* bmapPlayerDead = "Gameover_fc.png";
+
 PANEL* panEmoHealth = NULL;
 PANEL* panDialog = NULL;
+
+PANEL* panPlayerDead = NULL;
 
 void hud_ingame_init();
 void hud_ingame_align();
 void hud_ingame_update();
+
+void show_death_screen(var alpha);
+void hide_death_screen();
 
 #include "hud.c"
 
