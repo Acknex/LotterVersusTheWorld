@@ -58,7 +58,7 @@ void INIT_levelStart()
 	
 	// Use dummy entity for "level outliving"
 	ent_create(NULL, NULL, ground_reflections);
-	pp_bloom(2.5);
+	pp_bloom_start(2.5);
 	
 	mouse_init_game();
 	hud_ingame_init();

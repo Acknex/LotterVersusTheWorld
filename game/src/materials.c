@@ -68,34 +68,29 @@ void pp_desync(float strength)
 	PPDesyncMaterial.skill1 = strength;
 }
 
-void pp_bloom(float strength)
+void pp_bloom_start(float strength)
 {
 	PPBloomMixMaterial.skill1 = floatv(strength);
+		
+	PPBlurHMaterial.skill1 = floatv(1.0);
+	PPBlurHMaterial.skill2 = floatv(0.0);
 	
-	if(!pp_isBloomEnabled)
-	{
-		pp_isBloomEnabled = true;
-		
-		PPBlurHMaterial.skill1 = floatv(1.0);
-		PPBlurHMaterial.skill2 = floatv(0.0);
-		
-		PPBlurVMaterial.skill1 = floatv(0.0);
-		PPBlurVMaterial.skill2 = floatv(1.0);
-		
-		pp_view = cam;
-		pp_stage = cam;
-		
-		pp_desync(0);
-		
-		BloomImageView = cam;
-		pp_bloom_resize();
-		
-		pp_add(PPThresholdLuminanceMaterial);
-		pp_add(PPBlurHMaterial);
-		pp_add(PPBlurVMaterial);
-		pp_add(PPBloomMixMaterial);
-		pp_add(PPDesyncMaterial);
-	}
+	PPBlurVMaterial.skill1 = floatv(0.0);
+	PPBlurVMaterial.skill2 = floatv(1.0);
+	
+	pp_view = cam;
+	pp_stage = cam;
+	
+	pp_desync(0);
+	
+	BloomImageView = cam;
+	pp_bloom_resize();
+	
+	pp_add(PPThresholdLuminanceMaterial);
+	pp_add(PPBlurHMaterial);
+	pp_add(PPBlurVMaterial);
+	pp_add(PPBloomMixMaterial);
+	pp_add(PPDesyncMaterial);
 }
 
 
