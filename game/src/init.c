@@ -126,6 +126,7 @@ void INIT_levelLoop()
 	}
 	if(player && player->health <= 0)
 	{
+		MARKER_detach();
 		var fade = 0;
 		show_death_screen(0);
 		while(1)

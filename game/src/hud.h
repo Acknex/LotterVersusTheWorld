@@ -10,7 +10,7 @@ var vDummy = 0;
 FONT* fontHud = NULL;
 
 BMAP* bmapEmoHealth = "emohealthsmall.tga";
-BMAP* bmapHealthHud = "healthHud.tga";
+BMAP* bmapHealthHud = "healthHudx.tga";
 BMAP* bmapBombSlots = "bombSlots.tga";
 BMAP* bmapDialog = "dialog.tga";
 BMAP* bmapPlayerDead = "Gameover_fc.png";
