@@ -30,6 +30,8 @@ void INIT_levelStart()
 	on_r = INIT_levelRestartCheat;
 	INIT__levelRunning = 1;
 
+	random_seed(0);
+	QUEST_init();	
 	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
@@ -38,7 +40,6 @@ void INIT_levelStart()
 
 	stage_load(LEVEL__stage); // calls level_load!
 
-	QUEST_init();	
 	VECTOR* vecTemp;
 	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.85, 0.1);
 	ent_create("warlock.mdl", vecTemp, questmaster);

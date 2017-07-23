@@ -162,10 +162,10 @@ void hud_ingame_update() {
 		vBombCooldown = bmap_width(bmapBombSlots) / 6 * 5;
 	}
 	
-	if (key_l) {
+	/*if (key_l) {
 		while(key_l) wait(1);
 		show_dialog("Quest gestartet!");
-	}
+	}*/
 }
 
 void hud_ingame_show() {

@@ -86,7 +86,7 @@ action questmaster()
 
 action questitem()
 {
-	set(my, PASSABLE);
+	set(my, PASSABLE | INVISIBLE);//hack
 	vec_scale(my->scale_x, 2.5);
 	my->type = TypeQuestitem;
 	my->z = 80;
@@ -122,6 +122,7 @@ action questitem()
 	{
 		wait(1);
 	}
+	reset(my, INVISIBLE);//hack
 	while (my->alpha < 100)
 	{
 		MARKER_update(me);
@@ -173,6 +174,7 @@ void my_startup(){on_x= questspawn;}
 void QUEST_init()
 {
 	QUEST__id = integer(random(5));
+	QUEST_reset();
 }
 
 void QUEST_reset()
