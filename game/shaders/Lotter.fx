@@ -59,10 +59,10 @@ InNormal = normalize(InNormal);
 	float4 Color = tex2D(ColorMapSampler, InTex);
 	float3 blendmap = Color.rgb; //tex2D(sTexture, InTex.uv).rgb;
 	
-	float3 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (25.5 + vecSkill41.x*5.0)/64.0)).rgb;
-	float3 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (26.5 + vecSkill41.x*5.0)/64.0)).rgb;
-	float3 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (27.5 + vecSkill41.x*5.0)/64.0)).rgb;
-	return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b, blendmap.r+blendmap.g+blendmap.b);
+	float3 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (48.5 + vecSkill41.x*3.0)/64.0)).rgb;
+	float3 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (49.5 + vecSkill41.x*3.0)/64.0)).rgb;
+	float3 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (50.5 + vecSkill41.x*3.0)/64.0)).rgb;
+	return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b, blendmap.r+blendmap.g+blendmap.b) + vecSkill41.w;
 	
 	
 	

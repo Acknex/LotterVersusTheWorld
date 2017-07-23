@@ -129,6 +129,7 @@ action enemy_bat()
 	static int batId = 0;
 	my.skill36 = batId;
 	my.skill37 = random(360); // slight pan movement variations
+	my.skill41 = floatv(2);
 	batId++;
 	my.group = 9;
 	my.type = TypeBat;

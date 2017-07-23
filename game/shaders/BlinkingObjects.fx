@@ -43,9 +43,9 @@ float4 ps(out_ps In): COLOR
 {
 	float4 blendmap = tex2D(sTexture, In.uv).rgba;
 	
-	float3 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (25.5 + vecSkill41.x*5.0)/64.0)).rgb;
-	float3 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (26.5 + vecSkill41.x*5.0)/64.0)).rgb;
-	float3 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (27.5 + vecSkill41.x*5.0)/64.0)).rgb;
+	float3 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (25.5 + vecSkill41.x*3.0)/64.0)).rgb;
+	float3 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (26.5 + vecSkill41.x*3.0)/64.0)).rgb;
+	float3 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (27.5 + vecSkill41.x*3.0)/64.0)).rgb;
 	
 	if(blendmap.a < 0.01 || blendmap.a > 0.99)
 	{
