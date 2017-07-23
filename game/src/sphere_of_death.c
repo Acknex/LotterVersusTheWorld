@@ -65,7 +65,7 @@ void SPHEREOD__init()
 	my->event = SPHEREOD__event;
 	my->type = TypeSphereOfDeath;
 	my->bulletSpeed = 30;
-	set(my, PASSABLE | POLYGON | FLAG1);
+	set(my, POLYGON | FLAG1);
 	
 	SPHEREOD__loop();
 }

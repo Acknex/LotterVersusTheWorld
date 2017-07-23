@@ -87,7 +87,7 @@ void projectile()
 		vec_scale(vTarget, weapon_speed * time_step);
 		
 		c_ignore(3,4,0);
-		dist = c_move(me, nullvector, vTarget, ACTIVATE_SHOOT | USE_POLYGON);
+		dist = c_move(me, nullvector, vTarget, ACTIVATE_SHOOT | USE_POLYGON | IGNORE_PASSABLE | IGNORE_PASSENTS);
 		
 		if(t >= weapon_lifetime)
 		{
@@ -184,7 +184,7 @@ void granate()
 		vec_set(temp,vTarget);
 		vec_scale(temp,t*t*t);
 		
-		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH );
+		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_PUSH );
 		wait(1);
 	}
 	effect(p_granate_explode,200,my.x,nullvector);
