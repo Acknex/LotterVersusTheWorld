@@ -11,6 +11,7 @@ var dist_strafe = 0;
 VECTOR playerpos, temp;
 ANGLE diff, mouseDir, moveDir;
 var playerVelY = 0;
+var shootingHandle = 0;
 
 var desyncTimer = 0;
 
@@ -221,7 +222,6 @@ void player_move() {
 	}
 	/* SHOOOTING */
 	
-	var shootingHandle = 0;
 	if(mouse_left) 
 	{
 		if(shootingHandle == 0)
