@@ -63,6 +63,7 @@ void show_dialog(char * _text) {
 	proc_mode = PROC_GLOBAL;
 	str_cpy(dialogMessage, _text);
 	if (panDialog) {
+		proc_kill(4);
 		panDialog.scale_y = 0;
 		set(panDialog, SHOW);
 		while(panDialog.scale_y < 1) {
