@@ -30,20 +30,31 @@ void SPLASH__animStart()
 	while(SPLASH__beam->z < 0)
 	{
 		if(key_any == 1) return SPLASH__cancelAnim();
-		SPLASH__beam->z += 10 * time_step;
+		SPLASH__beam->z += 15 * time_step;
 		wait(1);
 	}
 	
 	if(key_any == 1) return SPLASH__cancelAnim();
 	wait(-1);
 	
-	//var tempFactor = (1 - (SPLASH__logoPanel->alpha / 100));
-	//var tempDist = screen_size.y - SPLASH__logoY;
-	while(SPLASH__logoPanel->alpha < 100)
+	while(SPLASH__lotti->alpha < 100)
 	{
+		if(key_any == 1) return SPLASH__cancelAnim();
+		SPLASH__lotti->alpha += 2.5 * time_step;
+		wait(1);
+	}	
+	
+	if(key_any == 1) return SPLASH__cancelAnim();
+	wait(-1);
+	
+	var tempFactor = (1 - (SPLASH__logoPanel->alpha / 50));
+	var tempDist = screen_size.y - SPLASH__logoY;
+	while(SPLASH__logoPanel->alpha < 50)
+	{
+		if(key_any == 1) return SPLASH__cancelAnim();
 		SPLASH__logoPanel->alpha += 1 * time_step;
-		//tempFactor = (1 - (SPLASH__logoPanel->alpha / 100));
-		//SPLASH__logoPanel->pos_y = screen_size.y - (tempDist * tempFactor);
+		tempFactor = (SPLASH__logoPanel->alpha / 50);
+		SPLASH__logoPanel->pos_y = screen_size.y - (tempDist * tempFactor);
 		wait(1);
 	}
 	
@@ -54,13 +65,23 @@ void SPLASH__animStart()
 int SPLASH__cancelAnim()
 {
 	SPLASH__animEnd();
-	return 1;
+	return 42;
 }
 
 void SPLASH__animEnd()
 {
 	SPLASH__cube->alpha = 100;
+	SPLASH__lotti->alpha = 100;
 	SPLASH__beam->z = 0;	
+	SPLASH__logoPanel->pos_y = SPLASH__logoY;
+	SPLASH__logoPanel->alpha = 50;
+	
+	while(key_any)
+	{
+		wait(1);
+	}
+	
+	
 }
 
 void SPLASH__setupLevel()
@@ -80,12 +101,12 @@ void SPLASH__setupLevel()
 	
 	// Init Lotti
 	SPLASH__lotti = ent_create("cbabe_male.mdl", vector(750, 0, 0), NULL);
-	SPLASH__lotti->material = LotterMaterial;
+	SPLASH__lotti->material = LotterSplashMaterial;
 	vec_scale(SPLASH__lotti.scale_x, 5);	
 	SPLASH__lotti->pan = 180;
 	ent_animate(SPLASH__lotti, "intro", 0, 0);
-	//SPLASH__lotti->ambient = -100;
-		
+	set(SPLASH__lotti, TRANSLUCENT);
+	SPLASH__lotti->alpha = 0;
 	
 	// Init Tronbeam
 	SPLASH__beam = ent_create("beam.png", vector(850, 0, -1000), NULL);
@@ -102,11 +123,14 @@ void SPLASH__setupLevel()
 	var logoHeight = bmap_height(SPLASH__logoBmap);
 	SPLASH__logoPanel = pan_create(NULL, 1);
 	pan_setwindow(SPLASH__logoPanel, 0, 0, 0, logoWidth, logoHeight, SPLASH__logoBmap, 0, 0);
-	SPLASH__positionLogo();
 	SPLASH__logoPanel->alpha = 0;
 	set(SPLASH__logoPanel, TRANSLUCENT);
 	set(SPLASH__logoPanel, SHOW);
 	
+	// Init Menu
+	
+	
+	SPLASH__reposition();
 	
 	// Fix camera
 	vec_set(cam->x, nullvector);
@@ -117,7 +141,9 @@ void SPLASH__setupLevel()
 	show_camera();
 }
 
-void SPLASH__positionLogo()
+
+// Someone smarter than me please put this into a logical place inside the global resize function
+void SPLASH__reposition()
 {
 	if(SPLASH__inSplash && SPLASH__logoPanel != NULL && SPLASH__logoBmap != NULL)
 	{
@@ -128,7 +154,22 @@ void SPLASH__positionLogo()
 		SPLASH__logoPanel->scale_x = ratio;
 		SPLASH__logoPanel->scale_y = ratio;
 		SPLASH__logoPanel->pos_x = (screen_size.x / 2) - ((logoWidth * ratio) / 2); 
-		SPLASH__logoPanel->pos_y = SPLASH__logoY; 
-		//SPLASH__logoPanel->pos_y = screen_size.y; 
+		//SPLASH__logoPanel->pos_y = SPLASH__logoY; 
+		SPLASH__logoPanel->pos_y = screen_size.y; 
 	}
+}
+
+void SPLASH__initMenu()
+{
+	
+}
+
+void SPLASH__startGame()
+{
+	
+}
+
+void SPLASH__housekeeping()
+{
+	
 }
