@@ -110,6 +110,7 @@ void TURRET__loop()
 			default:
 				break;
 		}
+		enemy_do_hit_flash(my);
 		wait(1);	
 	}
 	TURRET__die();
