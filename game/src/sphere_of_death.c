@@ -168,6 +168,7 @@ void SPHEREOD__loop()
 					vec_add (vecDist, my.x);
 					vecDist.z += 15;
 					ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	
+					ent->damage = 14;
 					ent->pan = i/count*360+randomOffset;	
 				}
 				vec_to_angle(ricochet->pan, vector(0, 0, 1));
