@@ -71,6 +71,7 @@ action enemy_turret_aim()
 void TURRET__init()
 {
 	ENEMY_init();
+	my->health = 10;
 	my->delayCounter = 0;
 	my->type = TypeTurret;
 	my->turretState = TURRETSLEEP;
