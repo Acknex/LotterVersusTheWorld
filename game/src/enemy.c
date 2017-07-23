@@ -10,7 +10,8 @@
 void ENEMY__projectileEvent();
 void ENEMY__projectileLoop();
 
-SOUND* sndBatDeath = "sounds\\bat_destroyed.wav";
+SOUND* sndBatDeath = "bat_destroyed.wav";
+SOUND* sndBatScream = "bat_scream.wav";
 
 
 void enemy_do_hit_flash(ENTITY* ent)
@@ -23,6 +24,25 @@ void enemy_do_hit_flash(ENTITY* ent)
 		ent.skill43 = ent.health;
 		ent.skill44 = floatv(1);
 	}
+}
+
+
+action scream_sprite()
+{
+	my.alpha = 100;
+	vec_set(my.scale_x, vector(0.2, 0.2, 0.2));
+	set(my, TRANSLUCENT | BRIGHT);
+	var c = 0;
+	while(1)
+	{
+		my.alpha -= 5*time_step;
+		c += 0.1*time_step;
+		if(my.alpha < 0)
+			break;
+		vec_set(my.scale_x, vector(0.2 + c * 0.5, 0.2 + c, 0.2 + c));
+		wait(1);
+	}
+	ptr_remove(my);
 }
 
 
@@ -144,6 +164,7 @@ action enemy_bat()
 	static int batId = 0;
 	my.skill36 = batId;
 	my.skill37 = random(360); // slight pan movement variations
+	my.skill60 = 0; // scream timeout
 	batId++;
 	my.group = 9;
 	my.type = TypeBat;
@@ -232,6 +253,27 @@ action enemy_bat()
 		MARKER_update(me);
 		enemy_do_hit_flash(my);
 		
+		// shoot
+		if(my.skill70 == 0)
+		{
+			if(player != NULL)
+			{
+				if(vec_dist(player->x, my.x) < 200)
+				{
+					ENTITY* ent = ent_create("graphics\\scream.dds", my.x, scream_sprite);
+					snd_play(sndBatScream, 100, 0);
+					hit_player(6);
+					vec_scale(ent->scale_x, 0.5);
+					ent->pan = my.pan;
+					ent->tilt = 90;
+					my.skill70 = 4;
+				}
+			}
+		}
+		else 
+		{
+			my.skill70 = maxv(0, my.skill70 - time_step/16);
+		}
 		wait(1);
 	}
 	effect(p_bat_explode,100,my.x,nullvector);

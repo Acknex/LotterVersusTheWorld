@@ -1,4 +1,5 @@
 #include <mtlView.c>
+#include "cheats.h"
 
 static BOOL pp_isBloomEnabled = false;
 VIEW *BloomImageView = NULL;
@@ -67,34 +68,38 @@ void pp_desync(float strength)
 	PPDesyncMaterial.skill1 = strength;
 }
 
-void pp_bloom(float strength)
+
+void pp_bloom_stop()
+{
+	pp_isBloomEnabled = 0;
+}
+
+void pp_bloom_start(float strength)
 {
 	PPBloomMixMaterial.skill1 = floatv(strength);
+		
+	PPBlurHMaterial.skill1 = floatv(1.0);
+	PPBlurHMaterial.skill2 = floatv(0.0);
 	
-	if(!pp_isBloomEnabled)
-	{
-		pp_isBloomEnabled = true;
-		
-		PPBlurHMaterial.skill1 = floatv(1.0);
-		PPBlurHMaterial.skill2 = floatv(0.0);
-		
-		PPBlurVMaterial.skill1 = floatv(0.0);
-		PPBlurVMaterial.skill2 = floatv(1.0);
-		
-		pp_view = cam;
-		pp_stage = cam;
-		
-		pp_desync(0);
-		
-		BloomImageView = cam;
-		pp_bloom_resize();
-		
-		pp_add(PPThresholdLuminanceMaterial);
-		pp_add(PPBlurHMaterial);
-		pp_add(PPBlurVMaterial);
-		pp_add(PPBloomMixMaterial);
-		pp_add(PPDesyncMaterial);
-	}
+	PPBlurVMaterial.skill1 = floatv(0.0);
+	PPBlurVMaterial.skill2 = floatv(1.0);
+	
+	pp_view = cam;
+	pp_stage = cam;
+	
+	pp_desync(0);
+	
+	BloomImageView = cam;
+	pp_bloom_resize();
+	
+	pp_add(PPThresholdLuminanceMaterial);
+	pp_add(PPBlurHMaterial);
+	pp_add(PPBlurVMaterial);
+	pp_add(PPBloomMixMaterial);
+	pp_add(PPDesyncMaterial);
+	
+	pp_isBloomEnabled = 1;
+	pp_bloom_resize();
 }
 
 
@@ -118,7 +123,7 @@ float ColorVariation = 0.0;
 
 function ColorLUT_Bounce()
 {
-	while(key_p)
+	while(key_p && cheats_enabled)
 	{
 		ColorVariation = 0.5 + 0.5 * sinv(4 * total_ticks);
 		wait(1);
@@ -145,7 +150,10 @@ MATERIAL *HexMaterial =
 	flags = TRANSLUCENT;
 }
 //
-//function WallMainText_startup()
+function Materials_startup()
+{
+	on_p = ColorLUT_Bounce;
+}
 //{
 //	// WallMainText.size_x = bmap_width(WallMainTextImage);
 //	WallMainText.size_y = bmap_height(WallMainTextImage);
@@ -155,7 +163,6 @@ MATERIAL *HexMaterial =
 //	wait(1);
 //	bmap_to_mipmap(WallMainTextImage);
 //	
-//	on_p = ColorLUT_Bounce;
 //	
 //	while(1)
 //	{
@@ -213,8 +220,8 @@ MATERIAL *WallOutlineMaterial =
 	flags = PASS_SOLID;
 }
 
-BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
-BMAP *WallLowerLavaBMAP = "graphics/lava.png";
+BMAP *WallLower01BMAP = "tile-wall-lower_01.dds";
+BMAP *WallLowerLavaBMAP = "lava.png";
 
 MATERIAL *WallLowerMaterial =
 {

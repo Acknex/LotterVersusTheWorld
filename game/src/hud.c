@@ -82,8 +82,12 @@ void hud_ingame_align() {
 		panDialog.pos_y = screen_size.y / 2 - bmap_height(panDialog.bmap) / 2;
 	}
 	if (panPlayerDead) {
-		panPlayerDead.pos_x = screen_size.x / 2 - bmap_width(panPlayerDead.bmap) / 2;
-		panPlayerDead.pos_y = screen_size.y / 2 - bmap_height(panPlayerDead.bmap) / 2;
+		//panPlayerDead.pos_x = screen_size.x / 2 - bmap_width(panPlayerDead.bmap) / 2;
+		//panPlayerDead.pos_y = screen_size.y / 2 - bmap_height(panPlayerDead.bmap) / 2;
+		panPlayerDead.pos_x = 0;
+		panPlayerDead.pos_y = 0;
+		panPlayerDead.scale_x = screen_size.x / bmap_width(bmapPlayerDead);
+		panPlayerDead.scale_y = screen_size.y / bmap_height(bmapPlayerDead);
 	}
 }
 

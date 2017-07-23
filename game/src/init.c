@@ -6,6 +6,7 @@
 #include "music_player.h"
 #include "hud.h"
 #include "quest.h"
+#include "cheats.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
@@ -15,14 +16,18 @@ var INIT__currentHardness = 0;
 
 void INIT_levelEnd();
 
+function INIT_levelRestartCheat()
+{
+	if(cheats_enabled) INIT_levelEnd();
+}
+
 //
 // NO wait(1) IN INIT_levelStart:
 // Will crash horribly because game loop is started
 //
 void INIT_levelStart()
 {
-	on_r = INIT_levelEnd;
-
+	on_r = INIT_levelRestartCheat;
 	INIT__levelRunning = 1;
 
 	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
@@ -53,7 +58,7 @@ void INIT_levelStart()
 	
 	// Use dummy entity for "level outliving"
 	ent_create(NULL, NULL, ground_reflections);
-	pp_bloom(2.5);
+	pp_bloom_start(2.5);
 	
 	mouse_init_game();
 	hud_ingame_init();
@@ -85,7 +90,7 @@ void INIT_levelEnd()
 	
 	wait(1);
 	
-	diag_status();
+	pp_bloom_stop();
 	
 	level_load(NULL);
 	
@@ -115,7 +120,7 @@ void INIT_levelLoop()
 		update_camera();
 		hud_ingame_update();
 		
-		if(LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
+		if(cheats_enabled && LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);
 	}
 	if(player && player->health <= 0)

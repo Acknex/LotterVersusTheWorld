@@ -2,6 +2,7 @@
 #include "datatypes.h"
 #include "levelgen.h"
 #include "entity_defs.h"
+#include "cheats.h"
 
 //STAGE* LEVEL__stage = NULL;
 
@@ -18,8 +19,12 @@ var desyncTimer = 0;
 var handleSndEngineIdle = 0;
 var handleSndEngineThrust = 0;
 
-SOUND* snd_engine_idle = "sounds\\engine_idle.wav";
-SOUND* snd_engine_thrust = "sounds\\engine_thrust.wav";
+SOUND* snd_engine_idle = "engine_idle.wav";
+SOUND* snd_engine_thrust = "engine_thrust.wav";
+
+SOUND* snd_player_hit1 = "player_hit1.wav";
+SOUND* snd_player_hit2 = "player_hit2.wav";
+SOUND* snd_player_hit3 = "player_hit3.wav";
 
 void player_move_old() {
 	
@@ -117,6 +122,36 @@ void player_move_old() {
 	}
 }
 
+void player_hit_sound() {
+	var i = integer(random(3));
+	if(i == 0)
+	{
+		snd_play(snd_player_hit1, 100, 0);
+	}
+	else if(i == 1)
+	{
+		snd_play(snd_player_hit2, 100, 0);
+	}
+	else if(i == 2)
+	{
+		snd_play(snd_player_hit3, 100, 0);
+	}
+}
+
+void hit_player(var dmg)
+{
+	if(player != NULL)
+	{
+		player->health -= dmg;
+		player_hit_sound();
+		desyncTimer = 0.4; // 0.4 second desync
+		if (player->health <= 0) 
+		{
+			pp_desync(0);
+		}
+	}
+}
+
 void player_move() {
 	if(player->health <= 0)
 		return;
@@ -148,7 +183,7 @@ void player_move() {
 		player.pan += clamp(diff*0.35,-diffAlignSpeed,diffAlignSpeed)*time_step;
 	}
 	
-	if(mouse_middle) {
+	if(mouse_middle && cheats_enabled) {
 		vec_set(player.x, target);
 	}
 	
@@ -228,8 +263,6 @@ void player_move() {
 		{
 			shootingHandle = snd_loop(sndPlayerShot, 50, 0);
 		}
-		player.weapon_bouncing = 2;
-		player.group = 3;
 		shoot(1);
 	}
 	if(!mouse_left && shootingHandle != 0) 
@@ -299,12 +332,7 @@ void player_event() {
 	switch(event_type) {
 		case EVENT_SHOOT:
 		case EVENT_SCAN:
-		//my.health = 0; // TODO: remove
-		my.health -=your.damage;
-		desyncTimer = 0.4; // 0.4 second desync
-		if (my.health <= 0) {
-			pp_desync(0);
-		}
+		hit_player(your.damage);
 		break;
 		
 	}

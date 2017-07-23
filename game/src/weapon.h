@@ -1,6 +1,8 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
+	#include "Annoying.h"
+
 	void projectile();
 	void shoot(int wp_type);
 	
@@ -12,10 +14,9 @@
 	var weapon_lifetime = 5;
 	var weapon_projectile_scale = 1.2;
 	
-	//Player skill43 is active cooldown timer
-	//Player skill44 is possible projectile bounce count
-	
 	STRING *str_weapon_code = "::";
+	
+	BMAP *projectile_skin = "#32x32x32";
 	
 	FONT *monoid = "Monoid#32b";
 	
