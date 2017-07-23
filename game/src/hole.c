@@ -2,8 +2,7 @@
 
 action enemy_hole()
 {
-	set(me, POLYGON);
-	set(me, FLAG1);
+	set(me, POLYGON | PASSABLE | FLAG1);
 	my.type = 9;
 	
 	while(1)

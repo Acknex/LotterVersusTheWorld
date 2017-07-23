@@ -297,8 +297,8 @@ void player_event() {
 	switch(event_type) {
 		case EVENT_SHOOT:
 		case EVENT_SCAN:
+		//my.health = 0; // TODO: remove
 		my.health -=your.damage;
-		my.health = 0; // TODO: remove
 		desyncTimer = 0.4; // 0.4 second desync
 		if (my.health <= 0) {
 			pp_desync(0);
