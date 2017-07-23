@@ -34,6 +34,8 @@ void INIT_levelStart()
 	
 	INIT__levelRunning = 1;
 
+	random_seed(0);
+	QUEST_init();	
 	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
@@ -42,7 +44,6 @@ void INIT_levelStart()
 
 	stage_load(LEVEL__stage); // calls level_load!
 
-	QUEST_init();	
 	VECTOR* vecTemp;
 	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.85, 0.1);
 	ent_create("warlock.mdl", vecTemp, questmaster);
@@ -133,6 +134,7 @@ void INIT_levelLoop()
 	}
 	if(player && player->health <= 0)
 	{
+		MARKER_detach();
 		var fade = 0;
 		show_death_screen(0);
 		while(1)
