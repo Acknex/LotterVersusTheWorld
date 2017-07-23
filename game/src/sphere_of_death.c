@@ -8,9 +8,9 @@ void SPHEREOD__die();
 void SPHEREOD__event();
 void SPHEREOD__turnOn();
 
-#define sphere_state skill20
-#define sphere_anim_open skill21
-#define sphere_anim_up skill22
+#define sphere_state skill24
+#define sphere_anim_open skill25
+#define sphere_anim_up skill26
 
 #define SOD_SEARCH 0
 #define SOD_OPEN 1
@@ -52,8 +52,8 @@ action enemy_sphere()
 	set(me, POLYGON);
 	set(me, FLAG1);
 	my.type = TypeSphereOfDeath;
-	my.skill41 = floatv(3);
-	my->material = LotterMaterial;
+	my->material = ObjectMaterial;
+	my.skill41 = floatv(55);
 	SPHEREOD__init();
 	
 }
@@ -64,6 +64,7 @@ void SPHEREOD__init()
 	my->delayCounter = 0;
 	my->event = SPHEREOD__event;
 	my->type = TypeSphereOfDeath;
+	my->bulletSpeed = 30;
 	set(my, PASSABLE | POLYGON | FLAG1);
 	
 	SPHEREOD__loop();
@@ -157,6 +158,17 @@ void SPHEREOD__loop()
 				my->sphere_anim_open = 0;
 				snd_play(snd_sphere_stomp, 100, 0);
 				ENTITY* ricochet = ent_create("ricochet_blue.tga", vector(my.x, my.y, my.z - 22), sphere_stomp_effect);
+				var count = 20;
+				var randomOffset = random(360);
+				var i = 0;
+				for(i = 0; i < count; ++i) {
+					VECTOR* vecDist = vector(-30, 0, 0);
+					ANGLE* angRot = vector(i/count*360+randomOffset, 0, 0);
+					vec_rotate(vecDist, angRot);
+					vec_add (vecDist, my.x);
+					ENTITY* ent = ent_create(SPHERE_MDL, vecDist, enemy_projectile);	
+					ent->pan = i/count*360+randomOffset;	
+				}
 				vec_to_angle(ricochet->pan, vector(0, 0, 1));
 			}
 		}

@@ -21,7 +21,7 @@ action rack_tapewheel()
 action rack_buildup()
 {
 	wait(1);
-	my->skill41 = floatv(1);
+	my->skill41 = floatv(31);
 	my->pan = my->skill1;
 	set(my, PASSABLE);
 	my->material = ObjectMaterial;
@@ -114,19 +114,19 @@ action desk_buildup()
 
 	ENTITY* lamp = ent_create("desk_lamp.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(20, -50, 70), _vec(my->skill1, 0, 0))), 0);
 	lamp->pan = 50 + my->skill1;
-	lamp->skill41 = floatv(1);
+	lamp->skill41 = floatv(31);
 	lamp->material = ObjectMaterial;
 	set(lamp, PASSABLE);
 
 	ENTITY* phone = ent_create("desk_phone.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(20, -80, 80), _vec(my->skill1, 0, 0))), 0);
 	phone->pan = 20+ my->skill1;
-	phone->skill41 = floatv(1);
+	phone->skill41 = floatv(31);
 	phone->material = ObjectMaterial;
 	set(phone, PASSABLE);
 
 	ENTITY* rack = ent_create("rack_case.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(0, 65, 0), _vec(my->skill1, 0, 0))), rack_buildup);
 	rack->skill1 = my->skill1;
-	rack->skill41 = floatv(1);
+	rack->skill41 = floatv(31);
 	rack->material = ObjectMaterial;
 	set(rack, PASSABLE);
 }

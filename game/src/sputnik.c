@@ -8,7 +8,8 @@ action enemy_sputnik()
 {
 	ENEMY_init();
 	my.event = enemy_sputnik_fade;
-	my->material = LotterMaterial;
+	my->material = ObjectMaterial;
+	my.skill41 = floatv(52);
 	VECTOR myTarget,curTarget;
 	vec_set(myTarget,my.x);
 	vec_set(curTarget,my.x);
@@ -19,7 +20,6 @@ action enemy_sputnik()
 	static int batId = 0;
 	my.skill36 = batId;
 	my.skill37 = random(360); // slight pan movement variations
-	my.skill41 = floatv(1);
 	batId++;
 	my.group = 9;
 	my.type = TypeEnemy;
