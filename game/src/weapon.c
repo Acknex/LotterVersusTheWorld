@@ -219,7 +219,7 @@ void granate()
 	effect(p_granate_explode,200,my.x,nullvector);
 	shake_cam(0.5);
 	snd_play(sndGrenadeExplode, 100, 0);
-	c_scan(my.x, nullvector, vector(360, 0, 200), SCAN_ENTS | IGNORE_ME);
+	c_scan(my.x, nullvector, vector(360, 0, 300), SCAN_ENTS | IGNORE_ME);
 	ent_remove(me);
 }
 
