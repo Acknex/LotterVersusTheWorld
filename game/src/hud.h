@@ -8,7 +8,6 @@ var vBombCooldown = 103;
 var vDummy = 0;
 
 FONT* fontHud = NULL;
-FONT* fontDialog = NULL;
 
 BMAP* bmapEmoHealth = "emohealthsmall.tga";
 BMAP* bmapHealthHud = "healthHud.tga";

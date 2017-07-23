@@ -621,7 +621,7 @@ void stageCreateEnemyData(STAGE* stage)
 	
 	if(stage->enemyPositions) error("stageCreateEnemyData(): stageNew->enemyPositions != NULL!");
 	//if(!stage->numWalkableTiles) error("stageCreateEnemyData(): stage->numWalkableTiles == 0!");
-	stage->numEnemies = minv(stage->numWalkableTiles*0.333,35+5*stage->level+random(5));
+	stage->numEnemies = minv(stage->numWalkableTiles*0.333, 15 + 5 * stage->level+random(5));
 	stage->enemyPositions = (VECTOR*)sys_malloc(sizeof(VECTOR)*stage->numEnemies);
 	stage->enemyData = (int*)sys_malloc(sizeof(int)*stage->numEnemies*2);
 	

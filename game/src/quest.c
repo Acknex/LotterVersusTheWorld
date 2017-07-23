@@ -16,7 +16,6 @@ void QUEST__itemEvent();
 #include "itembase.h"
 #include "teleporter.h"
 #include "camera.h"
-#include "font.h"
 #include "marker.h"
 
 SOUND* sndQuestStarted = "turret_up.wav";
@@ -34,6 +33,8 @@ TEXT* txtQuestTasks =
 	/* 4 */  "A wild Lottifant appeared"
 	);
 }
+
+STRING * strQuestMessage = "#256";
 
 action questmaster()
 {
@@ -55,21 +56,10 @@ action questmaster()
 		VECTOR vecTemp;
 		if (is(me, is_collected))
 		{
-			if (my->textTimer < TEXTDURATION)
-			{
-				VIEW* view = get_camera();
-				my->textTimer += time_step;
-				vec_set(&vecTemp, my->x);
-				if ((vec_to_screen(vecTemp, get_camera()) != NULL))
-				{
-					STRING* str = str_create("New Mission obtained:\n--------------------\n");
-					str_cat(str ,(txtQuestTasks->pstring)[QUEST__id]);
-					var alpha = minv(my->textTimer * 20, 100);
-					FONT_big(alpha);
-					draw_text(str, vecTemp.x + 30, vecTemp.y - 70, vector(255,255,255));
-					FONT_regular();
-				}
-			}
+			str_cpy(strQuestMessage, "New Mission obtained:\n");
+			str_cat(strQuestMessage, (txtQuestTasks->pstring)[QUEST__id]);
+			show_dialog(strQuestMessage);
+			break;
 		}
 		else
 		{
@@ -145,6 +135,7 @@ action questitem()
 
 	//var vZ = my->z;
 	var vOffset = random(500);
+	var showedMessage = 0;
 	while(my->textTimer < TEXTDURATION)
 	{
 		//my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
@@ -154,17 +145,8 @@ action questitem()
 
 		if (my->textTimer < TEXTDURATION && is(me, is_collected))
 		{
-			VIEW* view = get_camera();
-			my->textTimer += time_step;
-			vec_set(&vecTemp, my->x);
-			if ((vec_to_screen(vecTemp, get_camera()) != NULL))
-			{
-				STRING* str = str_create("Mission accomplished!");
-				var alpha = minv(my->textTimer * 20, 100);
-				FONT_big(alpha);
-				draw_text(str, vecTemp.x + 30, vecTemp.y - 70, vector(255,255,255));
-				FONT_regular();
-			}
+			show_dialog("Mission accomplished!");
+			break;
 		}
 		else
 		{
