@@ -117,13 +117,15 @@ void hide_camera()
 
 void focus_camera(ENTITY* ent)
 {
-	camera_focus_ent = NULL;
+	camera_focus_ent = ent;
+	/*
 	do
 	{
  		camera_focus_ent = ent;
 		wait(1);
 	} while (camera_focus_ent == NULL);
-	vec_set(cam->x, camera_focus_ent->x);
+	*/
+	if(camera_focus_ent) vec_set(cam->x, camera_focus_ent->x);
 }
  
 VIEW* get_camera()
