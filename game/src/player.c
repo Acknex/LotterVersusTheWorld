@@ -19,8 +19,8 @@ var desyncTimer = 0;
 var handleSndEngineIdle = 0;
 var handleSndEngineThrust = 0;
 
-SOUND* snd_engine_idle = "sounds\\engine_idle.wav";
-SOUND* snd_engine_thrust = "sounds\\engine_thrust.wav";
+SOUND* snd_engine_idle = "engine_idle.wav";
+SOUND* snd_engine_thrust = "engine_thrust.wav";
 
 void player_move_old() {
 	

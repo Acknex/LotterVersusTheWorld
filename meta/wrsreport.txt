@@ -1,0 +1,185 @@
+Create resource file: (wrs2)
+D:\git\ackcon\LottiVersusTheWorld\game\lottivstheworld.cd\lottivstheworld.wrs
+Project Files:
+1.		crosshair.tga
+2.		Can't open file: 'test.bmp'
+3.		pp_blur.fx
+4.		pp_gaussian.fx
+5.		pp_dilate.fx
+6.		pp_displace.fx
+7.		pp_erode.fx
+8.		pp_kuwahara.fx
+9.		pp_median.fx
+10.		pp_sharpen.fx
+11.		pp_sharpen2.fx
+12.		pp_bleach.fx
+13.		pp_desaturate.fx
+14.		pp_sepia.fx
+15.		pp_monochrome.fx
+16.		pp_negative.fx
+17.		pp_colorshift.fx
+18.		pp_colorspin.fx
+19.		pp_emboss.fx
+20.		pp_laplace.fx
+21.		pp_sobel.fx
+22.		pp_posterize.fx
+23.		pp_lens.fx
+24.		pp_bias.fx
+25.		st_stencilBlur.fx
+26.		pp_hdr.fx
+27.		pp_gamma.fx
+28.		chrome.tga
+29.		Lotter.fx
+30.		LotterSplash.fx
+31.		hoverboardGlow.fx
+32.		ThresholdLum.fx
+33.		BloomMix.fx
+34.		Blur.fx
+35.		Desync.fx
+36.		tile-wall-atlas_01.dds
+37.		tile-wall-text.png
+38.		color-lut_01.dds
+39.		Objects.fx
+40.		Hologram.fx
+41.		Hex.fx
+42.		wallpaper.txt
+43.		teleport.png
+44.		Teleport.fx
+45.		WallMain.fx
+46.		WallOutline.fx
+47.		tile-wall-lower_01.dds
+48.		lava.png
+49.		WallLower.fx
+50.		BlinkingObjects.fx
+51.		tile-floor-atlas_01.dds
+52.		Ground.fx
+53.		Turret.fx
+54.		BlurSmall.fx
+55.		spark.tga
+56.		dot.tga
+57.		smoke.tga
+58.		ricochet.tga
+59.		ricochet_red.tga
+60.		bat_destroyed.wav
+61.		hex_01.mdl
+62.		turret_up.wav
+63.		turret_down.wav
+64.		turret_destroyed.wav
+65.		turret_shot.wav
+66.		spikes_up.wav
+67.		sphere_activate.wav
+68.		sphere_stomp.wav
+69.		ricochet_blue.tga
+70.		emohealthsmall.tga
+71.		healthHud.tga
+72.		bombSlots.tga
+73.		dialog.tga
+74.		player_shot.wav
+75.		grenade_throw.wav
+76.		grenade_explode.wav
+77.		billboard.tga
+78.		Can't open file: 'sphere.mdl'
+79.		default.fx
+80.		Can't open file: 'skycube+6.dds'
+81.		bump.fx
+82.		specBump.fx
+83.		parallax.fx
+84.		specParallax.fx
+85.		pom.fx
+86.		specPom.fx
+87.		toon.fx
+88.		chrome.dds
+89.		chrome.fx
+90.		chromebump.fx
+91.		envglass.fx
+92.		envglassbump.fx
+93.		envMap.fx
+94.		envBump.fx
+95.		terraintex3.fx
+96.		rock.tga
+97.		sand.tga
+98.		grass.tga
+99.		terraintex.fx
+100.		water.dds
+101.		envwater.fx
+102.		waterEnv.fx
+103.		waterMirror.fx
+104.		floorMirror.fx
+105.		mirrorWater.fx
+106.		mirrorFloor.fx
+107.		turbulence.fx
+108.		animTree.fx
+109.		lightCount.fx
+110.		collect.wav
+111.		jetpack_lotter.mdl
+112.		item_a3_collectable.mdl
+113.		tronding1.mdl
+114.		gocart01.mdl
+115.		lottifant.mdl
+116.		warlock.mdl
+117.		in_game1.mp3
+118.		Teleport.mdl
+119.		rack_taperec.mdl
+120.		rack_taperec_wheel.mdl
+121.		rack_console.mdl
+122.		rack_console_keyboard.mdl
+123.		rack_hdd.mdl
+124.		rack_memory.mdl
+125.		desk_screen.mdl
+126.		desk_lamp.mdl
+127.		desk_phone.mdl
+128.		rack_case.mdl
+129.		Lava.fx
+130.		tile-ground.mdl
+131.		tile-wall-lower.mdl
+132.		tile-wall-upper-outline.mdl
+133.		tile-outline-post.mdl
+134.		level_stub.mdl
+135.		lava.hmp
+136.		tile-floor-turret.mdl
+137.		tile-floor-hole.mdl
+138.		tile-floor-spikes.mdl
+139.		bat.mdl
+140.		sphere_of_death.mdl
+141.		Sputnik.mdl
+142.		desk.mdl
+143.		screen.mdl
+144.		teleporter-effect.mdl
+145.		engine_idle.wav
+146.		engine_thrust.wav
+147.		hoverboardGlow.mdl
+148.		cbabe_maleHover.mdl
+149.		logo.png
+150.		menu_start.png
+151.		menu_start_over.png
+152.		menu_exit.png
+153.		menu_exit_over.png
+154.		main_menu.mp3
+155.		a4Cube.mdl
+156.		cbabe_male.mdl
+157.		beam.png
+158.		Can't open file: 'd:\git\ackcon\lottiversustheworld\game\models\hex_01.dds'
+159.		d:\git\ackcon\lottiversustheworld\game\models\jetpack_lotter.tga
+160.		d:\git\ackcon\lottiversustheworld\game\models\rack_skin.dds
+161.		d:\git\ackcon\lottiversustheworld\game\models\screen_skin.dds
+162.		d:\git\ackcon\lottiversustheworld\game\models\Lottiface2_fc25_fc34_fc.bmp
+163.		d:\git\ackcon\lottiversustheworld\game\models\sputnik.bmp
+164.		d:\git\ackcon\lottiversustheworld\game\models\a4Cube.pcx
+165.		d:\git\ackcon\lottiversustheworld\game\models\a4Cube_nm.tga
+166.		d:\git\ackcon\lottiversustheworld\game\models\cbabe_male.tga
+ 
+Create Engine: (lottivstheworld.exe)
+Autobind:
+1.		d3dx9_42.dll
+ 
+MagicKey:
+<92158>
+ 
+Project Files:
+1.		d3dcompiler_42.dll
+Autobind:
+1.		Skipped: D:\git\ackcon\LottiVersusTheWorld\game\acknex.wdf
+2.		D:\apps\acknex8\d3dx9_42.dll
+
+subdirectory created:
+d:\git\ackcon\lottiversustheworld\game\lottivstheworld.cd\

@@ -1,6 +1,6 @@
-SOUND* sndPlayerShot = "sounds\\player_shot.wav";
-SOUND* sndGrenadeThrow = "sounds\\grenade_throw.wav";
-SOUND* sndGrenadeExplode = "sounds\\grenade_explode.wav";
+SOUND* sndPlayerShot = "player_shot.wav";
+SOUND* sndGrenadeThrow = "grenade_throw.wav";
+SOUND* sndGrenadeExplode = "grenade_explode.wav";
 
 #include "camera.h"
 
@@ -19,13 +19,12 @@ void ricochet_effect()
 	if(my.tilt == 0)
 	my.tilt = 0.01;
 	my.roll = random(360);
-	while(t < 0.3) {
+	while(t < 0.3 && INIT__levelRunning) {
 		var f = t / 0.3;
 		var scale = 0.01+f*1;
 		vec_set(my.scale_x, vector(scale,scale,scale));
 		my.alpha = (1-f)*100;
 		t += time_step/16;
-		DEBUG_VAR(t,150);
 		wait(1);
 	}
 	ptr_remove(my);
@@ -36,9 +35,10 @@ void projectile()
 	var t = 0;
 	
 	BMAP *blub = ent_getskin(me, 1);
-	txt_fragment->target_map = blub;
+	txt_fragment->target_map = projectile_skin;
 	txt_fragment->flags |= SHOW;
 	
+	ent_setskin(me, projectile_skin, 1);
 	
 	VECTOR vTarget;
 	// Calculate grenate target
@@ -74,7 +74,7 @@ void projectile()
 	my.skill21 = 0; // How many time a projectile has bounced already
 	
 	var dist = 2;
-	while(INIT__levelRunning)
+	while(INIT__levelRunning && player)
 	{
 		t += time_step / 16; //Dead after timer if projectile is shot into the wild
 		
@@ -198,7 +198,7 @@ void cooldown()
 {
 	if(proc_status(cooldown) == 0)
 	{
-		while(player.weapon_cooldown < weapon_cooldown_time && mouse_left)
+		while(player.weapon_cooldown < weapon_cooldown_time && mouse_left && INIT__levelRunning)
 		{
 			player.weapon_cooldown += time_step / 16;
 			wait(1);
@@ -211,7 +211,7 @@ void cooldown_granate()
 {
 	if(proc_status(cooldown_granate) == 0)
 	{
-		while(player.weapon_granade_cooldown < weapon_grenade_cooldown_time)
+		while(player.weapon_granade_cooldown < weapon_grenade_cooldown_time && INIT__levelRunning)
 		{
 			player.weapon_granade_cooldown += time_step / 16;
 			wait(1);
@@ -222,6 +222,8 @@ void cooldown_granate()
 
 void shoot(int wp_type)
 {
+	if( !INIT__levelRunning ) { return; }
+	
 	VECTOR spawn;
 	vec_for_vertex(spawn, player, 2139);
 	

@@ -10,8 +10,8 @@
 void ENEMY__projectileEvent();
 void ENEMY__projectileLoop();
 
-SOUND* sndBatDeath = "sounds\\bat_destroyed.wav";
-SOUND* sndBatScream = "sounds\\bat_scream.wav";
+SOUND* sndBatDeath = "bat_destroyed.wav";
+SOUND* sndBatScream = "bat_scream.wav";
 
 
 void enemy_do_hit_flash(ENTITY* ent)

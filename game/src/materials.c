@@ -209,8 +209,8 @@ MATERIAL *WallOutlineMaterial =
 	flags = PASS_SOLID;
 }
 
-BMAP *WallLower01BMAP = "graphics/tile-wall-lower_01.dds";
-BMAP *WallLowerLavaBMAP = "graphics/lava.png";
+BMAP *WallLower01BMAP = "tile-wall-lower_01.dds";
+BMAP *WallLowerLavaBMAP = "lava.png";
 
 MATERIAL *WallLowerMaterial =
 {
