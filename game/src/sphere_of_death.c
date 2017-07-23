@@ -42,7 +42,7 @@ void sphere_stomp_effect()
 		vec_set(my.scale_x, vector(scale,scale,scale));
 		my.alpha = (1-f)*100;
 		t += time_step/16;
-		DEBUG_VAR(t,150);
+		//DEBUG_VAR(t,150);
 		wait(1);
 	}
 	ptr_remove(my);
@@ -56,11 +56,6 @@ action enemy_sphere()
 	my->material = LotterMaterial;
 	SPHEREOD__init();
 	
-	while(me)
-	{
-		MARKER_update(me);
-		wait(1);
-	}
 }
 
 void SPHEREOD__init()
@@ -91,6 +86,7 @@ void SPHEREOD__loop()
 	
 	while (!is(my, dead))
 	{
+		MARKER_update(me);
 		if(my->sphere_state == SOD_SEARCH)
 		{
 			if(player) vec_set(myTarget,player.x);

@@ -7,6 +7,7 @@
 
 Texture entSkin1;
 float4 vecTime;
+float fAlpha;
 
 sampler sTexture = sampler_state { Texture = <entSkin1>; MipFilter = Linear; };
 
@@ -50,7 +51,7 @@ float4 ps(out_ps In): COLOR
 	float fresnel = -In.normal.z;
 	fresnel *= fresnel;
 	fresnel = 1.0-fresnel;
-	return float4(a * fresnel, fresnel);
+	return float4(a * fresnel, fresnel)*fAlpha;
 }
 
 
