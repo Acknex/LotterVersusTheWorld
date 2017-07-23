@@ -4,8 +4,20 @@ const float4x4 matWorld;
 const float4 vecViewDir;
 const float4 vecSunDir;
 
+float ColorVariation_flt;
+float4 vecSkill41;
+
 texture entSkin1;
 texture chrome_tga_bmap;
+
+Texture ColorLUT_bmap;
+sampler sLUT = sampler_state
+{
+	Texture = <ColorLUT_bmap>; 
+	AddressU = Clamp;
+	AddressV = Clamp; 
+	MipFilter = Linear;
+};
 
 sampler ColorMapSampler = sampler_state 
 { 
@@ -40,11 +52,22 @@ out float2 OutLookup: TEXCOORD2)
 float4 DiffusePS( 
 in float2 InTex: TEXCOORD0, 
 in float3 InNormal: TEXCOORD1,
-in float2 Lookup: TEXCOORD2): COLOR 
+in float2 Lookup: TEXCOORD2): COLOR
 { 
 InNormal = normalize(InNormal);
 
 	float4 Color = tex2D(ColorMapSampler, InTex);
+	float3 blendmap = Color.rgb; //tex2D(sTexture, InTex.uv).rgb;
+	
+	float3 a = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (25.5 + vecSkill41.x*5.0)/64.0)).rgb;
+	float3 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (26.5 + vecSkill41.x*5.0)/64.0)).rgb;
+	float3 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (27.5 + vecSkill41.x*5.0)/64.0)).rgb;
+	return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b, blendmap.r+blendmap.g+blendmap.b);
+	
+	
+	
+
+	//float4 Color = tex2D(ColorMapSampler, InTex);
 	float diffuse = saturate(dot(InNormal,-vecViewDir)*1.25)*0.75+0.25-0.25*Color.a; //
 	float chrome = tex2D(ChromeMapSampler,Lookup.xy);
 	float chromeFac = 1-Color.a;

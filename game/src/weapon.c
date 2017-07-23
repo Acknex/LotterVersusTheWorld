@@ -75,7 +75,7 @@ void projectile()
 	vec_scale( vTarget, l);
 	vec_add(vTarget, mouse_pos3d);
 	
-	vTarget.z += 50;
+	vTarget.z += 0;
 	
 	
 	
@@ -92,15 +92,13 @@ void projectile()
 	vec_sub(vTarget, player.x);
 	vec_to_angle(my.pan, vTarget);
 	vec_normalize(vTarget, 1);
+	vTarget.z += random(0.1);
 	vec_scale(vTarget, weapon_speed * time_step);
 	
 	my.tilt = 90;
 	my.pan += 90;
 	
 	vec_scale(my.scale_x, weapon_projectile_scale);
-	
-	var length = 0;
-	var orig_height = my.z;
 	
 	my.skill21 = 0; // How many time a projectile has bounced already
 	
@@ -173,10 +171,10 @@ void granate()
 {
 	VECTOR vstart,temp, vTarget, midPos1, midPos2;
 	
-	my.group = 2;
+	my.group = 4;
 	my.type = TypePlayerProjectile;
 	my.damage = 3;
-	my.flags |= (PASSABLE |FLAG2);
+	my.flags |= (PASSABLE | FLAG2);
 	
 	// Calculate grenate target
 	vec_set(vTarget,mouse_dir3d);
@@ -194,6 +192,7 @@ void granate()
 	
 	
 	// Bezier interpolation
+	//var dist = 0;
 	while(my.skill2 < 16 && me)
 	{
 		my.skill2 = minv(my.skill2+time_step,16);
@@ -214,7 +213,7 @@ void granate()
 		vec_set(temp,vTarget);
 		vec_scale(temp,t*t*t);
 		
-		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH);
+		c_move(me, nullvector, temp, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PUSH );
 		wait(1);
 	}
 	effect(p_granate_explode,200,my.x,nullvector);

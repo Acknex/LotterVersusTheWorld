@@ -5,6 +5,7 @@
 #include "sky.h"
 #include "music_player.h"
 #include "hud.h"
+#include "quest.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
@@ -24,6 +25,13 @@ void INIT_levelStart()
 	stageAddExitAndEntrance(LEVEL__stage);
 	stageCreateEnemyData(LEVEL__stage);
 	stage_load(LEVEL__stage); // calls level_load!
+
+	QUEST_init();	
+	VECTOR* vecTemp;
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.85, 0.1);
+	ent_create("warlock.mdl", vecTemp, questmaster);
+	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.9, 0.1);
+	ent_create(CUBE_MDL, vecTemp, questitem);
 	
 	sky_color.red = 0;
 	sky_color.green = 0;
