@@ -70,8 +70,9 @@ void hud_ingame_align() {
 void show_blood_hit() {
 	proc_kill((void*)show_blood_hit);
 	ColorVariation = 1;
+		wait(-0.2);
 	while(ColorVariation > 0) {
-		ColorVariation -=2 * time_step;
+		ColorVariation -=0.2 * time_step;
 		wait(1);
 	}
 	ColorVariation = 0;
