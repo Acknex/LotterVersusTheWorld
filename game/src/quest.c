@@ -17,6 +17,10 @@ void QUEST__itemEvent();
 #include "teleporter.h"
 #include "camera.h"
 #include "font.h"
+#include "marker.h"
+
+SOUND* sndQuestStarted = "turret_up.wav";
+SOUND* sndQuestDone = "turret_down.wav";
 
 TEXT* txtQuestTasks = 
 {
@@ -33,6 +37,7 @@ TEXT* txtQuestTasks =
 
 action questmaster()
 {
+	my->type = TypeQuestmaster;
 	vec_scale(my->scale_x, 2.5);
 	my->event = QUEST__masterEvent;
 	my->material = HologramMaterial;
@@ -46,6 +51,7 @@ action questmaster()
 	}
 	while(my->textTimer < TEXTDURATION)
 	{
+		MARKER_update(me);
 		VECTOR vecTemp;
 		if (is(me, is_collected))
 		{
@@ -60,7 +66,7 @@ action questmaster()
 					str_cat(str ,(txtQuestTasks->pstring)[QUEST__id]);
 					var alpha = minv(my->textTimer * 20, 100);
 					FONT_big(alpha);
-					draw_text(str, vecTemp.x + 30, vecTemp.y - 30, vector(255,255,255));
+					draw_text(str, vecTemp.x + 30, vecTemp.y - 70, vector(255,255,255));
 					FONT_regular();
 				}
 			}
@@ -79,6 +85,7 @@ action questmaster()
 	}
 	while(my->alpha > 0)
 	{
+		MARKER_update(me);
 		wait(1);
 		my->alpha -= 7 * time_step;
 	}
@@ -89,6 +96,8 @@ action questmaster()
 
 action questitem()
 {
+	vec_scale(my->scale_x, 2.5);
+	my->type = TypeQuestitem;
 	my->z = 80;
 	switch (QUEST__id)
 	{
@@ -124,6 +133,7 @@ action questitem()
 	}
 	while (my->alpha < 100)
 	{
+		MARKER_update(me);
 		wait(1);
 		my->alpha += 10* time_step;
 	}
@@ -131,13 +141,42 @@ action questitem()
 	reset(my, TRANSLUCENT);
 	my->event = QUEST__itemEvent;
 	
-	while(!is(me, is_collected))
+
+	//var vZ = my->z;
+	var vOffset = random(500);
+	while(my->textTimer < TEXTDURATION)
 	{
+		//my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
+		my->pan = 135 * sinv(total_ticks * 2 - vOffset);
+		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
+		VECTOR vecTemp;
+
+		if (my->textTimer < TEXTDURATION && is(me, is_collected))
+		{
+			VIEW* view = get_camera();
+			my->textTimer += time_step;
+			vec_set(&vecTemp, my->x);
+			if ((vec_to_screen(vecTemp, get_camera()) != NULL))
+			{
+				STRING* str = str_create("Mission accomplished!");
+				var alpha = minv(my->textTimer * 20, 100);
+				FONT_big(alpha);
+				draw_text(str, vecTemp.x + 30, vecTemp.y - 70, vector(255,255,255));
+				FONT_regular();
+			}
+		}
+		else
+		{
+			MARKER_update(me);
+		}
 		wait(1);
 	}
+
+
 	QUEST__solved = 1;
-	ITEM_fade();
-	teleporter_enable();
+	teleporter_enable(); //switch to end boss?
+	ptr_remove(me);
+	
 }
 
 /*void questspawn()
@@ -170,6 +209,9 @@ void QUEST__masterEvent()
 	{
 		ITEM_collect();
 		QUEST__started = 1;
+		set(my, PASSABLE);		
+		snd_play(sndQuestStarted, 100, 0);
+		
 	}
 }
 
@@ -177,6 +219,12 @@ void QUEST__itemEvent()
 {
 	if (event_type == EVENT_TRIGGER)
 	{
-		ITEM_collect();
+		//ITEM_collect();
+		my->event = NULL;
+		set (me, is_collected);
+		set(my, PASSABLE);
+		snd_play(sndQuestDone, 100, 0);
+		ITEM_fade();
+		
 	}
 }
