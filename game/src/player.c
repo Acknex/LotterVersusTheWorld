@@ -228,8 +228,6 @@ void player_move() {
 		{
 			shootingHandle = snd_loop(sndPlayerShot, 50, 0);
 		}
-		player.weapon_bouncing = 2;
-		player.group = 3;
 		shoot(1);
 	}
 	if(!mouse_left && shootingHandle != 0) 
