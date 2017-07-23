@@ -28,7 +28,7 @@ SOUND* sndSpikesUp = "spikes_up.wav";
 
 action enemy_spikes()
 {
-  	set(me, POLYGON | FLAG1);
+  	set(me, POLYGON | FLAG1 | PASSABLE);
 	my.type = TypeSpikes;
 	ent_animate(my, "idle", 0, 0);
 	my->spikesState = SPIKESSLEEP;
