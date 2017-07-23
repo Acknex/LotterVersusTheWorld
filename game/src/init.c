@@ -15,6 +15,10 @@ var INIT__currentHardness = 0;
 
 void INIT_levelEnd();
 
+//
+// NO wait(1) IN INIT_levelStart:
+// Will crash horribly because game loop is started
+//
 void INIT_levelStart()
 {
 	on_r = INIT_levelEnd;
