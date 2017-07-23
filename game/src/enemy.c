@@ -68,6 +68,15 @@ void ENEMY_init()
 	my->health = 3;
 	my->damage = 1;
 	my->bulletSpeed = 30;
+	
+	while(1)
+	{
+		if(cheats_enabled && key_k) {
+			my.health = 0;
+			return;
+		}
+		wait(1);
+	}
 }
 
 var ENEMY_hit(var vEventType)

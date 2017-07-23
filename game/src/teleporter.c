@@ -13,6 +13,16 @@ void teleporter_disable()
 	set(teleporterEntity, INVISIBLE);
 }
 
+function teleport_effect(PARTICLE * p)
+{
+	p->flags = BEAM | BRIGHT | MOVE;
+	vec_set(p->vel_x, vector(0, 0, 2 + random(5)));
+	vec_set(p->blue, COLOR_WHITE);
+	vec_add(p->x, vec_rotate(vector(60,0,0), vector(random(360), 0, 0)));
+	p->lifespan = 100;
+	p->event = NULL;
+}
+
 action teleporter_out()
 {
 	teleporterEntity = me;
@@ -44,7 +54,7 @@ action teleporter_out()
 			player.near_teleport = 1;
 			player.z += time_step;
 			player.pan += 0.1 * portloader * time_step;
-			portloader += 0.5 * time_step;
+			portloader += time_step;
 			if(portloader >= 75) {
 				player.pan += 0.1 * portloader * time_step;
 				player.pause_control = 1;
@@ -59,6 +69,7 @@ action teleporter_out()
 				INIT_levelEnd();
 				return;
 			}
+			effect(teleport_effect, 3 + time_frame, my.x, vector(0,0,0));
 		}
 		else 
 		{

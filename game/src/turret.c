@@ -112,6 +112,10 @@ void TURRET__loop()
 				break;
 		}
 		enemy_do_hit_flash(my);
+		if(cheats_enabled && key_k) {
+			my.health = 0;
+			break;
+		}
 		wait(1);	
 	}
 	TURRET__die();
