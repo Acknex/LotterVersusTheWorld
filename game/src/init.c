@@ -54,8 +54,6 @@ void INIT_levelStart()
 	player_init();
 	diag("\npost-player-init");
 	
-	wait(1);
-
 	//setup camera	
 	create_camera();
 	focus_camera(player);
@@ -87,6 +85,7 @@ void INIT_levelStart()
 //	you.material = ObjectMaterial;
 
 	enemy_spawn_hex();
+	MARKER_attach();
 	diag("\ninit done.");
 }
 
@@ -95,6 +94,7 @@ void INIT_levelEnd()
 	me = NULL; //decouple from any calling entity
 	INIT__levelRunning = 0;
 	
+	MARKER_detach();
 	stopMusic();
 	
 	wait(1);
