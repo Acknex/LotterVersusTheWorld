@@ -38,6 +38,7 @@ void INIT_levelStart()
 	sky_color.blue = 0.1;
 	
 	player_init();
+	wait(1);
 	//setup camera	
 	focus_camera(player);
 	show_camera();
