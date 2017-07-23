@@ -161,11 +161,6 @@ void hud_ingame_update() {
 	if (player.weapon_granade_cooldown > weapon_grenade_cooldown_time / 6 * 5) {
 		vBombCooldown = bmap_width(bmapBombSlots) / 6 * 5;
 	}
-	
-	if (key_l) {
-		while(key_l) wait(1);
-		show_dialog("Quest gestartet!");
-	}
 }
 
 void hud_ingame_show() {
