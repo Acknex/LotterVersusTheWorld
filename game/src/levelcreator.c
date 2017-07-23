@@ -257,27 +257,22 @@ ENTITY * stage_genEntity(STAGE * stage, void * foo)
 
 VECTOR * stage_load(STAGE * stage)
 {
-	diag("\nstage_load: 0");
 	level_load(NULL);
 	
 	// Initialize models
-	diag("\nstage_load: 1");
 	stageRenderInit();
 	
 	
-	diag("\nstage_load: 2");
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	
 	DMDLSettings.flags |= DMDL_FIXNORMALS;
 	
-	diag("\nstage_load: 3");
 	ENTITY * entUpperWall = stage_genEntity(stage, stage_loadUpperWall);
 	ENTITY * entGround = stage_genEntity(stage, stage_loadGround);
 	ENTITY * entLowerWall = stage_genEntity(stage, stage_loadLowerWall);
 	ENTITY * entOutlines = stage_genEntity(stage, stage_loadWallOutline);
 	
-	diag("\nstage_load: 4");
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
 	
@@ -293,7 +288,6 @@ VECTOR * stage_load(STAGE * stage)
 	
 	entOutlines->flags |= PASSABLE;
 	
-	diag("\nstage_load: 5");
 	{
 		int i, j;
 		for(i = 1; i < (stage->size[0] - 1); i++) {
@@ -403,11 +397,9 @@ VECTOR * stage_load(STAGE * stage)
 			}
 		}
 	}
-	diag("\nstage_load: 6");
 	
 	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	ent->material = TeleporterEffectMaterial;
 	
-	diag("\nstage_load: 7");
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }

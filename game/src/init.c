@@ -24,23 +24,14 @@ void INIT_levelStart()
 	on_r = INIT_levelEnd;
 
 	INIT__levelRunning = 1;
-	
-	//level_load("prototype_wmb.wmb");
-	//level_load("prototype.mdl");
-	//level_load("test_level_small.wmb");
-	diag("\npre-create");
 
 	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
 	stageAddExitAndEntrance(LEVEL__stage);
 	stageCreateEnemyData(LEVEL__stage);
-	
-	diag("\npre-load");
 
 	stage_load(LEVEL__stage); // calls level_load!
-	
-	diag("\npost-load");
 
 	QUEST_init();	
 	VECTOR* vecTemp;
@@ -49,32 +40,24 @@ void INIT_levelStart()
 	vecTemp = stageGetQuestPosition(LEVEL__stage, NULL, 0.25, 0.1);
 	ent_create(CUBE_MDL, vecTemp, questitem);
 	
-	diag("\npost-questinit");
-	
 	sky_color.red = 0;
 	sky_color.green = 0;
 	sky_color.blue = 0.1;
 	
 	player_init();
-	diag("\npost-player-init");
 	
 	//setup camera	
 	create_camera();
 	focus_camera(player);
 	show_camera();
 	
-	diag("\npost-camera-setup");
-	
 	// Use dummy entity for "level outliving"
 	ent_create(NULL, NULL, ground_reflections);
 	pp_bloom(2.5);
 	
-	diag("\npost-shader-init");
-	
 	mouse_init_game();
 	hud_ingame_init();
 	hud_ingame_show();
-	diag("\npost-hud-init");
 	//skychange(); //because.
 	
 
@@ -90,7 +73,6 @@ void INIT_levelStart()
 
 	enemy_spawn_hex();
 	MARKER_attach();
-	diag("\ninit done.");
 }
 
 void INIT_levelEnd()
