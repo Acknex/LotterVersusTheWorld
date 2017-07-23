@@ -26,9 +26,25 @@ void hud_ingame_init() {
 		set(panDialog, OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y);
 	}
 	
+	if(!panPlayerDead) {
+		panPlayerDead = pan_create(NULL, 3);
+		panPlayerDead.bmap = bmapPlayerDead;
+		panPlayerDead.alpha = 0;
+		set(panPlayerDead,  TRANSLUCENT | CENTER_X | CENTER_Y);
+	}
+	
 	hud_ingame_align();
 }
 
+void show_death_screen(var alpha)
+{
+	panPlayerDead.alpha = alpha;
+	set(panPlayerDead, SHOW);	
+}
+void hide_death_screen()
+{
+	reset(panPlayerDead, SHOW);
+}
 void show_dialog(STRING* _text) {
 	if (panDialog) {
 		panDialog.scale_y = 0;
@@ -64,6 +80,10 @@ void hud_ingame_align() {
 	if (panDialog) {
 		panDialog.pos_x = screen_size.x / 2 - bmap_width(panDialog.bmap) / 2;
 		panDialog.pos_y = screen_size.y / 2 - bmap_height(panDialog.bmap) / 2;
+	}
+	if (panPlayerDead) {
+		panPlayerDead.pos_x = screen_size.x / 2 - bmap_width(panPlayerDead.bmap) / 2;
+		panPlayerDead.pos_y = screen_size.y / 2 - bmap_height(panPlayerDead.bmap) / 2;
 	}
 }
 
