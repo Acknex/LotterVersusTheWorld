@@ -131,10 +131,12 @@ MATERIAL *ObjectMaterial =
 	flags = PASS_SOLID;
 }
 
+BMAP *HologramTexture = "wireframe_01.dds";
 MATERIAL *HologramMaterial =
 {
 	effect = "Hologram.fx";
 	flags = TRANSLUCENT;
+	skin1 = HologramTexture;
 }
 
 MATERIAL *HexMaterial =
