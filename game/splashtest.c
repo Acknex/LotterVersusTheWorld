@@ -29,7 +29,10 @@ void main()
 {
 	max_entities = 20000;
 	d3d_antialias = 0;
-	video_mode = 12;
+	//video_aspect = 1.777;
+	//video_mode = 12;
+	video_set(1280,720,0,0);
+	
 	on_resize = INIT_resize;
 	INIT_start();
 	wait(1);
