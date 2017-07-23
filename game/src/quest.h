@@ -4,6 +4,7 @@
 void QUEST_init();
 void QUEST_reset();
 var QUEST_isSolved();
+var QUEST_isStarted();
 
 #include "quest.c"
 
