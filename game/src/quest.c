@@ -96,6 +96,7 @@ action questmaster()
 
 action questitem()
 {
+	set(my, PASSABLE);
 	vec_scale(my->scale_x, 2.5);
 	my->type = TypeQuestitem;
 	my->z = 80;
@@ -203,6 +204,11 @@ var QUEST_isSolved()
 	return QUEST__solved;
 }
 
+var QUEST_isStarted()
+{
+	return QUEST__started;
+}
+
 void QUEST__masterEvent()
 {
 	if (event_type == EVENT_TRIGGER)
@@ -222,7 +228,6 @@ void QUEST__itemEvent()
 		//ITEM_collect();
 		my->event = NULL;
 		set (me, is_collected);
-		set(my, PASSABLE);
 		snd_play(sndQuestDone, 100, 0);
 		ITEM_fade();
 		
