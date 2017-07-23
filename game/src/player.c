@@ -138,6 +138,20 @@ void player_hit_sound() {
 	}
 }
 
+void hit_player(var dmg)
+{
+	if(player != NULL)
+	{
+		player->health -= dmg;
+		player_hit_sound();
+		desyncTimer = 0.4; // 0.4 second desync
+		if (player->health <= 0) 
+		{
+			pp_desync(0);
+		}
+	}
+}
+
 void player_move() {
 	if(player->health <= 0)
 		return;
@@ -318,13 +332,7 @@ void player_event() {
 	switch(event_type) {
 		case EVENT_SHOOT:
 		case EVENT_SCAN:
-		//my.health = 0; // TODO: remove
-		my.health -=your.damage;
-		player_hit_sound();
-		desyncTimer = 0.4; // 0.4 second desync
-		if (my.health <= 0) {
-			pp_desync(0);
-		}
+		hit_player(your.damage);
 		break;
 		
 	}

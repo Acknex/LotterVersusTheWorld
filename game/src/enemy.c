@@ -262,7 +262,7 @@ action enemy_bat()
 				{
 					ENTITY* ent = ent_create("graphics\\scream.dds", my.x, scream_sprite);
 					snd_play(sndBatScream, 100, 0);
-					player->health -= 6;
+					hit_player(6);
 					vec_scale(ent->scale_x, 0.5);
 					ent->pan = my.pan;
 					ent->tilt = 90;
