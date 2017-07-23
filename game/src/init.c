@@ -85,11 +85,13 @@ void INIT_levelEnd()
 	
 	wait(1);
 	
+	diag_status();
+	
+	level_load(NULL);
+	
 	// stage_unload(); // destroy all meshes
 	stageDestroy(LEVEL__stage);
 	LEVEL__stage = NULL;
-	
-	level_load(NULL);
 	
 	wait(1);
 	
