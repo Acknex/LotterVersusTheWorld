@@ -7,6 +7,7 @@
 void SPLASH__init()
 {
 	create_camera();
+	pp_bloom_start(2.5);
 	SPLASH__setupLevel();
 	wait(1);
 	
