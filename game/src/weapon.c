@@ -3,6 +3,7 @@ SOUND* sndGrenadeThrow = "sounds\\grenade_throw.wav";
 SOUND* sndGrenadeExplode = "sounds\\grenade_explode.wav";
 
 #include "camera.h"
+
 void ricochet_effect()
 {
 	var t = 0;
@@ -49,8 +50,6 @@ void projectile()
 	
 	vTarget.z += 0;
 	
-	
-	
 	my.group = 4;
 	my.flags |= (FLAG2);
 	my.type = TypePlayerProjectile;
@@ -75,7 +74,7 @@ void projectile()
 	my.skill21 = 0; // How many time a projectile has bounced already
 	
 	var dist = 2;
-	while(1)
+	while(INIT__levelRunning)
 	{
 		t += time_step / 16; //Dead after timer if projectile is shot into the wild
 		
@@ -165,7 +164,7 @@ void granate()
 	
 	// Bezier interpolation
 	//var dist = 0;
-	while(my.skill2 < 16 && me)
+	while(my.skill2 < 16 && me && INIT__levelRunning)
 	{
 		my.skill2 = minv(my.skill2+time_step,16);
 		float t = my.skill2/16.0;
