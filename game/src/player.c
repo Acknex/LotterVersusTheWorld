@@ -117,7 +117,9 @@ void player_move_old() {
 }
 
 void player_move() {
-	
+	if(player->health <= 0)
+		return;
+		
 	if (mouse_mode > 0)	
 	{ 
 		mouse_pos.x = mouse_cursor.x;    
@@ -274,11 +276,11 @@ void player_event() {
 		case EVENT_SHOOT:
 		case EVENT_SCAN:
 		my.health -=your.damage;
+		my.health = 0; // TODO: remove
 		desyncTimer = 0.4; // 0.4 second desync
 		if (my.health <= 0) {
-			printf("You are DEAD!");
+			pp_desync(0);
 		}
-		
 		break;
 		
 	}
