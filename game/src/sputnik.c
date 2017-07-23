@@ -19,10 +19,11 @@ action enemy_sputnik()
 	static int batId = 0;
 	my.skill36 = batId;
 	my.skill37 = random(360); // slight pan movement variations
+	my.skill41 = floatv(1);
 	batId++;
 	my.group = 9;
 	my.type = TypeEnemy;
-	my.health = 50; // TANK IT, BABY
+	my.health = 15; // TANK IT, BABY
 	my.damage = 12;
 	var attacking = 0;
 	var attacked = 0;
@@ -57,9 +58,9 @@ action enemy_sputnik()
 				//draw_line3d2(my.x,curTarget,COLOR_RED,75);
 				//draw_line3d2(curTarget,myTarget,COLOR_GREEN,75);
 			}	
-			my.skill31 += 12*time_step;
-			my.skill31 %= 360;
-			my.z = 64+16*sinv(my.skill31);
+			//my.skill31 += 12*time_step;
+			//my.skill31 %= 360;
+			my.z = 64;
 			if(!(my.eflags&CLIPPED))
 			{
 				vec_set(temp2,nullvector);
@@ -119,7 +120,7 @@ action enemy_sputnik()
 			}
 			else if(attacking > 0)
 			{
-				ent_animate(me, "attack", attacking, 0);
+				ent_animate(me, "attackA", attacking, 0);
 				
 				if(attacking >= 30 && attacked == 0)
 				{
@@ -147,6 +148,7 @@ action enemy_sputnik()
 			if(attacking > 0) { attacking = 0; attacked = 0; }
 		}
 		
+		enemy_do_hit_flash(my);
 		wait(1);
 	}
 	effect(p_bat_explode,100,my.x,nullvector);

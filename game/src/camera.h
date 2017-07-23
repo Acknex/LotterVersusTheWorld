@@ -30,6 +30,7 @@ void create_camera(int);
 void remove_camera();
 void update_camera();
 void show_camera();
+void shake_cam(var shakeTime);
 void hide_camera();
 void focus_camera(ENTITY* ent);
 VIEW* get_camera();

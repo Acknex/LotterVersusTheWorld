@@ -52,7 +52,8 @@ action enemy_sphere()
 	set(me, POLYGON);
 	set(me, FLAG1);
 	my.type = TypeSphereOfDeath;
-	
+	my.skill41 = floatv(3);
+	my->material = LotterMaterial;
 	SPHEREOD__init();
 	
 }
@@ -178,6 +179,7 @@ void SPHEREOD__loop()
 				my->sphere_state = SOD_SEARCH;
 			}
 		}
+		enemy_do_hit_flash(my);
 		wait(1);	
 	}
 	SPHEREOD__die();
