@@ -2,31 +2,26 @@
 #include "marker_cfg.h"
 
 var MARKER__show = 0;
+var MARKER__enable = 0;
 
 void MARKER_toggle()
 {
 	MARKER__show = 1 - MARKER__show;
 }
 
-void MARKER_attach(ENTITY* ent)
+void MARKER_attach()
 {
-	if (ent != NULL)
-	{
-	//	set(ent, has_marker);
-	}
+	MARKER__enable = 1;
 }
 
-void MARKER_detach(ENTITY* ent)
+void MARKER_detach()
 {
-	if (ent != NULL)
-	{
-//		reset(ent, has_marker);
-	}
+	MARKER__enable = 0;
 }
 
 void MARKER_update(ENTITY* ent)
 {
-	if (MARKER__show == 0)
+	if (MARKER__show == 0 || MARKER__enable == 0)
 		return;
 	
 	if (ent == NULL || player == NULL)

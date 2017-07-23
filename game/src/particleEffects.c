@@ -226,7 +226,7 @@ void p_hoverboard_smoke(PARTICLE* p)
 	vec_add(p.vel_x,p.skill_x);
 	p.vel_z *= 0.1;
 	vec_scale(p.vel_x,10+random(5));
-	vec_set(p.blue,vector(190,16,220));
+	vec_set(p.blue,vector(255,255,0)); //190 16 220
 	p.skill_d = random(0.2)+0.8;
 	vec_scale(p.blue,p.skill_d);
 	set(p,MOVE | BRIGHT);
