@@ -117,16 +117,11 @@ void hide_camera()
 
 void focus_camera(ENTITY* ent)
 {
-	cam->pan = CAMERA_PAN;
-	cam->tilt = CAMERA_TILT; 
-	//camera_focus_ent = NULL;
-	do
-	{
- 		camera_focus_ent = ent;
-		wait(1);
-	} while (camera_focus_ent == NULL);
-	vec_set(cam->x, camera_focus_ent->x);
-	vec_set(cameraTarget, camera_focus_ent->x);
+	camera_focus_ent = ent;
+	if(camera_focus_ent) {
+		vec_set(cam->x, camera_focus_ent->x);
+		vec_set(cameraTarget, camera_focus_ent->x);
+	}
 }
  
 VIEW* get_camera()

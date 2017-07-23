@@ -258,36 +258,36 @@ MATERIAL *PPReflectionBlurVMaterial =
 
 void ground_reflections()
 {
-	if(ReflectionView)
-		return;
+	if(ReflectionView == NULL)
+	{	
+		PPReflectionBlurHMaterial.skill1 = floatd(1.0, 512.0);
+		PPReflectionBlurHMaterial.skill2 = floatv(0.0);
 		
-	PPReflectionBlurHMaterial.skill1 = floatd(1.0, 512.0);
-	PPReflectionBlurHMaterial.skill2 = floatv(0.0);
+		PPReflectionBlurVMaterial.skill1 = floatv(0.0);
+		PPReflectionBlurVMaterial.skill2 = floatd(1.0, 512.0);
+		
+		ReflectionView = view_create(-2);
+		ReflectionView.size_x = 512;
+		ReflectionView.size_y = 512;
+		set(ReflectionView, NOFLAG1);
+		
+		pp_view = ReflectionView;
+		pp_stage = ReflectionView;
+		pp_stage.bmap = bmap_createblack(512, 512, 8888);
+		
+		pp_add(PPReflectionBlurHMaterial);
+		pp_stage.bmap = bmap_createblack(512, 512, 8888);
+		
+		pp_add(PPReflectionBlurVMaterial);
+		pp_stage.bmap = ReflectionView.bmap;
+		GroundMaterial.skin1 = pp_stage.bmap;
+		TurretMaterial.skin1 = pp_stage.bmap;
+		
+		set(ReflectionView, SHOW);
+		proc_mode = PROC_LATE;
+	}
 	
-	PPReflectionBlurVMaterial.skill1 = floatv(0.0);
-	PPReflectionBlurVMaterial.skill2 = floatd(1.0, 512.0);
-	
-	ReflectionView = view_create(-2);
-	ReflectionView.size_x = 512;
-	ReflectionView.size_y = 512;
-	set(ReflectionView, NOFLAG1);
-	
-	pp_view = ReflectionView;
-	pp_stage = ReflectionView;
-	pp_stage.bmap = bmap_createblack(512, 512, 8888);
-	
-	pp_add(PPReflectionBlurHMaterial);
-	pp_stage.bmap = bmap_createblack(512, 512, 8888);
-	
-	pp_add(PPReflectionBlurVMaterial);
-	pp_stage.bmap = ReflectionView.bmap;
-	GroundMaterial.skin1 = pp_stage.bmap;
-	TurretMaterial.skin1 = pp_stage.bmap;
-	
-	set(ReflectionView, SHOW);
-	proc_mode = PROC_LATE;
-	
-	while(1)
+	while(cam)
 	{
 		ReflectionView.aspect = (screen_size.x/screen_size.y)*cam.aspect; // screen aspect, independent of render target
 		ReflectionView.arc    = cam.arc;
@@ -302,7 +302,6 @@ void ground_reflections()
 		vec_set(ReflectionView.pan, cam.pan);
 		ReflectionView.tilt *= -1.0;
 		ReflectionView.roll *= -1.0;
-		
 		wait(1);
 	}
 }

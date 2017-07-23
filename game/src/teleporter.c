@@ -25,7 +25,7 @@ action teleporter_out()
 	proc_mode = PROC_LATE;
 	
 	var portloader = 0;
-	while(me)
+	while(1)
 	{
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
 		if(!is(me, INVISIBLE) && dist < 50) // ist höhenabhängig!

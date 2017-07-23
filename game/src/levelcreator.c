@@ -58,13 +58,13 @@ void stageRenderInit()
 void stage_unload()
 {
 	int i;
-	stage_groundMesh->Release();
+	// stage_groundMesh->Release();
 	for(i = 0; i < 3; i++) {
-		(stage_upperWallMesh[0])->Release();
+		// (stage_upperWallMesh[0])->Release();
 	}
-	stage_lowerWallMesh->Release();
-	stage_upperWallOutlineMesh->Release();
-	stage_outlinePostMesh->Release();
+	// stage_lowerWallMesh->Release();
+	// stage_upperWallOutlineMesh->Release();
+	// stage_outlinePostMesh->Release();
 }
 
 void stage_loadGround(DynamicModel * model, STAGE * stage)
@@ -262,6 +262,7 @@ VECTOR * stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
+	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	
@@ -274,7 +275,6 @@ VECTOR * stage_load(STAGE * stage)
 	
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
-	
 	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;
@@ -343,7 +343,6 @@ VECTOR * stage_load(STAGE * stage)
 				else if(tile->flags & TILE_FLAG_TRAP_SPUTNIK) {
 					ent = ent_create("Sputnik.mdl", vec_add(vector(0, 0, 80), &center), enemy_sputnik);
 					ent->type = TypeEnemy;
-					MARKER_attach(ent);
 				} else if(tile->value != 0) {
 					var r = random(100);
 					var rot = 0;
@@ -398,7 +397,6 @@ VECTOR * stage_load(STAGE * stage)
 			}
 		}
 	}
-	
 	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	ent->material = TeleporterEffectMaterial;
 	
