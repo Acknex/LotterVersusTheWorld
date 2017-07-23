@@ -52,7 +52,8 @@ action enemy_sphere()
 	set(me, POLYGON);
 	set(me, FLAG1);
 	my.type = TypeSphereOfDeath;
-	
+	my.skill41 = floatv(3);
+	my->material = LotterMaterial;
 	SPHEREOD__init();
 	
 	while(me)
