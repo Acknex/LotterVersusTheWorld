@@ -1,3 +1,22 @@
+SOUND* snd_sputnik_attack1 = "sputnik_attack1.wav";
+SOUND* snd_sputnik_attack2 = "sputnik_attack2.wav";
+SOUND* snd_sputnik_attack3 = "sputnik_attack3.wav";
+
+void sputnik_attack_sound() {
+	var i = integer(random(3));
+	if(i == 0)
+	{
+		snd_play(snd_sputnik_attack1, 100, 0);
+	}
+	else if(i == 1)
+	{
+		snd_play(snd_sputnik_attack2, 100, 0);
+	}
+	else if(i == 2)
+	{
+		snd_play(snd_sputnik_attack3, 100, 0);
+	}
+}
 
 void enemy_sputnik_fade()
 {
@@ -116,6 +135,7 @@ action enemy_sputnik()
 				{
 					// Initiate attack
 					attacking = time_step;
+					sputnik_attack_sound();
 				}
 			}
 			else if(attacking > 0)
