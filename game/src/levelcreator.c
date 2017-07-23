@@ -58,13 +58,13 @@ void stageRenderInit()
 void stage_unload()
 {
 	int i;
-	stage_groundMesh->Release();
+	// stage_groundMesh->Release();
 	for(i = 0; i < 3; i++) {
-		(stage_upperWallMesh[0])->Release();
+		// (stage_upperWallMesh[0])->Release();
 	}
-	stage_lowerWallMesh->Release();
-	stage_upperWallOutlineMesh->Release();
-	stage_outlinePostMesh->Release();
+	// stage_lowerWallMesh->Release();
+	// stage_upperWallOutlineMesh->Release();
+	// stage_outlinePostMesh->Release();
 }
 
 void stage_loadGround(DynamicModel * model, STAGE * stage)
@@ -262,6 +262,7 @@ VECTOR * stage_load(STAGE * stage)
 	// Initialize models
 	stageRenderInit();
 	
+	
 	ENTITY * entLava = ent_create("lava.hmp", vector(100 * stage->size[0], 100 * stage->size[1], -350), NULL);
 	entLava->material = stageMtlLava;
 	
@@ -274,7 +275,6 @@ VECTOR * stage_load(STAGE * stage)
 	
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
-	
 	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;
@@ -398,7 +398,6 @@ VECTOR * stage_load(STAGE * stage)
 			}
 		}
 	}
-	
 	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	ent->material = TeleporterEffectMaterial;
 	
