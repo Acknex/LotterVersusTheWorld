@@ -11,7 +11,7 @@ action screenOnWall()
 action rack_tapewheel()
 {
 	my->roll = random(360);
-	while (me)
+	while (1)
 	{
 		my->roll += time_step * 10;
 		wait(1);
