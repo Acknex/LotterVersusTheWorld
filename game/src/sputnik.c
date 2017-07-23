@@ -23,7 +23,7 @@ action enemy_sputnik()
 	batId++;
 	my.group = 9;
 	my.type = TypeEnemy;
-	my.health = 50; // TANK IT, BABY
+	my.health = 15; // TANK IT, BABY
 	my.damage = 12;
 	var attacking = 0;
 	var attacked = 0;
@@ -120,7 +120,7 @@ action enemy_sputnik()
 			}
 			else if(attacking > 0)
 			{
-				ent_animate(me, "attack", attacking, 0);
+				ent_animate(me, "attackA", attacking, 0);
 				
 				if(attacking >= 30 && attacked == 0)
 				{
