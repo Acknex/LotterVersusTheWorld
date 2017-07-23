@@ -1,6 +1,7 @@
 #include "entity_defs.h"
 #include "ricochet.h"
 #include "marker.h"
+#include "font.h"
 
 #define bulletSpeed skill20
 #define bulletLifeTime skill21
@@ -294,11 +295,35 @@ action enemy_hex()
 		ANGLE angle;
 		vec_to_angle(angle, dir);
 		my.pan = angle.pan+90.0;
+		
 		wait(1);
+		
+		int count = 0;
+		for(you = ent_next(NULL); you; you = ent_next(you))
+		{
+			switch(you.type)
+			{
+				case TypeEnemy:
+				case TypeBat:
+				case TypeSphereOfDeath:
+					++count;
+					break;
+			}
+		}
+		
+		if(count == 0) {
+			// We don't have enmies in the level anymore
+			break;
+		}
+		
+		//FONT_big(100);
+		//DEBUG_VAR(count, 16);
 	}
 	
-	effect(p_bat_explode,100,my.x,nullvector);
-	snd_play(sndBatDeath, 100, 0);
+	show_dialog("Room clear!\nTeleporter is now free.");
+	
+	// effect(p_bat_explode,100,my.x,nullvector);
+	// snd_play(sndBatDeath, 100, 0);
 	ptr_remove(me);
 }
 

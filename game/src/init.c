@@ -28,7 +28,11 @@ function INIT_levelRestartCheat()
 void INIT_levelStart()
 {
 	on_r = INIT_levelRestartCheat;
+	
+	QUEST_reset();
+	
 	INIT__levelRunning = 1;
+	
 
 	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
 	stageFill(LEVEL__stage);

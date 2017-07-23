@@ -16,10 +16,9 @@ void teleporter_disable()
 action teleporter_out()
 {
 	teleporterEntity = me;
-	ent_create("Teleport.mdl", my.x, NULL);
-	set(me, PASSABLE);
-	set(me, FLAG2);
-	set(me, INVISIBLE);
+	you = ent_create("Teleport.mdl", my.x, NULL);
+	set(me,  PASSABLE | FLAG2 | INVISIBLE);
+	set(you, PASSABLE | FLAG2);
 	while(!player) wait(1);
 	
 	proc_mode = PROC_LATE;
@@ -56,5 +55,5 @@ action teleporter_out()
 		}
 		my->skill41 = floatv(0.001 + 0.001 * portloader);
 		wait(1);
-	}
+	} 
 }

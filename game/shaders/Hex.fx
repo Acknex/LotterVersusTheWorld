@@ -55,9 +55,7 @@ float4 ps(out_ps In): COLOR
 	float4 b = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (61.5)/64.0)).rgba;
 	float4 c = tex2D(sLUT, float2(0.5 * ColorVariation_flt, (62.5)/64.0)).rgba;
 	
-	//return float4(a * blendmap.r + b * blendmap.g + c * blendmap.b * fresnel, fresnel + blendmap.a);
-	
-	return float4(a.rgb * blendmap.r + b.rgb * blendmap.g + c.rgb * blendmap.b, (a.a * blendmap.r + b.a * blendmap.g + c.a * blendmap.b));
+	return a * blendmap.r + b * blendmap.g + c * blendmap.b;
 }
 
 

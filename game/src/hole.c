@@ -3,7 +3,7 @@
 action enemy_hole()
 {
 	set(me, POLYGON | PASSABLE | FLAG1);
-	my.type = 9;
+	my.type = TypeHole;
 	
 	while(1)
 	{

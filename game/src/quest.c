@@ -17,6 +17,7 @@ void QUEST__itemEvent();
 #include "teleporter.h"
 #include "camera.h"
 #include "marker.h"
+#include "util.h"
 
 SOUND* sndQuestStarted = "turret_up.wav";
 SOUND* sndQuestDone = "turret_down.wav";
@@ -40,12 +41,13 @@ action questmaster()
 {
 	my->type = TypeQuestmaster;
 	vec_scale(my->scale_x, 2.5);
-	my->event = QUEST__masterEvent;
+	//my->event = QUEST__masterEvent;
 	my->material = HologramMaterial;
-	my->emask |= ENABLE_TRIGGER;
-	my->trigger_range = 80;
+	//my->emask |= ENABLE_TRIGGER;
+	//my->trigger_range = 80;
 	my->z = 80;
 	my->pan = -135;
+	set(me, PASSABLE);
 	while(player == NULL)
 	{
 		wait(1);
@@ -54,8 +56,12 @@ action questmaster()
 	{
 		MARKER_update(me);
 		VECTOR vecTemp;
-		if (is(me, is_collected))
+		if (vec_dist2d(my.x, player.x) < 80) // We collided with it ;)
 		{
+			QUEST__started = 1;
+			set(my, PASSABLE);		
+			snd_play(sndQuestStarted, 100, 0);
+		
 			str_cpy(strQuestMessage, "New Mission obtained:\n");
 			str_cat(strQuestMessage, (txtQuestTasks->pstring)[QUEST__id]);
 			show_dialog(strQuestMessage);
@@ -114,14 +120,16 @@ action questitem()
 			
 	}
 	set(my, TRANSLUCENT);
-	my->alpha = 0;
+	//my->alpha = 0;
 	my->material = HologramMaterial;
-	my->emask |= ENABLE_TRIGGER;
-	my->trigger_range = 80;
+	//my->emask |= ENABLE_TRIGGER;
+	//my->trigger_range = 80;
+	set(me, INVISIBLE);
 	while (QUEST__started == 0)
 	{
 		wait(1);
 	}
+	reset(me, INVISIBLE);
 	while (my->alpha < 100)
 	{
 		MARKER_update(me);
@@ -142,16 +150,15 @@ action questitem()
 		my->pan = 135 * sinv(total_ticks * 2 - vOffset);
 		my->tilt = 30 * sinv(total_ticks * 10 + vOffset);
 		VECTOR vecTemp;
-
-		if (my->textTimer < TEXTDURATION && is(me, is_collected))
+		
+		if (vec_dist2d(my.x, player.x) < 80) // We collided with it ;)
 		{
-			show_dialog("Mission accomplished!");
+			show_dialog("Mission accomplished!\nTeleporter enabled.");
+			snd_play(sndQuestDone, 100, 0);
 			break;
 		}
-		else
-		{
-			MARKER_update(me);
-		}
+
+		MARKER_update(me);
 		wait(1);
 	}
 
@@ -159,7 +166,6 @@ action questitem()
 	QUEST__solved = 1;
 	teleporter_enable(); //switch to end boss?
 	ptr_remove(me);
-	
 }
 
 /*void questspawn()
@@ -189,29 +195,4 @@ var QUEST_isSolved()
 var QUEST_isStarted()
 {
 	return QUEST__started;
-}
-
-void QUEST__masterEvent()
-{
-	if (event_type == EVENT_TRIGGER)
-	{
-		ITEM_collect();
-		QUEST__started = 1;
-		set(my, PASSABLE);		
-		snd_play(sndQuestStarted, 100, 0);
-		
-	}
-}
-
-void QUEST__itemEvent()
-{
-	if (event_type == EVENT_TRIGGER)
-	{
-		//ITEM_collect();
-		my->event = NULL;
-		set (me, is_collected);
-		snd_play(sndQuestDone, 100, 0);
-		ITEM_fade();
-		
-	}
 }

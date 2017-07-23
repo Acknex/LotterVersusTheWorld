@@ -32,4 +32,4 @@
 #define TypeQuestitem 14
 
 
-#define TypeMaxNumber 13 //adjust and never exceed
+#define TypeMaxNumber 15 //adjust and never exceed
