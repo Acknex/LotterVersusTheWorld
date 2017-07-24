@@ -68,7 +68,8 @@ float4 ps(out_ps In): COLOR
 	
 	float4 floorcol = 
 		col1 * attributes.r +
-		col2 * attributes.g;
+		col2 * attributes.g +
+		col3 * attributes.b * vecSkill41.x;
 	
 	float4 reflection = tex2D(sReflection, texcoords);
 	reflection.a = 0.0;

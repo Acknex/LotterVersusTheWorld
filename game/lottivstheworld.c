@@ -17,7 +17,7 @@
 #include "splash.h"
 
 #define DEBUG
-#define FASTLOAD
+// #define FASTLOAD
 
 #ifdef DEBUG
 	#include <default.c>
