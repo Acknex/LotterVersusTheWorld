@@ -64,7 +64,7 @@ technique object
 	pass one
 	{
 		CullMode = None;
-		ZWriteEnable = False;
+		ZWriteEnable = True;
 		AlphaBlendEnable = True;
 		DestBlend = One;
 		SrcBlend = One;

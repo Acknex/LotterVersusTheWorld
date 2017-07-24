@@ -102,6 +102,8 @@ void INIT_levelEnd()
 	MARKER_detach();
 	stopMusic();
 	
+	proc_kill2(MARKER_sprite, NULL);
+	
 	wait(1);
 	
 	pp_bloom_stop();
