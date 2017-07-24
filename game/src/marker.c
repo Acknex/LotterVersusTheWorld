@@ -83,8 +83,8 @@ action MARKER_sprite()
 		{
 			vec_set(my.x, data.owner.x);
 			my.z = 0;
-			my.y -= 0.5 * bmap_width(data.target);
-			my.y += my.scale_y * data.owner.min_y;
+			my.y -= my.scale_y * 0.5 * bmap_width(data.target);
+			my.y += data.owner.min_y;
 		
 			if(data.countdown > 0)
 			{
