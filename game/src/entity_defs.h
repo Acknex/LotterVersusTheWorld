@@ -1,6 +1,7 @@
 #define dead FLAG3
 
 #define type skill1
+#define markerData skill2
 #define health skill10
 #define damage skill11
 #define pause_control skill12
@@ -12,7 +13,6 @@
 #define weapon_bouncing skill17
 #define weapon_granade_cooldown skill18
 #define markerCounter skill19
-
 
 //skill20-40: for individual use, do not define here
 
@@ -33,6 +33,7 @@
 #define TypeQuestitem 14
 #define TypeTeleporterDisabled 15
 #define TypeTeleporterEnabled 16
+#define TypeMarker 17
 
 
-#define TypeMaxNumber 17 //adjust and never exceed
+#define TypeMaxNumber 18 //adjust and never exceed

@@ -201,7 +201,7 @@ void SPLASH__startGame()
 	INIT_start();
 	wait(1);
 	INIT_levelStart();
-	INIT_levelLoop();	
+	INIT_levelLoop();
 }
 
 void SPLASH__exitGame()

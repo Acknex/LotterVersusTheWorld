@@ -17,6 +17,7 @@
 #include "splash.h"
 
 #define DEBUG
+#define FASTLOAD
 
 #ifdef DEBUG
 	#include <default.c>
@@ -41,10 +42,13 @@ void main()
 	INIT_start();
 	wait(1);
 	INIT_globalLoop();
+#ifdef FASTLOAD
+	INIT_levelStart();
+	INIT_levelLoop();
+#else
 	SPLASH__init();
-	//INIT_levelStart();
-	//INIT_levelLoop();
-	
+#endif
+
 	//on_h = MARKER_toggle;
 	//debug
 	MARKER_toggle();

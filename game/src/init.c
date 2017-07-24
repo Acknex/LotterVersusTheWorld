@@ -175,6 +175,7 @@ void INIT_start()
 	stats_init();
 	FONT_create();
 	fancyhud_init();
+	MARKER_init();
 	//create_camera();	
 }
 

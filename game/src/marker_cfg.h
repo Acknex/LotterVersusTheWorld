@@ -26,6 +26,7 @@ TEXT* txtMarkers =
 	/*TypeQuestItem 14*/       ".questitem\n 0xC0FFEE",
 	/*TypeTeleporterDisabled 15*/      ".teleporter .broken\n 0xDEADC0DE",
 	/*TypeTeleporterEnabled 16*/      ".teleporter .active\n 0xC001C001"
+	/*TypeMarker 17*/          ".marker\n0xB50736"
 	);
 }
 

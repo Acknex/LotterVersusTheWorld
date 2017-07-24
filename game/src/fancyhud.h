@@ -4,7 +4,8 @@
 function fancyhud_objects_event()
 {
 	if(my) {
-		if(my.type == TypeQuestmaster) {
+		if(my.type == TypeMarker) {
+			// draw all markers
 			return 0;
 		}
 	}
@@ -14,7 +15,7 @@ function fancyhud_objects_event()
 MATERIAL * fancyhud_objects = 
 {
 	event = fancyhud_objects_event;
-	flags = ENABLE_TREE | ENABLE_RENDER;
+	flags = ENABLE_RENDER;
 }
 
 VIEW * fancyhud_view = 
