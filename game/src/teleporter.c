@@ -3,6 +3,7 @@
 
 ENTITY * teleporterEntity = NULL;
 ENTITY * teleporterSocket = NULL;
+SOUND * sndTeleport = "teleport_loop.wav";
 
 void teleporter_enable()
 {
@@ -38,6 +39,8 @@ action teleporter_out()
 	
 	proc_mode = PROC_LATE;
 	
+	var sndHandle = 0;
+	var sndVolume = 0;
 	var portloader = 0;
 	while(1)
 	{
@@ -45,6 +48,16 @@ action teleporter_out()
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
 		if(!is(me, INVISIBLE) && dist < 70) // ist höhenabhängig!
 		{
+			if(sndHandle == 0) 
+			{
+				sndHandle = snd_loop(sndTeleport, 0, 0);
+			}
+			else if(sndVolume < 100)
+			{
+				sndVolume = minv(100, sndVolume + 5*time_step);
+				snd_tune(sndHandle, sndVolume, 0, 0);
+			}
+			
 			if(dist > 5)
 			{
 				var force = 10 * pow(dist / 50, 1);
@@ -73,12 +86,26 @@ action teleporter_out()
 			}
 			if(portloader >= 100) {
 				INIT_levelEnd();
+				snd_stop(sndHandle);
 				return;
 			}
 			effect(teleport_effect, 3 + time_frame, my.x, vector(0,0,0));
 		}
 		else 
 		{
+			if(sndHandle != 0)
+			{
+				if(sndVolume > 0)
+				{
+					sndVolume = maxv(0, sndVolume - 5*time_step);
+					snd_tune(sndHandle, sndVolume, 0, 0);
+				}
+				else
+				{
+					snd_stop(sndHandle);
+					sndHandle = 0;
+				}
+			}
 			player.near_teleport = 0;
 			portloader = maxv(0, portloader - 10 * time_step);
 		}
