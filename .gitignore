@@ -8,3 +8,5 @@ ackerr.txt
 /game/level/*.$$p
 /game/level/*.$$w
 /game/lottivstheworld.cd
+shot_*.jpg
+highscores.dat
