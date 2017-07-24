@@ -124,12 +124,12 @@ void TURRET__loop()
 
 void TURRET__turnOn()
 {
+	reset(my, PASSABLE); // Active turrets must be damageable
 	MARKER_update(me);
 	my->animCounter += TURRET_ANIMOPENSPEED * time_step;
 	if (my->animCounter >= 100)
 	{
 		my->turretState = TURRETACTIVE;
-		reset(my, PASSABLE);	
 	}
 	my->animCounter = minv(100, my->animCounter);
 	ent_animate(me, "open", my->animCounter, 0);
@@ -142,7 +142,8 @@ void TURRET__turnOff()
 	my->animCounter += TURRET_ANIMCLOSESPEED * time_step;
 	if (my->animCounter >= 100)
 	{
-		my->turretState = TURRETSLEEP;	
+		set(my, PASSABLE); // Inactive turrets are immune
+		my->turretState = TURRETSLEEP;
 	}
 	my->animCounter = minv(100, my->animCounter);
 	ent_animate(me, "open", 100 - my->animCounter, 0);
