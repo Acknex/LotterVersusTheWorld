@@ -64,8 +64,10 @@ void hide_death_screen()
 }
 
 void show_dialog(char * _text) {
+	str_cpy(dialogMessage, _text);
+	wait(1); // Unlink from current function
+	me = NULL;
 	proc_mode = PROC_GLOBAL;
-//	str_cpy(dialogMessage, _text);
 	if (panDialog) {
 		proc_kill(4);
 		panDialog.scale_y = 0.01;
@@ -77,7 +79,6 @@ void show_dialog(char * _text) {
 		//	panDialog.scale_y += 0.1 * time_step;
 			panDialog.scale_y = minv(panDialog.scale_y + 0.1 * time_step, 100);
 		}
-		str_cpy(dialogMessage, _text);
 		//panDialog.scale_y = 1;
 		// pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, dialogMessage);
 		wait(-3);

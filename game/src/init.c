@@ -84,6 +84,13 @@ void INIT_levelStart()
 
 	enemy_spawn_hex();
 	MARKER_attach();
+	
+	wait(-0.5);
+	
+	show_dialog(str_printf(
+		NULL,
+		"Welcome to Stage 0x%02X.\nEnjoy your stay!",
+		(int)INIT__currentHardness));
 }
 
 void INIT_levelEnd()
