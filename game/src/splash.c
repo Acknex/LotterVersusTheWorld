@@ -7,7 +7,7 @@
 void SPLASH__init()
 {
 	create_camera();
-	pp_bloom_start(2.5);
+	pp_bloom_start(2.0);
 	SPLASH__setupLevel();
 	wait(1);
 	
@@ -18,7 +18,7 @@ void SPLASH__init()
 	//error("lol");
 }
 
-void SPLASH__animStart()
+int SPLASH__animStart()
 {
 	while(SPLASH__cube->alpha < 100)
 	{
@@ -62,7 +62,8 @@ void SPLASH__animStart()
 	}
 	
 	
-	SPLASH__animEnd();	
+	SPLASH__animEnd();
+	return 0;	
 }
 
 int SPLASH__cancelAnim()
@@ -145,7 +146,8 @@ void SPLASH__setupLevel()
 	// Init Menu
 	SPLASH__menuPanel = pan_create(NULL, 2);
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 0, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__startGame, NULL, NULL);
-	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 32, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__exitGame, NULL, NULL);
+	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 32, SPLASH__menuCreditsOnBmap, SPLASH__menuCreditsOffBmap, SPLASH__menuCreditsOnBmap, SPLASH__menuCreditsOffBmap, SPLASH__startCredits, NULL, NULL);
+	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 64, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__exitGame, NULL, NULL);
 	SPLASH__menuPanel->alpha = 0;
 	set(SPLASH__menuPanel, TRANSLUCENT);
 	set(SPLASH__menuPanel, SHOW);	
@@ -193,7 +195,6 @@ void SPLASH__initMenu()
 
 void SPLASH__startGame()
 {
-	remove_camera();
 	SPLASH__housekeeping();	
 	
 	wait(1);
@@ -204,6 +205,11 @@ void SPLASH__startGame()
 	INIT_levelLoop();
 }
 
+void SPLASH__startCredits()
+{
+	// Hier den credits start code einfügen. 
+}
+
 void SPLASH__exitGame()
 {
 	sys_exit("");
@@ -212,11 +218,14 @@ void SPLASH__exitGame()
 void SPLASH__housekeeping()
 {
 	SPLASH__inSplash = 0;
+	remove_camera();
 	ptr_remove(SPLASH__logoPanel);
 	ptr_remove(SPLASH__menuPanel);
 	ptr_remove(SPLASH__logoBmap);
 	ptr_remove(SPLASH__menuStartOffBmap);
 	ptr_remove(SPLASH__menuStartOnBmap);
+	ptr_remove(SPLASH__menuCreditsOffBmap);
+	ptr_remove(SPLASH__menuCreditsOnBmap);
 	ptr_remove(SPLASH__menuExitOffBmap);
 	ptr_remove(SPLASH__menuExitOnBmap);
 	ent_remove(SPLASH__cube);
@@ -228,6 +237,8 @@ void SPLASH__housekeeping()
 	SPLASH__logoBmap = NULL;
 	SPLASH__menuStartOffBmap = NULL;
 	SPLASH__menuStartOnBmap = NULL;
+	SPLASH__menuCreditsOffBmap = NULL;
+	SPLASH__menuCreditsOnBmap = NULL;
 	SPLASH__menuExitOffBmap = NULL;
 	SPLASH__menuExitOnBmap = NULL;
 	SPLASH__cube = NULL;
