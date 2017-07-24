@@ -30,11 +30,12 @@ function teleport_effect(PARTICLE * p)
 action teleporter_out()
 {
 	teleporterEntity = me;
-	you = ent_create("Teleport.mdl", my.x, NULL);
-	teleporterSocket = you;
-	teleporterSocket->type = TypeTeleporterDisabled;
+	teleporterSocket = ent_create("Teleport.mdl", my.x, NULL);
+	teleporterSocket.type = TypeTeleporterDisabled;
+	teleporterSocket.material = ObjectMaterial;
+	teleporterSocket.skill41 = floatv(36);
 	set(me,  PASSABLE | FLAG2 | INVISIBLE);
-	set(you, PASSABLE | FLAG2);
+	set(teleporterSocket, PASSABLE | FLAG2);
 	while(!player) wait(1);
 	
 	proc_mode = PROC_LATE;
