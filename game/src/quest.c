@@ -9,7 +9,6 @@ var QUEST__count = 5;
 var QUEST__id = 0;
 
 void QUEST__masterEvent();
-void QUEST__itemEvent();
 void QUEST__droptofloor();
 
 #include "entity_defs.h"
@@ -141,13 +140,12 @@ action questitem()
 	}
 	my->alpha = 100;
 	reset(my, TRANSLUCENT);
-	my->event = QUEST__itemEvent;
 	
 
 	//var vZ = my->z;
 	var vOffset = random(500);
 	var showedMessage = 0;
-	while(my->textTimer < TEXTDURATION)
+	while(1)
 	{
 		//my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 		my->pan = 135 * sinv(total_ticks * 2 - vOffset);
@@ -156,11 +154,6 @@ action questitem()
 		
 		if ((vec_dist2d(my.x, player.x) < 80) || (cheats_enabled && key_q)) // We collided with it ;)
 		{
-			str_cpy(strQuestMessage, "Mission completed!");
-			//str_cat(strQuestMessage, (txtQuestTasks->pstring)[QUEST__id]);
-			str_cat(strQuestMessage, "\nTeleporter enabled.");
-			show_dialog(strQuestMessage);
-			snd_play(sndQuestDone, 100, 0);
 			break;
 		}
 
@@ -168,9 +161,16 @@ action questitem()
 		wait(1);
 	}
 
+	snd_play(sndQuestDone, 100, 0);
+	
+	str_cpy(strQuestMessage, "Mission completed!\nTeleporter enabled.");
+	show_dialog(strQuestMessage);
 
 	QUEST__solved = 1;
 	teleporter_enable(); //switch to end boss?
+	
+	wait(1); // this is needed for decoupling show_dialog from this entity!
+	
 	ptr_remove(me);
 }
 
