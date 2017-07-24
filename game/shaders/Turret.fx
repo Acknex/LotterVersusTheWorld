@@ -71,11 +71,12 @@ float4 ps(out_ps In): COLOR
 		col2 * attributes.g;
 	
 	float4 reflection = tex2D(sReflection, texcoords);
+	reflection.a = 0.0;
 	
 	float4 infolayer = tex2D(sInfoLayer, float2(texcoords.x, 1 - texcoords.y));
 	reflection += infolayer;
 	
-	return float4(reflection.rgb * 0.6 + floorcol.rgb, 0.0) + col3 * attributes.b * vecSkill41.x;
+	return 0.6 * reflection + floorcol;
 }
 
 
