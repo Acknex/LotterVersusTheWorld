@@ -36,6 +36,7 @@ void INIT_levelStart()
 
 	random_seed(0);
 	QUEST_init();	
+	//wer auch immer hier ein INIT__currentHardness++ versteckt hat: Schelle links, Schelle rechts!
 	LEVEL__stage = stageCreate(16+INIT__currentHardness,16+INIT__currentHardness,0,INIT__currentHardness++); // 8172.607
 	stageFill(LEVEL__stage);
 	stageConnect(LEVEL__stage);
@@ -146,6 +147,7 @@ void INIT_levelLoop()
 			wait(1);
 		}
 		hide_death_screen();
+		INIT__currentHardness = 0; //reset difficulty level after death
 		INIT_levelEnd();
 	}
 }

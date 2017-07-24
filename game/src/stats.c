@@ -28,7 +28,7 @@ void stats_init()
 		if(INIT__levelRunning)
 		{
 			set(panHighscores, SHOW);
-			DEBUG_VAR(stats_current.score, 16);
+			//DEBUG_VAR(stats_current.score, 16);
 		}
 		else
 		{

@@ -83,7 +83,7 @@ void SPIKES__turnOn()
 		my->delayCounter = 0;
 		my->spikesState = SPIKESACTIVE;
 		my->spikesCoolDown = SPIKES_COOLDOWN;
-		reset(my, PASSABLE);	
+		//reset(my, PASSABLE);	
 	}
 	my->animCounter = minv(100, my->animCounter);
 	ent_animate(me, "open", my->animCounter, 0);

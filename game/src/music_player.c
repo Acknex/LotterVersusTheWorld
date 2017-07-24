@@ -61,10 +61,10 @@ void updateMusic()
 	}
 	if(crossTime == 0)
 		return;
-	DEBUG_VAR(volume_current, 180);
+	//DEBUG_VAR(volume_current, 180);
 	var crossfactor = time_step/16.0/crossTime*maxVol;
-	DEBUG_VAR(crossfactor, 200);
-	DEBUG_VAR(crossTime, 220);
+	//DEBUG_VAR(crossfactor, 200);
+	//DEBUG_VAR(crossTime, 220);
 	if(handle_current != 0 && volume_current < maxVol)
 	{
 		volume_current = minv(volume_current+crossfactor, maxVol);
