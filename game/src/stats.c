@@ -6,6 +6,8 @@ FONT * stats_font = "Arial#40b";
 HIGHSCORE stats_highscore;
 HIGHSCORE stats_current;
 
+BOOL stat_gotHighscore;
+
 PANEL * panHighscores = 
 {
 	digits(0, 0, "Score: %.0f", stats_font, 1, stats_current.score);
@@ -29,6 +31,12 @@ void stats_init()
 		{
 			set(panHighscores, SHOW);
 			//DEBUG_VAR(stats_current.score, 16);
+			
+			if(stats_current.score > stats_highscore.score)
+			{
+				stat_gotHighscore = TRUE;
+				memcpy(&stats_highscore, &stats_current, sizeof(HIGHSCORE));
+			}
 		}
 		else
 		{
@@ -41,6 +49,7 @@ void stats_init()
 void stats_reset()
 {
 	memset(&stats_current, 0, sizeof(HIGHSCORE));
+	stat_gotHighscore = FALSE;
 }
 
 void stats_addKill(int enemyType)
@@ -54,15 +63,10 @@ void stats_addKill(int enemyType)
  */
 BOOL stats_finalize()
 {
-	BOOL isSuper = (stats_current.score > stats_highscore.score);
-	
-	if(isSuper) {
+	if(stat_gotHighscore) {
 		FILE * f = fopen("highscores.dat", "wb");
 		fwrite(&stats_current, sizeof(HIGHSCORE), 1, f);
 		fclose(f);
-		
-		memcpy(&stats_highscore, &stats_current, sizeof(HIGHSCORE));
 	}
-	
-	return isSuper;
+	return stat_gotHighscore;
 }

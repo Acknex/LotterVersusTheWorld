@@ -57,7 +57,7 @@ function MARKER_entRemove(ENTITY * ent)
 
 function MARKER_init()
 {
-	MARKER_font = font_create("monoid#64b");
+	MARKER_font = font_create("monoid#64");
 	// MARKER_entRemoveLink = on_ent_remove;
 	// on_ent_remove = MARKER_entRemove;
 }
@@ -66,8 +66,11 @@ action MARKER_sprite()
 {
 	my.type = TypeMarker;
 	my.material = MARKER_mtlRemove;
+	my.skill41 = floatv(5);
 	set(me, PASSABLE | DECAL);
 	wait(1); // Wait for initialization
+	
+	proc_mode = PROC_LATE;
 	
 	while(my.markerData != NULL)
 	{
@@ -81,6 +84,16 @@ action MARKER_sprite()
 		}
 		vec_set(my.pan, vector(180, 90, 0));
 		
+		// Clear the render target, so we don't have overwrite
+		bmap_rendertarget(data.target, 0, 0);
+		draw_quad(
+			NULL,
+			NULL, NULL,
+			vector(bmap_width(data.target), bmap_height(data.target), 0), NULL,
+			COLOR_BLACK,
+			100, 0);
+		bmap_rendertarget(NULL, 0, 0);
+		
 		wait(1);
 	}
 	
@@ -93,7 +106,6 @@ function MARKER_initializeEntity(ENTITY * ent)
 		return;
 	}
 	
-	diag("\nregister marker");
 	ent.markerData = 10;
 	
 	MARKERdata * data = malloc(sizeof(MARKERdata));
@@ -111,9 +123,11 @@ function MARKER_initializeEntity(ENTITY * ent)
 	data.text.font = MARKER_font;
 	data.text.flags = SHOW | LIGHT;
 	if(ent.type == TypePlayer) {
-		vec_set(data.text.blue, COLOR_GREEN);
-	} else {
+		// UI Color 1
 		vec_set(data.text.blue, COLOR_RED);
+	} else {
+		// UI Color 2
+		vec_set(data.text.blue, COLOR_GREEN);
 	}
 	
 	data.sprite.markerData = (void*)data;

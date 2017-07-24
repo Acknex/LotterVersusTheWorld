@@ -3,6 +3,7 @@
 #include "levelgen.h"
 #include "entity_defs.h"
 #include "cheats.h"
+#include "stats.h"
 
 //STAGE* LEVEL__stage = NULL;
 
@@ -157,6 +158,8 @@ void hit_player(var dmg)
 	}
 }
 
+STRING *player_infoText = "#256";
+
 void player_move() {
 	if(player->health <= 0)
 		return;
@@ -308,6 +311,13 @@ void player_move() {
 	
 	desyncTimer = maxv(0, desyncTimer - time_step/16);
 	pp_desync(floatv(desyncTimer/0.4*20));
+	
+	MARKER_setText(player, str_printf(
+		player_infoText,
+		"LIV:%d\nSCO:%d\nMAX:%d",
+		(int)(player.health),
+		(int)(stats_current.score),
+		(int)(stats_highscore.score)));
 }
 
 

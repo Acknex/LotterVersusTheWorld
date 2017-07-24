@@ -14,6 +14,7 @@ function fancyhud_objects_event()
 
 MATERIAL * fancyhud_objects = 
 {
+	effect = "Marker.fx";
 	event = fancyhud_objects_event;
 	flags = ENABLE_RENDER;
 }
