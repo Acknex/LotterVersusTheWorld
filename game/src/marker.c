@@ -13,6 +13,7 @@ typedef struct MARKERdata
 	BMAP * target;
 	TEXT * text;
 	STRING * contents;
+	int countdown;
 } MARKERdata;
 
 function MARKER_mtlRemove_event()
@@ -84,15 +85,26 @@ action MARKER_sprite()
 		}
 		vec_set(my.pan, vector(180, 90, 0));
 		
-		// Clear the render target, so we don't have overwrite
-		bmap_rendertarget(data.target, 0, 0);
-		draw_quad(
-			NULL,
-			NULL, NULL,
-			vector(bmap_width(data.target), bmap_height(data.target), 0), NULL,
-			COLOR_BLACK,
-			100, 0);
-		bmap_rendertarget(NULL, 0, 0);
+		if(data.countdown > 0)
+		{
+			reset(me, INVISIBLE);
+		
+			// Clear the render target, so we don't have overwrite
+			bmap_rendertarget(data.target, 0, 0);
+			draw_quad(
+				NULL,
+				NULL, NULL,
+				vector(bmap_width(data.target), bmap_height(data.target), 0), NULL,
+				COLOR_BLACK,
+				100, 0);
+			bmap_rendertarget(NULL, 0, 0);
+			
+			data.countdown --;
+		}
+		else
+		{
+			set(me, INVISIBLE);
+		}
 		
 		wait(1);
 	}
@@ -166,6 +178,7 @@ void MARKER_setText(ENTITY * ent, STRING * text)
 	MARKERdata * data = (void*)ent.markerData;
 	
 	str_cpy(data.contents, text);
+	data.countdown = 1; // This mimics the previous behaviour, but stateful
 }
 
 void MARKER_update(ENTITY* ent)
