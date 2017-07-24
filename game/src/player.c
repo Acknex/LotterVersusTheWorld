@@ -329,6 +329,7 @@ void player_init() {
 	player->health = 100;
 	player->weapon_bouncing = 2;
 	player->group = 3;
+	player.type = TypePlayer;
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2.25);
