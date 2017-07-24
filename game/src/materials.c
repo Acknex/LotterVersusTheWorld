@@ -6,6 +6,8 @@ VIEW *BloomImageView = NULL;
 
 BMAP* chrome_tga = "chrome.tga";
 
+BMAP *materials_FancyHUDImage;
+
 MATERIAL *LotterMaterial =
 {
 	effect = "Lotter.fx";
@@ -76,6 +78,14 @@ void pp_bloom_resize()
 		PPBloomMixMaterial.skin1 = bmap_createblack(screen_size.x, screen_size.y, 8888);
 		BloomImageView.bmap = PPBloomMixMaterial.skin1;
 	}
+	
+	if(materials_FancyHUDImage) {
+		ptr_remove(materials_FancyHUDImage);
+	}
+	materials_FancyHUDImage = bmap_createblack(
+		screen_size.x,
+		screen_size.y,
+		8888);
 }
 
 void pp_desync(float strength)
@@ -165,11 +175,12 @@ MATERIAL *HexMaterial =
 	effect = "Hex.fx";
 	flags = TRANSLUCENT;
 }
-//
+
 function Materials_startup()
 {
 	on_p = ColorLUT_Bounce;
 }
+
 //{
 //	// WallMainText.size_x = bmap_width(WallMainTextImage);
 //	WallMainText.size_y = bmap_height(WallMainTextImage);
@@ -284,7 +295,7 @@ MATERIAL *PPReflectionBlurVMaterial =
 void ground_reflections()
 {
 	if(ReflectionView == NULL)
-	{	
+	{
 		PPReflectionBlurHMaterial.skill1 = floatd(1.0, 512.0);
 		PPReflectionBlurHMaterial.skill2 = floatv(0.0);
 		

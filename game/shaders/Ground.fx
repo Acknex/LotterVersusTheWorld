@@ -23,6 +23,15 @@ sampler sLUT = sampler_state
 	MipFilter = Linear;
 };
 
+Texture materials_FancyHUDImage_bmap;
+sampler sInfoLayer = sampler_state
+{
+	Texture = <materials_FancyHUDImage_bmap>;
+	AddressU = Clamp;
+	AddressV = Clamp;
+	MipFilter = Point;
+};
+
 struct out_ps // Output to the pixelshader fragment
 {
 	float4 Pos		: POSITION;
@@ -58,6 +67,10 @@ float4 ps(out_ps In): COLOR
 		col2 * attributes.g;
 	
 	float4 reflection = tex2D(sReflection, texcoords);
+	
+	float4 infolayer = tex2D(sInfoLayer, float2(texcoords.x, 1 - texcoords.y));
+	reflection += infolayer;
+	
 	return float4(/*lerp(*/reflection.rgb * 0.6 + floorcol.rgb/*, 0.6).rgb*/, 0.0);
 }
 

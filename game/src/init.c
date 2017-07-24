@@ -8,6 +8,7 @@
 #include "quest.h"
 #include "cheats.h"
 #include "stats.h"
+#include "fancyhud.h"
 
 #include "items.h" //temp
 #include "turret.h" //temp
@@ -136,6 +137,7 @@ void INIT_levelLoop()
 		player_move();
 		update_camera();
 		hud_ingame_update();
+		fancyhud_update();
 		
 		if(cheats_enabled && LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);
@@ -172,6 +174,7 @@ void INIT_start()
 {
 	stats_init();
 	FONT_create();
+	fancyhud_init();
 	//create_camera();	
 }
 
