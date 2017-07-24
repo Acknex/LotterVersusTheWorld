@@ -73,6 +73,9 @@ action MARKER_sprite()
 	
 	proc_mode = PROC_LATE;
 	
+	vec_set(my.pan, vector(180, 90, 0));
+	vec_fill(my.scale_x, 0.6);
+	
 	while(my.markerData != NULL)
 	{
 		MARKERdata * data = (void*)my.markerData;
@@ -81,29 +84,27 @@ action MARKER_sprite()
 			vec_set(my.x, data.owner.x);
 			my.z = 0;
 			my.y -= 0.5 * bmap_width(data.target);
-			my.y += 0.75 * data.owner.min_y;
-		}
-		vec_set(my.pan, vector(180, 90, 0));
+			my.y += my.scale_y * data.owner.min_y;
 		
-		if(data.countdown > 0)
-		{
-			reset(me, INVISIBLE);
-		
-			// Clear the render target, so we don't have overwrite
-			bmap_rendertarget(data.target, 0, 0);
-			draw_quad(
-				NULL,
-				NULL, NULL,
-				vector(bmap_width(data.target), bmap_height(data.target), 0), NULL,
-				COLOR_BLACK,
-				100, 0);
-			bmap_rendertarget(NULL, 0, 0);
-			
-			data.countdown --;
-		}
-		else
-		{
-			set(me, INVISIBLE);
+			if(data.countdown > 0)
+			{
+				reset(me, INVISIBLE);
+				data.countdown --;
+				
+				// Clear the render target, so we don't have overwrite
+				bmap_rendertarget(data.target, 0, 0);
+				draw_quad(
+					NULL,
+					NULL, NULL,
+					vector(bmap_width(data.target), bmap_height(data.target), 0), NULL,
+					COLOR_BLACK,
+					100, 0);
+				bmap_rendertarget(NULL, 0, 0);
+			}
+			else
+			{
+				set(me, INVISIBLE);
+			}
 		}
 		
 		wait(1);
