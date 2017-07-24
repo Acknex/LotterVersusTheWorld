@@ -107,7 +107,8 @@ action enemy_sputnik()
 				vec_scale(temp2,0.75*time_step);
 				vec_add(vspeed,temp2);
 			}
-			c_move(me,nullvector,vspeed,IGNORE_PASSABLE | IGNORE_SPRITES | IGNORE_PUSH | IGNORE_WORLD);
+			c_ignore(30, 0);
+			c_move(me,nullvector,vspeed,IGNORE_CONTENT| IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_SPRITES | IGNORE_PUSH | IGNORE_WORLD);
 			if(HIT_TARGET && LEVEL__stage)
 			{
 				my.skill38 += time_step;

@@ -280,6 +280,10 @@ VECTOR * stage_load(STAGE * stage)
 	set(entUpperWall	, FLAG2);
 	set(entOutlines	, FLAG2);
 	
+	entGround->group = 30;
+	entLowerWall->group = 30;
+	entOutlines->group = 30;
+	
 	entGround->material    = GroundMaterial;
 	entUpperWall->material = WallMainMaterial;
 	entLowerWall->material = WallLowerMaterial;
