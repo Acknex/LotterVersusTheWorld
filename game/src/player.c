@@ -152,8 +152,22 @@ void hit_player(var dmg)
 		if (player->health <= 0) 
 		{
 			pp_desync(0);
-			snd_stop(handleSndEngineIdle);
-			snd_stop(handleSndEngineThrust);
+			if(handleSndEngineIdle != 0)
+			{
+				snd_stop(handleSndEngineIdle);
+				handleSndEngineIdle = 0;
+			}
+			if(handleSndEngineThrust != 0)
+			{
+				snd_stop(handleSndEngineThrust);
+				handleSndEngineThrust = 0;
+			}
+			if(shootingHandle != 0)
+			{
+				snd_stop(shootingHandle);
+				shootingHandle = 0;
+			}
+			
 		}
 	}
 }
