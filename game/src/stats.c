@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "Annoying.h"
 
-FONT * stats_font = "Arial#40b";
-
 HIGHSCORE stats_highscore;
 HIGHSCORE stats_current;
 
@@ -10,13 +8,6 @@ BOOL stat_gotHighscore;
 
 float stat_multCounter = 0;
 float stat_multFactor = 1;
-
-PANEL * panHighscores = 
-{
-	digits(0, 0, "Score: %.0f", stats_font, 1, stats_current.score);
-	pos_x = 10;
-	pos_y = 10;
-}
 
 void stats_init()
 {
@@ -32,18 +23,11 @@ void stats_init()
 	{
 		if(INIT__levelRunning)
 		{
-			set(panHighscores, SHOW);
-			//DEBUG_VAR(stats_current.score, 16);
-			
 			if(stats_current.score > stats_highscore.score)
 			{
 				stat_gotHighscore = TRUE;
 				memcpy(&stats_highscore, &stats_current, sizeof(HIGHSCORE));
 			}
-		}
-		else
-		{
-			reset(panHighscores, SHOW);
 		}
 		stat_multCounter += time_step;
 		if(stat_multCounter >= 96) { // 6 Sekunden bis zum Reset
