@@ -334,7 +334,7 @@ void player_move() {
 	{
 		case 0:
 			MARKER_setText(player, "WASD:\nMove");
-			if(key_w || key_s || key_a || key_d) {
+			if(key_w || key_s || key_a || key_d || key_cul || key_cur || key_cuu || key_cud) {
 				tutorialStage = 1;
 			}
 			break;
