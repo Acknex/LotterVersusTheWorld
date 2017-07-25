@@ -2,6 +2,7 @@
 #include "sky.h"
 #include "music_player.h"
 #include "mouse.h"
+#include "stats.h"
 
 
 void SPLASH__init()
@@ -198,6 +199,9 @@ void SPLASH__startGame()
 	SPLASH__housekeeping();	
 	
 	wait(1);
+	
+	// reset stats when the game starts
+	stats_reset();
 	
 	INIT_start();
 	wait(1);

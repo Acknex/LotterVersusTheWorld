@@ -16,11 +16,9 @@
 var INIT__levelRunning = 0;
 var INIT__currentHardness = 0;
 
-void INIT_levelEnd();
-
 function INIT_levelRestartCheat()
 {
-	if(cheats_enabled) INIT_levelEnd();
+	if(cheats_enabled) INIT_levelEnd(0);
 }
 
 //
@@ -30,8 +28,6 @@ function INIT_levelRestartCheat()
 void INIT_levelStart()
 {
 	on_r = INIT_levelRestartCheat;
-	
-	stats_reset();
 	
 	INIT__levelRunning = 1;
 
@@ -94,7 +90,7 @@ void INIT_levelStart()
 		(int)INIT__currentHardness));
 }
 
-void INIT_levelEnd()
+void INIT_levelEnd(var isGameOver)
 {
 	me = NULL; //decouple from any calling entity
 	INIT__levelRunning = 0;
@@ -116,8 +112,16 @@ void INIT_levelEnd()
 	
 	wait(1);
 	
-	if(stats_finalize()) {
+	if(stats_finalize())
+	{
+		// TODO: Display highscore here
 		error("You got a new highscore.\nAlso: Replace this error with something useful.");
+	}
+	
+	if(isGameOver)
+	{
+		INIT__currentHardness = 0; //reset difficulty level after death
+		stats_reset();
 	}
 	
 	remove_camera();
@@ -134,8 +138,21 @@ void INIT_levelLoop()
 	while(INIT__levelRunning != 0)
 	{
 		//updateMusic();
-		if(player && player->health <= 0)
-			break;
+		if(player) if(player->health <= 0) {
+			var fade = 0;
+			show_death_screen(0);
+			while(1)
+			{
+				show_death_screen(fade);
+				fade = minv(fade+2*time_step, 100);
+				if(fade > 80 && key_any)
+					break;
+				wait(1);
+			}
+			hide_death_screen();
+			INIT_levelEnd(1);
+			return;
+		}
 		player_move();
 		update_camera();
 		hud_ingame_update();
@@ -143,23 +160,6 @@ void INIT_levelLoop()
 		
 		if(cheats_enabled && LEVEL__stage && key_m) stageDraw(LEVEL__stage, 0, screen_size.y-LEVEL__stage->size[1]*12, 12);
 		wait(1);
-	}
-	if(player && player->health <= 0)
-	{
-		MARKER_detach();
-		var fade = 0;
-		show_death_screen(0);
-		while(1)
-		{
-			show_death_screen(fade);
-			fade = minv(fade+2*time_step, 100);
-			if(fade > 80 && key_any)
-				break;
-			wait(1);
-		}
-		hide_death_screen();
-		INIT__currentHardness = 0; //reset difficulty level after death
-		INIT_levelEnd();
 	}
 }
 

@@ -86,7 +86,7 @@ action teleporter_out()
 					COLOR_BLACK, alpha, 0);
 			}
 			if(portloader >= 100) {
-				INIT_levelEnd();
+				INIT_levelEnd(0);
 				snd_stop(sndHandle);
 				return;
 			}
