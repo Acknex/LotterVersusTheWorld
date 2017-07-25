@@ -2,20 +2,21 @@
 #include "sky.h"
 #include "music_player.h"
 #include "mouse.h"
+#include "stats.h"
 
 
 void SPLASH__init()
 {
 	create_camera();
+	show_camera(); // Don't forget: Normal camera is still visible ^^
 	pp_bloom_start(2.0);
+	wait(10); // this is required: wait until fully init
 	SPLASH__setupLevel();
-	wait(1);
+	// wait(1);
 	
 	startMusic("media\\main_menu.mp3", 4, 0);
 	
 	SPLASH__animStart();
-	
-	//error("lol");
 }
 
 int SPLASH__animStart()
@@ -158,9 +159,6 @@ void SPLASH__setupLevel()
 	vec_set(cam->x, nullvector);
 	cam->pan = 0;
 	cam->tilt = 0; 
-	
-	wait(1);
-	show_camera();
 }
 
 
@@ -199,7 +197,9 @@ void SPLASH__startGame()
 	
 	wait(1);
 	
-	INIT_start();
+	// reset stats when the game starts
+	stats_reset();
+	
 	wait(1);
 	INIT_levelStart();
 	INIT_levelLoop();

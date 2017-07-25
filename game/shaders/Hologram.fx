@@ -81,7 +81,7 @@ technique object
 {
 	pass one
 	{
-		ZWriteEnable = False;
+		ZWriteEnable = True;
 		AlphaBlendEnable = True;
 		//DestBlend = One;
 		//SrcBlend = One;

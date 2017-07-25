@@ -1,19 +1,13 @@
 #include <stdio.h>
 #include "Annoying.h"
 
-FONT * stats_font = "Arial#40b";
-
 HIGHSCORE stats_highscore;
 HIGHSCORE stats_current;
 
 BOOL stat_gotHighscore;
 
-PANEL * panHighscores = 
-{
-	digits(0, 0, "Score: %.0f", stats_font, 1, stats_current.score);
-	pos_x = 10;
-	pos_y = 10;
-}
+float stat_multCounter = 0;
+float stat_multFactor = 1;
 
 void stats_init()
 {
@@ -29,18 +23,15 @@ void stats_init()
 	{
 		if(INIT__levelRunning)
 		{
-			set(panHighscores, SHOW);
-			//DEBUG_VAR(stats_current.score, 16);
-			
 			if(stats_current.score > stats_highscore.score)
 			{
 				stat_gotHighscore = TRUE;
 				memcpy(&stats_highscore, &stats_current, sizeof(HIGHSCORE));
 			}
 		}
-		else
-		{
-			reset(panHighscores, SHOW);
+		stat_multCounter += time_step;
+		if(stat_multCounter >= 96) { // 6 Sekunden bis zum Reset
+			stat_multFactor = 1.0;
 		}
 		wait(1);
 	}
@@ -50,12 +41,17 @@ void stats_reset()
 {
 	memset(&stats_current, 0, sizeof(HIGHSCORE));
 	stat_gotHighscore = FALSE;
+	stat_multCounter = 0;
+	stat_multFactor = 1;
 }
 
 void stats_addKill(int enemyType)
 {
-	stats_current.score += stats_scores[enemyType];
+	stats_current.score += stat_multFactor * stats_scores[enemyType];
 	stats_current.kills[enemyType] += 1;
+	
+	stat_multFactor += 0.1;
+	stat_multCounter = 0;
 }
 
 /**

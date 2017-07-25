@@ -28,6 +28,9 @@ SOUND* snd_player_hit1 = "player_hit1.wav";
 SOUND* snd_player_hit2 = "player_hit2.wav";
 SOUND* snd_player_hit3 = "player_hit3.wav";
 
+int tutorialStage = 0;
+var tutorialTimer = 0;
+
 /*
 void player_move_old() {
 	
@@ -326,12 +329,56 @@ void player_move() {
 	desyncTimer = maxv(0, desyncTimer - time_step/16);
 	pp_desync(floatv(desyncTimer/0.4*20));
 	
-	MARKER_setText(player, str_printf(
-		player_infoText,
-		"LIV:%d\nSCO:%d\nMAX:%d",
-		(int)(player.health),
-		(int)(stats_current.score),
-		(int)(stats_highscore.score)));
+	// Don't reset this, we show tutorial only once per game instance
+	switch(tutorialStage)
+	{
+		case 0:
+			MARKER_setText(player, "WASD:\nMove");
+			if(key_w || key_s || key_a || key_d) {
+				tutorialStage = 1;
+			}
+			break;
+		case 1:
+			MARKER_setText(player, "LMB:\nShoot");
+			if(mouse_left) {
+				tutorialStage = 2;
+			}
+			break;
+		case 2:
+			MARKER_setText(player, "RMB:\nGrenade");
+			if(mouse_right) {
+				tutorialStage = 3;
+				tutorialTimer = 8;
+			}
+			break;
+		case 3:
+		case 4:
+		case 5:
+			if(tutorialStage == 3)
+				MARKER_setText(player, "KILL");
+			else if(tutorialStage == 4)
+				MARKER_setText(player, "THEM");
+			else
+				MARKER_setText(player, "ALL");
+			if(tutorialTimer <= 0) {
+				tutorialStage++;
+				tutorialTimer = 8;
+				break;
+			}
+			tutorialTimer -= time_step;
+			break;
+		default:
+			int pre = stat_multFactor;
+			int post = ((int)(10 * stat_multFactor)) % 10;
+			MARKER_setText(player, str_printf(
+				player_infoText,
+				"LIV:%d\nSCO:%d\nMUL:x%1d.%1d",
+				(int)(player.health),
+				(int)(stats_current.score),
+				pre, post));
+			break;
+	}
+	
 }
 
 
@@ -343,6 +390,7 @@ void player_init() {
 	player->health = 100;
 	player->weapon_bouncing = 2;
 	player->group = 3;
+	player.type = TypePlayer;
 	
 	// Adapt scale
 	vec_scale(player.scale_x, 2.25);

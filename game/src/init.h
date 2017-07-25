@@ -2,7 +2,7 @@
 #define INIT_H
 
 void INIT_levelStart();
-void INIT_levelEnd();
+void INIT_levelEnd(var isGameOver);
 void INIT_levelLoop();
 void INIT_globalLoop();
 void INIT_global();

@@ -27,14 +27,17 @@ function teleport_effect(PARTICLE * p)
 	p->event = NULL;
 }
 
+STRING * teleporter_message = "#128";
+
 action teleporter_out()
 {
 	teleporterEntity = me;
-	you = ent_create("Teleport.mdl", my.x, NULL);
-	teleporterSocket = you;
-	teleporterSocket->type = TypeTeleporterDisabled;
+	teleporterSocket = ent_create("Teleport.mdl", my.x, NULL);
+	teleporterSocket.type = TypeTeleporterDisabled;
+	teleporterSocket.material = ObjectMaterial;
+	teleporterSocket.skill41 = floatv(36);
 	set(me,  PASSABLE | FLAG2 | INVISIBLE);
-	set(you, PASSABLE | FLAG2);
+	set(teleporterSocket, PASSABLE | FLAG2);
 	while(!player) wait(1);
 	
 	proc_mode = PROC_LATE;
@@ -44,7 +47,20 @@ action teleporter_out()
 	var portloader = 0;
 	while(1)
 	{
-		MARKER_update(teleporterSocket);
+		if(hex_isDead) {
+			str_cpy(teleporter_message, "GUARDIAN:\n  Shut down\n");
+		} else {
+			str_cpy(teleporter_message, "GUARDIAN:\n  Active\n");
+		}
+		
+		if(is(me, INVISIBLE)) {
+			str_cat(teleporter_message, "TELEPORT:\n  Disabled");
+		} else {
+			str_cat(teleporter_message, "TELEPORT:\n  Enabled");
+		}
+		
+		MARKER_setText(teleporterSocket, teleporter_message);
+		
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
 		if(!is(me, INVISIBLE) && dist < 70) // ist höhenabhängig!
 		{
@@ -85,7 +101,7 @@ action teleporter_out()
 					COLOR_BLACK, alpha, 0);
 			}
 			if(portloader >= 100) {
-				INIT_levelEnd();
+				INIT_levelEnd(0);
 				snd_stop(sndHandle);
 				return;
 			}
