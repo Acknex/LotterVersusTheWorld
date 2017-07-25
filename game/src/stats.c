@@ -8,6 +8,9 @@ HIGHSCORE stats_current;
 
 BOOL stat_gotHighscore;
 
+float stat_multCounter = 0;
+float stat_multFactor = 1;
+
 PANEL * panHighscores = 
 {
 	digits(0, 0, "Score: %.0f", stats_font, 1, stats_current.score);
@@ -42,6 +45,10 @@ void stats_init()
 		{
 			reset(panHighscores, SHOW);
 		}
+		stat_multCounter += time_step;
+		if(stat_multCounter >= 96) { // 6 Sekunden bis zum Reset
+			stat_multFactor = 1.0;
+		}
 		wait(1);
 	}
 }
@@ -50,12 +57,17 @@ void stats_reset()
 {
 	memset(&stats_current, 0, sizeof(HIGHSCORE));
 	stat_gotHighscore = FALSE;
+	stat_multCounter = 0;
+	stat_multFactor = 1;
 }
 
 void stats_addKill(int enemyType)
 {
-	stats_current.score += stats_scores[enemyType];
+	stats_current.score += stat_multFactor * stats_scores[enemyType];
 	stats_current.kills[enemyType] += 1;
+	
+	stat_multFactor += 0.1;
+	stat_multCounter = 0;
 }
 
 /**

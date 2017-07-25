@@ -354,12 +354,14 @@ void player_move() {
 			tutorialTimer -= time_step;
 			break;
 		default:
+			int pre = stat_multFactor;
+			int post = ((int)(10 * stat_multFactor)) % 10;
 			MARKER_setText(player, str_printf(
 				player_infoText,
-				"LIV:%d\nSCO:%d\nMAX:%d",
+				"LIV:%d\nSCO:%d\nMUL:x%1d.%1d",
 				(int)(player.health),
 				(int)(stats_current.score),
-				(int)(stats_highscore.score)));
+				pre, post));
 			break;
 	}
 	
