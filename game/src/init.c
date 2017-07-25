@@ -178,7 +178,7 @@ void INIT_start()
 	FONT_create();
 	fancyhud_init();
 	MARKER_init();
-	//create_camera();	
+	//create_camera();
 }
 
 void INIT_exit()
