@@ -325,13 +325,13 @@ void player_move() {
 			}
 			break;
 		case 1:
-			MARKER_setText(player, "Left Mouse:\nShoot");
+			MARKER_setText(player, "LMB:\nShoot");
 			if(mouse_left) {
 				tutorialStage = 2;
 			}
 			break;
 		case 2:
-			MARKER_setText(player, "Right Mouse:\nGrenade");
+			MARKER_setText(player, "RMB:\nGrenade");
 			if(mouse_right) {
 				tutorialStage = 3;
 				tutorialTimer = 8;

@@ -135,12 +135,20 @@ function MARKER_initializeEntity(ENTITY * ent)
 	data.text.target_map = data.target;
 	data.text.font = MARKER_font;
 	data.text.flags = SHOW | LIGHT;
-	if(ent.type == TypePlayer) {
-		// UI Color 1
-		vec_set(data.text.blue, COLOR_RED);
-	} else {
-		// UI Color 2
-		vec_set(data.text.blue, COLOR_GREEN);
+	switch(ent.type)
+	{
+		case TypePlayer:
+		case TypeQuestmaster:
+		case TypeQuestitem:
+		case TypeTeleporterDisabled:
+		case TypeTeleporterEnabled:
+			// UI Color 1
+			vec_set(data.text.blue, COLOR_RED);
+			break;
+		default:
+			// UI Color 2
+			vec_set(data.text.blue, COLOR_GREEN);
+			break;
 	}
 	
 	data.sprite.markerData = (void*)data;
