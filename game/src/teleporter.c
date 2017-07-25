@@ -27,6 +27,8 @@ function teleport_effect(PARTICLE * p)
 	p->event = NULL;
 }
 
+STRING * teleporter_message = "#128";
+
 action teleporter_out()
 {
 	teleporterEntity = me;
@@ -45,7 +47,20 @@ action teleporter_out()
 	var portloader = 0;
 	while(1)
 	{
-		MARKER_update(teleporterSocket);
+		if(QUEST_isSolved()) {
+			str_cpy(teleporter_message, "GUARDIAN:\n  Shut down\n");
+		} else {
+			str_cpy(teleporter_message, "GUARDIAN:\n  Active\n");
+		}
+		
+		if(is(me, INVISIBLE)) {
+			str_cat(teleporter_message, "TELEPORT:\n  Disabled");
+		} else {
+			str_cat(teleporter_message, "TELEPORT:\n  Enabled");
+		}
+		
+		MARKER_setText(teleporterSocket, teleporter_message);
+		
 		var dist = vec_dist(vector(player.x, player.y, 0), vector(me.x, me.y, 0));
 		if(!is(me, INVISIBLE) && dist < 70) // ist höhenabhängig!
 		{
