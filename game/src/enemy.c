@@ -294,9 +294,12 @@ action enemy_bat()
 	stats_addKill(STATENEMY_BAT);
 }
 
+BOOL hex_isDead = 0;
+
 action enemy_hex()
 {
 	ENEMY_init();
+	hex_isDead = FALSE;
 	
 	my->material = HexMaterial;
 	
@@ -332,6 +335,7 @@ action enemy_hex()
 		//DEBUG_VAR(count, 16);
 	}
 	
+	hex_isDead = TRUE;
 	show_dialog("Room clear!\nTeleporter is now free.");
 	
 	// effect(p_bat_explode,100,my.x,nullvector);

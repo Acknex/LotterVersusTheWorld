@@ -47,7 +47,7 @@ action teleporter_out()
 	var portloader = 0;
 	while(1)
 	{
-		if(QUEST_isSolved()) {
+		if(hex_isDead) {
 			str_cpy(teleporter_message, "GUARDIAN:\n  Shut down\n");
 		} else {
 			str_cpy(teleporter_message, "GUARDIAN:\n  Active\n");
