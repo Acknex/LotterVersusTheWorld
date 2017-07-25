@@ -37,7 +37,10 @@ void main()
 {
 	max_entities = 20000;
 	d3d_antialias = 0;
-	video_mode = 12;
+	
+	video_window(vector(0, 0, 0), nullvector, 1, "Lotter vs. the World");
+	video_set(sys_metrics(0), sys_metrics(1), 0, 2);
+	
 	on_resize = INIT_resize;
 	INIT_start();
 	wait(1);
