@@ -155,8 +155,22 @@ void hit_player(var dmg)
 		if (player->health <= 0) 
 		{
 			pp_desync(0);
-			snd_stop(handleSndEngineIdle);
-			snd_stop(handleSndEngineThrust);
+			if(handleSndEngineIdle != 0)
+			{
+				snd_stop(handleSndEngineIdle);
+				handleSndEngineIdle = 0;
+			}
+			if(handleSndEngineThrust != 0)
+			{
+				snd_stop(handleSndEngineThrust);
+				handleSndEngineThrust = 0;
+			}
+			if(shootingHandle != 0)
+			{
+				snd_stop(shootingHandle);
+				shootingHandle = 0;
+			}
+			
 		}
 	}
 }
@@ -320,7 +334,7 @@ void player_move() {
 	{
 		case 0:
 			MARKER_setText(player, "WASD:\nMove");
-			if(key_w || key_s || key_a || key_d) {
+			if(key_w || key_s || key_a || key_d || key_cul || key_cur || key_cuu || key_cud) {
 				tutorialStage = 1;
 			}
 			break;
