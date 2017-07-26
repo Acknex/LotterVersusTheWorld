@@ -1,3 +1,5 @@
+#include <particles.c>
+
 #include "camera.h"
 #include "sky.h"
 #include "music_player.h"
@@ -159,6 +161,9 @@ void SPLASH__setupLevel()
 	vec_set(cam->x, nullvector);
 	cam->pan = 0;
 	cam->tilt = 0; 
+	
+	// Intro stuff last
+	SPLASH__smokeEmitter = ent_create("a4Cube.mdl", vector(-750, 0, 0), SPLASH__act_smokeGen);
 }
 
 
@@ -208,6 +213,51 @@ void SPLASH__startGame()
 void SPLASH__startCredits()
 {
 	// Hier den credits start code einfügen. 
+}
+
+void SPLASH__introStart()
+{
+}
+
+void SPLASH__introEnd()
+{
+}
+
+void SPLASH__introCancel()
+{
+}
+
+function SPLASH__act_smoke(ENTITY* p)
+{
+	VECTOR vTemp;
+	vec_randomize(vTemp, 3);
+	vec_add(p._VEL_X, vTemp);
+	 
+	set(p, _MOVE | TRANSLUCENT);
+	p.alpha = 100;
+	//p.bmap = SPLASH__smokeSprite;
+	//part.lifespan = 100;
+	//part.size = 200;
+	//part.event = SPLASH__act_smoke_event;
+	//part.gravity = 0.01;
+	vec_set(p.blue, vector(60, 60, 60));
+	p._SIZE = 20;
+	p._GRAVITY = 0.01;
+	p._FADE = 0.5;  // fade factor
+	p._LIFESPAN = 1000;
+	p.event = p_fade_sprite;	
+}
+
+action SPLASH__act_smokeGen()
+{
+	VECTOR emitterTemp;
+	set(me, INVISIBLE);
+	while(me)
+	{
+		vec_randomize(emitterTemp, my->x);
+		effect_sprite("smoke.tga", SPLASH__act_smoke, maxv(1,2*time_step), my->x, vector(0, 0, 1));
+		wait(1);
+	}
 }
 
 void SPLASH__exitGame()
