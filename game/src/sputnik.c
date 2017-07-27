@@ -1,3 +1,4 @@
+#include "particleEffects.h"
 #include "stats.h"
 
 SOUND* snd_sputnik_attack1 = "sputnik_attack1.wav";

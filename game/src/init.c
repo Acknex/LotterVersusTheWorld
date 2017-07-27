@@ -9,9 +9,7 @@
 #include "cheats.h"
 #include "stats.h"
 #include "fancyhud.h"
-
-#include "items.h" //temp
-#include "turret.h" //temp
+#include "splash.h"
 
 var INIT__levelRunning = 0;
 var INIT__currentHardness = 0;
@@ -71,14 +69,6 @@ void INIT_levelStart()
 
 	startMusic("media\\in_game1.mp3", 4, 1);
 
-	//this is debug hack for items
-//	VECTOR* vecTemp;
-//	vecTemp = vector(175,175, 25);
-//	ent_create("jetpack_lotter.mdl", vecTemp, item_jetpack);
-//	vecTemp = vector(725,900, 50);
-//	you = ent_create("tronding1.mdl", vecTemp, enemy_turret);
-//	you.material = ObjectMaterial;
-
 	enemy_spawn_hex();
 	MARKER_attach();
 	
@@ -97,7 +87,7 @@ void INIT_levelEnd(var isGameOver)
 	
 	MARKER_detach();
 	
-	proc_kill2(MARKER_sprite, NULL);
+	proc_kill2(MARKER_sprite, NULL); //is this still needed?
 	
 	wait(1);
 	
@@ -177,6 +167,7 @@ void INIT_start()
 	FONT_create();
 	fancyhud_init();
 	MARKER_init();
+	MARKER_toggle();
 	//create_camera();
 }
 
@@ -191,4 +182,5 @@ void INIT_resize()
 	pp_bloom_resize();
 	FONT_scale();
 	hud_ingame_align();
+	SPLASH__reposition();
 }

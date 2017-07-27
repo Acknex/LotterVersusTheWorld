@@ -40,6 +40,7 @@ void main()
 	
 	video_window(vector(0, 0, 0), nullvector, 1, "Lotter vs. the World");
 	video_set(sys_metrics(0), sys_metrics(1), 0, 2);
+//	video_set(sys_metrics(0), sys_metrics(1), 0, 1); //remove windows taskbar (covers hud)
 	
 	on_resize = INIT_resize;
 	INIT_start();
@@ -54,7 +55,7 @@ void main()
 
 	//on_h = MARKER_toggle;
 	//debug
-	MARKER_toggle();
+	//MARKER_toggle();
 	
 	on_exit = INIT_exit;
 	on_close = quitGame;

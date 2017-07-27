@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include "marker.h"
 #include "stats.h"
+#include "particleeffects.h"
 
 void SPHEREOD__init();
 void SPHEREOD__loop();

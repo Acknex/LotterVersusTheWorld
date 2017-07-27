@@ -78,6 +78,7 @@ action questmaster()
 		wait(1);
 		my->animCounter = cycle(my->animCounter += 2 * time_step,0,100);
 		ent_animate(me, "stand", my->animCounter, ANM_CYCLE);
+		my.alpha=cycle(my.alpha+5*time_step,0,100);
 	}
 	wait(-2);
 	while(my->scale_z > 0)
@@ -87,7 +88,14 @@ action questmaster()
 		my->scale_z -= 0.15 * time_step;
 		QUEST__droptofloor();
 	}
-	my->scale_z = 0;
+	while(my->scale_x > 0)
+	{
+		MARKER_update(me);
+		wait(1);
+		my->scale_x -= 0.25 * time_step;
+		my->scale_y -= 0.25 * time_step;
+	}
+	vec_set(my->scale_x, nullvector);
 	wait(1);
 	ptr_remove(me);
 }
@@ -145,7 +153,8 @@ action questitem()
 	//var vZ = my->z;
 	var vOffset = random(500);
 	var showedMessage = 0;
-	while(1)
+	var countDown = 8;
+	while(countDown > 0)
 	{
 		//my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
 		my->pan = 135 * sinv(total_ticks * 2 - vOffset);
@@ -154,35 +163,67 @@ action questitem()
 		
 		if ((vec_dist2d(my.x, player.x) < 80) || (cheats_enabled && key_q)) // We collided with it ;)
 		{
-			break;
+			set(me, is_collected);
 		}
 
+		if (is(me, is_collected))
+		{
+			countDown -= time_step;
+		}
+		
 		MARKER_update(me);
 		wait(1);
 	}
 
 	snd_play(sndQuestDone, 100, 0);
-	
-	str_cpy(strQuestMessage, "Mission completed!\nTeleporter enabled.");
-	show_dialog(strQuestMessage);
 
-	QUEST__solved = 1;
-	teleporter_enable(); //switch to end boss?
-	
-	wait(1); // this is needed for decoupling show_dialog from this entity!
+	var smoothTransition = 1;
+	var hasTriggered = 0;
+	var angle = 0;
+	var newPan = 0;
+	VECTOR* dist;
+	VECTOR myPos;
+	VECTOR myScale;
+	VECTOR myRotation;
+	vec_set(&myPos, my->x);
+	vec_set(&myScale, my->scale_x);
+	vec_set(&myRotation, my->pan);
+	while(player != NULL)
+	{
+		angle += 10 * time_step;
+		dist = vector(80, 0, 0);	
+		vec_rotate(dist, vector(angle, 0, 0));
+		vec_add(dist, player->x);
+		dist->z -= 80;
+		newPan -= 15* time_step;
+		smoothTransition = clamp(smoothTransition - time_step  * 0.5, 0, 1);
+		if (smoothTransition <= 0) 
+		{
+			if (hasTriggered == 0)
+			{
+				hasTriggered = 1;
+			str_cpy(strQuestMessage, "Mission completed!\nTeleporter enabled.");
+			show_dialog(strQuestMessage);
+		
+			QUEST__solved = 1;
+			teleporter_enable(); //switch to end boss?
+			}
+			vec_set(my->x, dist);
+			my->pan = newPan;
+		}
+		else
+		{
+			vec_lerp(my->x, dist, &myPos, smoothTransition);
+			vec_lerp(my->scale_x, vector(1, 1, 1), &myScale, smoothTransition);
+			vec_lerp(my->pan, vector(newPan, 0, 0), &myRotation, smoothTransition);
+		}
+		wait(1);
+	}	
 	
 	ptr_remove(me);
 }
 
-/*void questspawn()
-{
-	you = ent_create("warlock.mdl", player.x, questmaster);
-	you.x+= 100;
-}
-void my_startup(){on_x= questspawn;}
-*/
 
-	QUEST_reset();
 void QUEST_reset()
 {
 	QUEST__solved = 0;

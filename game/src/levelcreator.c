@@ -6,6 +6,8 @@
 #include "spikes.h"
 #include "hole.h"
 #include "sphere_of_death.h"
+#include "bat.h"
+#include "sputnik.h"
 #include "teleporter.h"
 #include "entity_defs.h"
 #include "marker.h"

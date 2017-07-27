@@ -54,9 +54,9 @@ int SPLASH__animStart()
 	wait(-1);
 	
 	var tempFactor = (1 - (SPLASH__logoPanel->alpha / 50));
-	var tempDist = screen_size.y - SPLASH__logoY;
 	while(SPLASH__logoPanel->alpha < 50)
 	{
+		var tempDist = screen_size.y - SPLASH__logoY;
 		if(key_any == 1) return SPLASH__cancelAnim();
 		SPLASH__logoPanel->alpha += 1 * time_step;
 		tempFactor = (SPLASH__logoPanel->alpha / 50);
@@ -181,8 +181,10 @@ void SPLASH__reposition()
 			SPLASH__logoPanel->scale_x = ratio;
 			SPLASH__logoPanel->scale_y = ratio;
 			SPLASH__logoPanel->pos_x = (screen_size.x / 2) - ((logoWidth * ratio) / 2); 
-			//SPLASH__logoPanel->pos_y = SPLASH__logoY; 
-			SPLASH__logoPanel->pos_y = screen_size.y; 
+			//while animated (alpha <50) logo corrects position by itself
+			if (SPLASH__logoPanel->alpha >= 50)
+				SPLASH__logoPanel->pos_y = SPLASH__logoY; 
+			//SPLASH__logoPanel->pos_y = screen_size.y; 
 			
 			SPLASH__menuPanel->pos_x = (screen_size.x / 2) - (64);
 			SPLASH__menuPanel->pos_y = SPLASH__logoY + logoHeight;
