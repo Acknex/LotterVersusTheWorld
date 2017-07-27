@@ -1,6 +1,8 @@
 #ifndef SPLASH_H
 #define SPLASH_H
 
+BMAP* SPLASH__smokeSprite = "smoke.tga";
+
 BMAP* SPLASH__logoBmap = "logo.png";
 PANEL* SPLASH__logoPanel = NULL;
 
@@ -15,21 +17,42 @@ PANEL* SPLASH__menuPanel = NULL;
 ENTITY* SPLASH__cube = NULL;
 ENTITY* SPLASH__beam = NULL;
 ENTITY* SPLASH__lotti = NULL;
+ENTITY* SPLASH__smokeEmitter = NULL;
+ENTITY* SPLASH__introEnt1 = NULL;
+ENTITY* SPLASH__introEnt2 = NULL;
+ENTITY* SPLASH__introEnt3 = NULL;
 
 var SPLASH__inSplash = 1;
 var SPLASH__logoY = 0;
+var SPLASH__camMoving = 0;
+var SPLASH__camTurning = 0;
+
+// Menu Stuff
 
 void SPLASH__init();
 void SPLASH__setupLevel();
+
 int SPLASH__animStart();
 void SPLASH__animEnd();
-void SPLASH__reposition();
 int SPLASH__cancelAnim();
+
+void SPLASH__reposition();
+
 void SPLASH__initMenu();
 void SPLASH__startGame();
 void SPLASH__startCredits();
 void SPLASH__exitGame();
+
 void SPLASH__housekeeping();
+
+// Intro stuff
+
+void SPLASH__introStart();
+void SPLASH__introEnd();
+void SPLASH__introCancel();
+
+function SPLASH__act_smoke(ENTITY*);
+action SPLASH__act_smokeGen();
 
 
 #include "splash.c"

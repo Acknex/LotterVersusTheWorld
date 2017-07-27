@@ -96,7 +96,6 @@ void INIT_levelEnd(var isGameOver)
 	INIT__levelRunning = 0;
 	
 	MARKER_detach();
-	stopMusic();
 	
 	proc_kill2(MARKER_sprite, NULL);
 	

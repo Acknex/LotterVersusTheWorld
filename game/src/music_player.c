@@ -4,9 +4,16 @@ var volume_current = 0;
 var volume_last = 0;
 var crossTime = 0;
 var maxVol = 100;
+STRING* currentMusic = NULL;
 
 void startMusic(STRING* file, var crossFadeTime, var loop)
 {
+	if(currentMusic != NULL && file != NULL)
+	{
+		if(str_cmp(currentMusic, file) == 1)
+			return;
+	}
+	currentMusic = NULL;
 	if(handle_current != 0)
 	{
 		if(handle_last != 0)
@@ -20,6 +27,7 @@ void startMusic(STRING* file, var crossFadeTime, var loop)
 	
 	if(file != NULL)
 	{
+		currentMusic = file;
 		if(loop == 1)
 		{
 			handle_current = media_loop(file, NULL, 0);

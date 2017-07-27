@@ -16,6 +16,17 @@ typedef struct MARKERdata
 	int countdown;
 } MARKERdata;
 
+var activeMarkers = 0;
+/*void MARKER_debug_startup()
+{
+	while(1)
+	{
+		DEBUG_VAR(activeMarkers, 150);
+		wait(1);
+	}
+}*/
+
+
 function MARKER_mtlRemove_event()
 {
 	return 1;
@@ -32,6 +43,10 @@ function MARKER_entRemove(ENTITY * ent)
 	if(ent == NULL) {
 		return;
 	}
+	if (ent->type != TypeMarker)
+		return;
+	
+	activeMarkers--;
 	MARKERdata * data = (void*)ent.markerData;
 	if(data == NULL) {
 		return;
@@ -52,19 +67,22 @@ function MARKER_entRemove(ENTITY * ent)
 	
 	if(other != NULL) {
 		other.markerData = NULL;
-		ent_remove(other);
+		//ent_remove(other);
 	}
 }
 
 function MARKER_init()
 {
 	MARKER_font = font_create("monoid#64");
-	// MARKER_entRemoveLink = on_ent_remove;
-	// on_ent_remove = MARKER_entRemove;
+	//MARKER_entRemoveLink = on_ent_remove;
+	on_ent_remove = MARKER_entRemove;
 }
+
 
 action MARKER_sprite()
 {
+	activeMarkers++;
+	var killme = 0;
 	my.type = TypeMarker;
 	my.material = MARKER_mtlRemove;
 	my.skill41 = floatv(5);
@@ -76,7 +94,7 @@ action MARKER_sprite()
 	vec_set(my.pan, vector(180, 90, 0));
 	vec_fill(my.scale_x, 0.6);
 	
-	while(my.markerData != NULL)
+	while(my.markerData != NULL && killme == 0)
 	{
 		MARKERdata * data = (void*)my.markerData;
 		if(data != NULL)
@@ -104,12 +122,14 @@ action MARKER_sprite()
 			else
 			{
 				set(me, INVISIBLE);
+				//kill entity in order to stop expensive rendertarget processing
+				//sprite will be recreated automatically, this is less expensive
+				killme = 1;
 			}
 		}
 		
 		wait(1);
 	}
-	
 	ent_remove(me);
 }
 
@@ -182,6 +202,10 @@ void MARKER_setText(ENTITY * ent, STRING * text)
 		return;
 	}
 	
+	//limit visible distance for big performance boost
+	if(vec_dist(ent->x, player->x) > 2000)
+		return;
+		
 	MARKER_initializeEntity(ent);
 	
 	MARKERdata * data = (void*)ent.markerData;
