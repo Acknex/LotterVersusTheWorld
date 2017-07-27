@@ -128,8 +128,8 @@ void SPIKES__active()
 	my->delayCounter += time_step;
 	if (vec_dist(player->x, my->x) < SPIKES_ATTACKRANGE)
 	{
-		my->delayCounter = cycle(my->delayCounter + time_step, 0, TURRET_ALTERNATIONTIME);
-		if (my->delayCounter > TURRET_ALTERNATIONTIME * 0.5)
+		my->delayCounter = cycle(my->delayCounter + time_step, 0, SPIKES_ALTERNATIONTIME);
+		if (my->delayCounter > SPIKES_ALTERNATIONTIME * 0.5)
 		{
 			my->animCounter -= SPIKES_ANIMCLOSESPEEDFAST * time_step;
 			my->animCounter = maxv(0, my->animCounter);

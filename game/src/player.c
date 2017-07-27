@@ -6,6 +6,8 @@
 #include "stats.h"
 
 //STAGE* LEVEL__stage = NULL;
+#define slowdown FLAG8
+#define jumping FLAG7
 
 var anim_percentage = 0;
 var dist_ahead = 0;
@@ -224,9 +226,19 @@ void player_move() {
 		vec_normalize(temp2,minv(10,vec_length(temp2))*0.3*time_step);
 		//vec_lerp(vPlayerSpeed,vPlayerSpeed,temp,0.2*time_step);
 		vec_add(vPlayerSpeed,temp2);
-		
+		VECTOR vSpeed;
+		vec_set(&vSpeed, vPlayerSpeed);
+		vSpeed.z = 0;
+		//hole slows down player - if he's not jumping
+		if (is(player, slowdown) && !is(player, jumping))
+		{
+			vec_scale(&vSpeed, 0.4);
+//			reset(player, slowdown);
+		}
+		vec_scale(&vSpeed, time_step);
 		c_ignore(4,0);
-		c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+		//c_move(player, nullvector, vector(vPlayerSpeed.x*time_step,vPlayerSpeed.y*time_step,0), IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
+		c_move(player, nullvector, &vSpeed, IGNORE_PASSABLE | GLIDE | ACTIVATE_TRIGGER);
 		
 		var engineVolume = vec_length(vPlayerSpeed)/45;
 		snd_tune(handleSndEngineThrust, engineVolume*80, engineVolume*70, 0);
@@ -234,14 +246,16 @@ void player_move() {
 		
 		if(player.near_teleport == 0) {
 		
-			if(!jumpbuttonHit && key_space && player.z <= 190) {
+			if(!jumpbuttonHit && key_space && player.z <= 190 && !is(player, slowdown)) {
 				playerVelY = 10;
+				set(player, jumping);
 			}
 			jumpbuttonHit = key_space;
 		
 			// Fancy mini-gravity
 			player.z += playerVelY * time_step;
 			if(player.z <= 190) {
+				reset(player, jumping);
 				playerVelY = abs(0.3 * playerVelY);
 				player.z = 190;
 				if(abs(playerVelY) < 0.05) {
@@ -262,6 +276,8 @@ void player_move() {
 		ent_animate(player,"attack",0,0);
 		ent_bonerotate(player,"Bone1",vector(0,sinv(total_ticks*8)*10,0));
 		ent_bonerotate(player,"Bone4",vector(0,sinv(total_ticks*8)*10,0));
+		reset(player, slowdown);
+		
 	}
 	int i;
 	for(i = 0; i < 2; i++)
@@ -419,9 +435,18 @@ void player_init() {
 void player_event() {
 	switch(event_type) {
 		case EVENT_SHOOT:
+			hit_player(your.damage);
+			break;
 		case EVENT_SCAN:
-		hit_player(your.damage);
-		break;
+			if (your->type == TypeHole)
+			{
+				set(player, slowdown);
+			}
+			else
+			{
+				hit_player(your.damage);
+			}
+			break;
 		
 	}
 }

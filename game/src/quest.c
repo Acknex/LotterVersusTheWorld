@@ -79,7 +79,6 @@ action questarrow()
 				distFac = minv(distFac + time_step, 10);
 		}
 		var distFac01 = distFac * 0.1;
-		DEBUG_VAR(distFac, 200);
 		dist = (maxv((dist - 100), 100) * distFac01) + (100 * (1 - distFac01));
 		vecDist = vector(dist, 0, 0);
 		vec_rotate(vecDist, vector(my->pan, 0 , 0));

@@ -159,7 +159,7 @@ void p_sphere_explode(PARTICLE* p)
 		p.skill_x = (int)((p.x+100)/200);
 		p.skill_y = (int)((p.y+100)/200);
 	}
-	p.event = p_bat_explode_fade;
+	p.event = p_sphere_explode_fade;
 }
 
 
