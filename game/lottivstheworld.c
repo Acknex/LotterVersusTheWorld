@@ -53,9 +53,6 @@ void main()
 	SPLASH__init();
 #endif
 
-	//on_h = MARKER_toggle;
-	//debug
-	//MARKER_toggle();
 	
 	on_exit = INIT_exit;
 	on_close = quitGame;

@@ -37,6 +37,69 @@ TEXT* txtQuestTasks =
 
 STRING * strQuestMessage = "#256";
 
+action questarrow()
+{
+	set(my, INVISIBLE | PASSABLE);
+	my->material = HologramMaterial;
+	if (you== NULL)
+	{
+		wait(1);
+		ptr_remove(me);
+		return;
+	}
+	ENTITY* questmaster = you;
+	while(player == NULL)
+	{
+		wait(1);
+	}
+	reset(my, INVISIBLE);
+	VECTOR diff;
+	ANGLE angle;
+	var angRoll = 0;
+	VECTOR* vecDist;
+	var dist;
+	var distFac = 0;
+	while(QUEST__started == 0 && questmaster != NULL)
+	{
+		vec_diff(&diff, questmaster->x, player->x);
+		vec_to_angle(&angle, &diff);
+		angRoll = ang(angRoll + 15* time_step);
+		vec_set(my->pan, vector(angle.pan, 0, angRoll));	
+		dist = vec_length(&diff);
+		if (dist < 600)
+		{
+			distFac = cycle(distFac + time_step, 0, 10);
+		}
+		else
+		{
+			if (distFac == 10)
+				distFac = 0;
+				
+			if (distFac != 0)
+				distFac = minv(distFac + time_step, 10);
+		}
+		var distFac01 = distFac * 0.1;
+		DEBUG_VAR(distFac, 200);
+		dist = (maxv((dist - 100), 100) * distFac01) + (100 * (1 - distFac01));
+		vecDist = vector(dist, 0, 0);
+		vec_rotate(vecDist, vector(my->pan, 0 , 0));
+		vec_add(vecDist, player->x);
+		vecDist->z -= 80;
+		vec_set(my->x, vecDist);
+
+		wait(1);	
+	}
+	VECTOR timeVec;
+	while(my->scale_x > 0)
+	{
+		wait (1);
+		vec_fill(&timeVec, 0.5 * time_step);
+		vec_sub(my->scale_x, timeVec);		
+	}
+	vec_fill(my->scale_x, 0);
+	ptr_remove(me);
+}
+
 action questmaster()
 {
 	my->type = TypeQuestmaster;
@@ -53,6 +116,7 @@ action questmaster()
 	{
 		wait(1);
 	}
+	ent_create("arrow.mdl", my->x, questarrow);
 	while(QUEST__started == 0)
 	{
 		MARKER_update(me);
@@ -150,10 +214,11 @@ action questitem()
 	reset(my, TRANSLUCENT);
 	
 
+
 	//var vZ = my->z;
 	var vOffset = random(500);
 	var showedMessage = 0;
-	var countDown = 8;
+	var countDown = 6;
 	while(countDown > 0)
 	{
 		//my->z = vZ + 10 * sinv(total_ticks * 20 + vOffset);
@@ -177,7 +242,7 @@ action questitem()
 
 	snd_play(sndQuestDone, 100, 0);
 
-	var smoothTransition = 1;
+	var smoothTransition = 10;
 	var hasTriggered = 0;
 	var angle = 0;
 	var newPan = 0;
@@ -196,26 +261,26 @@ action questitem()
 		vec_add(dist, player->x);
 		dist->z -= 80;
 		newPan -= 15* time_step;
-		smoothTransition = clamp(smoothTransition - time_step  * 0.5, 0, 1);
+		smoothTransition = clamp(smoothTransition - time_step, 0, 10);
 		if (smoothTransition <= 0) 
 		{
 			if (hasTriggered == 0)
 			{
 				hasTriggered = 1;
-			str_cpy(strQuestMessage, "Mission completed!\nTeleporter enabled.");
-			show_dialog(strQuestMessage);
-		
-			QUEST__solved = 1;
-			teleporter_enable(); //switch to end boss?
+				str_cpy(strQuestMessage, "Mission completed!\nTeleporter enabled.");
+				show_dialog(strQuestMessage);
+			
+				QUEST__solved = 1;
+				teleporter_enable(); //switch to end boss?
 			}
 			vec_set(my->x, dist);
 			my->pan = newPan;
 		}
 		else
 		{
-			vec_lerp(my->x, dist, &myPos, smoothTransition);
-			vec_lerp(my->scale_x, vector(1, 1, 1), &myScale, smoothTransition);
-			vec_lerp(my->pan, vector(newPan, 0, 0), &myRotation, smoothTransition);
+			vec_lerp(my->x, dist, &myPos, smoothTransition / 10);
+			vec_lerp(my->scale_x, vector(1, 1, 1), &myScale, smoothTransition / 10);
+			vec_lerp(my->pan, vector(newPan, 0, 0), &myRotation, smoothTransition / 10);
 		}
 		wait(1);
 	}	
@@ -251,6 +316,9 @@ void QUEST__droptofloor()
 	VECTOR to;
 	vec_set(to, my->x);
 	to.z -= 300;
-	var dist = c_trace(my->x, to, IGNORE_ME | IGNORE_PASSABLE);
-	my.z -= dist+my->min_z;
+	var dist = c_trace(my->x, to, IGNORE_ME | IGNORE_PASSABLE | IGNORE_PASSENTS | IGNORE_SPRITES);
+	if (dist > 0)
+	{
+		my.z -= dist+my->min_z;
+	}
 }
