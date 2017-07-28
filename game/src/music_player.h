@@ -9,6 +9,9 @@ void startMusic(STRING* file, var crossFadeTime, var loop);
 // stops all music immediately
 void stopMusic();
 
+// returns 1 if music is still played (even fading out)
+var playingMusic();
+
 // updates volumes. run in main loop
 void updateMusic();
 

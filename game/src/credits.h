@@ -1,9 +1,8 @@
 #ifndef CREDITS_H
 #define CREDITS_H
 
-STRING * credits_song   = "credits.mp3";
 STRING * credits_source = "credits.dat";
-var credits_scrollSpeed = 1.0; // 1 Pixel per quant
+var credits_scrollSpeed = 2.98; // 1 Pixel per quant
 
 STRING * credits_fontName  = "Arial";
 STRING * credits_fontFlags = "b";

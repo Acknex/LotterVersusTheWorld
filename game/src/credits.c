@@ -27,8 +27,6 @@ typedef struct CreditsNode
 
 CreditsNode * credits_firstNode = NULL;
 
-var credits_musicHandle;
-
 FONT * credits_fontset[4];
 
 TEXT * credits_text = 
@@ -306,7 +304,8 @@ void credits_run()
 	}
 	
 	// Wait a bit, then terminate the credits
-	while(media_playing(credits_musicHandle))
+	startMusic(NULL, 0.5, 0);
+	while(playingMusic() == 1)
 	{
 		wait(1);
 	}
@@ -331,13 +330,12 @@ void credits_start()
 	// background
 	ent_create(NULL, vector(0,0,0), credits_run);
 	
-	credits_musicHandle = media_play(credits_song, NULL, 100);
+	startMusic("media\\credits.mp3", 0.5, 0);
 }
 
 void credits_cancel()
 {
 	level_load(NULL);
-	media_stop(credits_musicHandle);
 	// TODO: Replace with "return-to-menu"!
 	sys_exit("Credits exit!");
 }
