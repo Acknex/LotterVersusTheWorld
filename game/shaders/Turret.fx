@@ -77,7 +77,7 @@ float4 ps(out_ps In): COLOR
 	float4 infolayer = tex2D(sInfoLayer, float2(texcoords.x, 1 - texcoords.y));
 	reflection += infolayer;
 	
-	return 0.6 * reflection + floorcol;
+	return 0.6 * reflection + floorcol + vecSkill41.w;
 }
 
 
