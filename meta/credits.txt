@@ -1,0 +1,61 @@
+
+Types:
+	h1: 1 Text, Huge Font, Center
+	h2: 1 Text, Large Font, Center
+	h3: 1 Text, Medium Font, Center
+	c:  1 Text, Normal Font, Center
+	l:  1 Text, Normal Font, Left
+	r:  1 Text, Normal Font, Right
+	x:  2 Text, Normal Font, (Left,Right)
+	i:  1 File, Autosize, Center
+
+(h1) Lotter vs. The World
+
+(h2) An AckCon Production
+
+(h3) AckCon Staff:
+(l) Felix "MasterQ32" Queißner
+	(r) Shader stuff
+	(r) Level instantiation
+(l) Simon "simonschreibt" Trümpler
+		Lead Artist
+		Textures
+		Coloring
+(l) Marius "mk_1" Kappes
+		Sounds
+		Music
+(l) Robert "firoball" Jäger
+		Framework
+		AI
+(l) Patrick "jengs" Jendral
+		Weapons
+(l) Niels "slin" Daumann
+		Shader Master
+(l) Jonas "padmalcom" Freiknecht
+		HUD
+		Hit Feedback
+(l) Felix "superku" Pohl
+		Level Generation
+(l) Michael "xzwg" Schwarz
+		Intro
+		Main Menu
+(l) "hen-woll"
+		Character
+		Enemies
+(l) "lemming"
+		Props
+
+(h3) Additional Thanks
+(l) Kanal 21
+		Providing the location
+(l) Achim "Pappenheimer" Lübbeke
+		Pre-AckCon communications with Kanal 21
+(l) real,-
+		Providing food staples and energy drinks
+	
+(h3) Additional Non-Thanks:
+(l) Pizzaservice
+
+(c) No lottifants were harmed during the production of this game.
+
+(c) Gamestudio wasn't updated since March 2016, still waiting for the 2017 update!
