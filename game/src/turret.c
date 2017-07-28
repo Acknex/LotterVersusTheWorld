@@ -120,6 +120,7 @@ void TURRET__loop()
 		}
 		wait(1);	
 	}
+	my.skill44 = floatv(0);
 	TURRET__die();
 }
 
@@ -230,7 +231,7 @@ void TURRET__die()
 	my->animCounter = 0;
 	my->type = TypeDestroyed;
 	
-	stats_addKill(STATENEMY_TURRET);	
+	stats_addKill(STATENEMY_TURRET);
 	
 	while (my->animCounter < 100)
 	{
@@ -242,7 +243,7 @@ void TURRET__die()
 		MARKER_update(me);
 		wait(1);
 	}
-
+	
 	set(my, PASSABLE);
 	while (1)
 	{
