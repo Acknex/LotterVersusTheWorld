@@ -32,7 +32,6 @@ TEXT * credits_text =
 {
 	strings = 1;
 	string ( "This is stupid!");
-	flags = CENTER_X | SHOW;
 }
 
 void credits_init()
