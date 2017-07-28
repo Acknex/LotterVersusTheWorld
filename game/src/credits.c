@@ -8,6 +8,7 @@
 	l:  1 Text, Normal Font, Left
 	r:  1 Text, Normal Font, Right
 	x:  2 Text, Normal Font, (Left,Right)
+	f:  2 Text, Normal Font, (Left,'-',Right)
 	i:  1 File, Autosize, Center
 	s:  1 Number, Spacing in num * normal font size
 */
@@ -16,7 +17,7 @@ typedef struct CreditsNode
 {
 	var height;
 	var alignment; /* 0=left, 1=middle, 2=right */
-	int fuckYouType; /* 0=text, 1=image, 2=empty */
+	int fuckYouType; /* 0=text, 1=image, 2=empty, 3=filmic */
 	STRING * text1;
 	STRING * text2;
 	BMAP   * image;
@@ -125,6 +126,17 @@ void credits_init()
 		}
 		else if(str_cmp("x", fuckYouTypeString)) {
 			curr.fuckYouType = 0;
+			
+			file_str_read(f, inputString);
+			curr.text1 = str_create(inputString);
+			
+			file_str_read(f, inputString);
+			curr.text2 = str_create(inputString);
+			
+			curr.alignment = 0;
+		}
+		else if(str_cmp("f", fuckYouTypeString)) {
+			curr.fuckYouType = 3;
 			
 			file_str_read(f, inputString);
 			curr.text1 = str_create(inputString);
@@ -243,6 +255,38 @@ void credits_run()
 					h += 2 * credits_imageMarginH;
 					break;
 				case 2: // space
+					break;
+					
+				case 3: // filmic
+					credits_text.font = credits_fontset[it.font];
+					credits_text.pos_y = y;
+					
+					
+					credits_text.flags &= ~(CENTER_X | ARIGHT);
+					credits_text.flags |= ARIGHT;
+					credits_text.pos_x = 0.5 * screen_size.x - 16;
+					(credits_text.pstring)[0] = it.text1;
+					draw_obj(credits_text);
+					
+					draw_quad(
+						NULL,
+						vector(
+							0.5 * screen_size.x - 8,
+							y + 0.5 * credits_text.font.dy,
+							0),
+						NULL,
+						vector(16, 1, 0),
+						NULL,
+						COLOR_WHITE,
+						100,
+						0);
+					
+					credits_text.flags &= ~(CENTER_X | ARIGHT);
+					credits_text.pos_x = 0.5 * screen_size.x + 16;
+					(credits_text.pstring)[0] = it.text2;
+					draw_obj(credits_text);
+					
+					y += credits_text.font.dy;
 					break;
 				default:
 					error(str_printf(NULL, "invalid fuckYouType: %d", it.fuckYouType));

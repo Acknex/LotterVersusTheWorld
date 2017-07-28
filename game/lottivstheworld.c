@@ -48,8 +48,12 @@ void main()
 	wait(1);
 	INIT_globalLoop();
 #ifdef FASTLOAD
+#ifdef FASTCREDITS
+	credits_start();
+#else
 	INIT_levelStart();
 	INIT_levelLoop();
+#endif
 #else
 	SPLASH__init();
 #endif
