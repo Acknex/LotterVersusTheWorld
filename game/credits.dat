@@ -1,13 +1,63 @@
-h1;This was
+h1;This was:
 i;logo.png
 s;8
-h2;We tried to please you!
-s;1
-h3;Did we fail?
-s;4
-l;Dies ist linksbündig
-r;Dies ist rechtsbündig
-c;Dies ist zentriert!
-x;Dies ist link,;dies ist rechts!
-i;Gameover.png
-l;Text nach einem Bild!
+h2;An AckCon 2017 Production
+s;8;
+h3;AckCon Staff
+s;4;
+l;Felix "MasterQ32" Queißner
+r;Shader stuff
+r;Level instantiation
+s;2
+l;Simon "simonschreibt" Trümpler
+r;Lead Artist
+r;Textures
+r;Coloring
+s;2
+l;Marius "mk_1" Kappes
+r;Sounds
+r;Music
+s;2
+l;Robert "firoball" Jäger
+r;Framework
+r;AI
+s;2
+l;Patrick "jengs" Jendral
+r;Weapons
+s;2
+l;Niels "slin" Daumann
+r;Shader Master
+s;2
+l;Jonas "padmalcom" Freiknecht
+r;HUD
+r;Hit Feedback
+s;2
+l;Felix "superku" Pohl
+r;Level Generation
+s;2
+l;Michael "xzwg" Schwarz
+r;Intro
+r;Main Menu
+s;2
+l;--- "hen-woll" ---
+r;Character
+r;Enemies
+s;2
+l;--- "lemming" ---
+r;Props
+s;8
+h3;Additional Thanks
+s;4;
+x;Kanal 21;Providing the location
+s;1;
+x;Achim "Pappenheimer" Lübbeke;Pre-AckCon communications with Kanal 21
+s;1;
+x;real,-;Providing food staples and energy drinks
+s;8
+h3;Especially NO Thanks
+s;4;
+x;Pizza service;Really bad pizza
+s;8
+c;No lottifants were harmed during the production of this game.
+s;8
+c;Gamestudio wasn't updated since March 2016, still waiting for the 2017 update!

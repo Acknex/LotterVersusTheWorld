@@ -26,6 +26,8 @@ typedef struct CreditsNode
 
 CreditsNode * credits_firstNode = NULL;
 
+var credits_musicHandle;
+
 FONT * credits_fontset[4];
 
 TEXT * credits_text = 
@@ -266,11 +268,14 @@ void credits_run()
 	}
 	
 	// Wait a bit, then terminate the credits
-	wait(-5);
+	while(media_playing(credits_musicHandle))
+	{
+		wait(1);
+	}
 	
 	// TODO:;
 	// Return to main menu here
-	error("credits done");
+	credits_cancel();
 }
 
 void credits_start()
@@ -279,18 +284,22 @@ void credits_start()
 		error("Error in credits: failed to initialize credits!");
 		return;
 	}
-	// Kill all evil in this world!
+	
+	// Kill all evil inthis world!
 	level_load(NULL);
 	
 	// Use normal entity for
 	// running the credits in the
 	// background
 	ent_create(NULL, vector(0,0,0), credits_run);
+	
+	credits_musicHandle = media_play(credits_song, NULL, 100);
 }
 
 void credits_cancel()
 {
 	level_load(NULL);
+	media_stop(credits_musicHandle);
 	// TODO: Replace with "return-to-menu"!
 	sys_exit("Credits exit!");
 }
