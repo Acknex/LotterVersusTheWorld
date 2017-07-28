@@ -5,6 +5,7 @@
 #include "music_player.h"
 #include "mouse.h"
 #include "stats.h"
+#include "credits.h"
 
 
 void SPLASH__init()
@@ -198,7 +199,7 @@ void SPLASH__initMenu()
 
 void SPLASH__startGame()
 {
-	SPLASH__housekeeping();	
+	SPLASH__housekeeping();
 	
 	wait(1);
 	
@@ -212,7 +213,12 @@ void SPLASH__startGame()
 
 void SPLASH__startCredits()
 {
-	// Hier den credits start code einfügen. 
+	SPLASH__housekeeping();
+	
+	wait(1);
+	
+	on_esc = credits_cancel;
+	credits_start();
 }
 
 void SPLASH__introStart()

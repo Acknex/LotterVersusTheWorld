@@ -29,19 +29,19 @@ void quitGame()
 	sys_exit("");
 }
 
-void hack() {
-	diag("\nframe");
-}
-
 void main() 
 {
 	max_entities = 20000;
 	d3d_antialias = 0;
 	
-#ifndef DEBUG
+#ifdef WINDOWMODE
+	video_mode = 10;
+#else
 	video_window(vector(0, 0, 0), nullvector, 1, "Lotter vs. the World");
 	video_set(sys_metrics(0), sys_metrics(1), 0, 2);
 #endif
+
+	credits_init();
 	
 	on_resize = INIT_resize;
 	INIT_start();
