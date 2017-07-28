@@ -243,12 +243,6 @@ void credits_run()
 					h += 2 * credits_imageMarginH;
 					break;
 				case 2: // space
-					// TODO: Comment blank space out later!
-					draw_quad(
-						NULL,
-						vector(0, y, 0), NULL,
-						vector(screen_size.x, h, 0), NULL,
-						COLOR_GREEN, 100, 0);
 					break;
 				default:
 					error(str_printf(NULL, "invalid fuckYouType: %d", it.fuckYouType));
