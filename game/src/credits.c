@@ -16,7 +16,7 @@ typedef struct CreditsNode
 {
 	var height;
 	var alignment; /* 0=left, 1=middle, 2=right */
-	int type; /* 0=text, 1=image, 2=empty */
+	int fuckYouType; /* 0=text, 1=image, 2=empty */
 	STRING * text1;
 	STRING * text2;
 	BMAP   * image;
@@ -67,7 +67,7 @@ void credits_init()
 	var f = file_open_read(credits_source);
 	
 	STRING * tempString = "#512";
-	STRING * typeString = "#512";
+	STRING * fuckYouTypeString = "#512";
 	STRING * inputString = "#512";
 
 	str_cpy(delimit_str, ";\n");
@@ -77,53 +77,53 @@ void credits_init()
 	CreditsNode * it = NULL;
 	while(TRUE)
 	{
-		if(file_str_readto(f, typeString, NULL, 512) < 0) {
+		if(file_str_readto(f, fuckYouTypeString, NULL, 512) < 0) {
 			break;
 		}
 		CreditsNode * curr = malloc(sizeof(CreditsNode));
 		memset(curr, 0, sizeof(CreditsNode));
 		
-		if(str_cmp("h1", typeString)) {
+		if(str_cmp("h1", fuckYouTypeString)) {
 			file_str_read(f, inputString);
-			curr.type = 0;
+			curr.fuckYouType = 0;
 			curr.font = 3;
 			curr.text1 = str_create(inputString);
 			curr.alignment = 1;
 		}
-		else if(str_cmp("h2", typeString)) {
+		else if(str_cmp("h2", fuckYouTypeString)) {
 			file_str_read(f, inputString);
-			curr.type = 0;
+			curr.fuckYouType = 0;
 			curr.font = 2;
 			curr.text1 = str_create(inputString);
 			curr.alignment = 1;
 		}
-		else if(str_cmp("h3", typeString)) {
+		else if(str_cmp("h3", fuckYouTypeString)) {
 			file_str_read(f, inputString);
-			curr.type = 0;
+			curr.fuckYouType = 0;
 			curr.font = 1;
 			curr.text1 = str_create(inputString);
 			curr.alignment = 1;
 		}
-		else if(str_cmp("c", typeString)) {
+		else if(str_cmp("c", fuckYouTypeString)) {
 			file_str_read(f, inputString);
-			curr.type = 0;
+			curr.fuckYouType = 0;
 			curr.text1 = str_create(inputString);
 			curr.alignment = 1;
 		}
-		else if(str_cmp("l", typeString)) {
+		else if(str_cmp("l", fuckYouTypeString)) {
 			file_str_read(f, inputString);
-			curr.type = 0;
+			curr.fuckYouType = 0;
 			curr.text1 = str_create(inputString);
 			curr.alignment = 0;
 		}
-		else if(str_cmp("r", typeString)) {
+		else if(str_cmp("r", fuckYouTypeString)) {
 			file_str_read(f, inputString);
-			curr.type = 0;
+			curr.fuckYouType = 0;
 			curr.text1 = str_create(inputString);
 			curr.alignment = 2;
 		}
-		else if(str_cmp("x", typeString)) {
-			curr.type = 0;
+		else if(str_cmp("x", fuckYouTypeString)) {
+			curr.fuckYouType = 0;
 			
 			file_str_read(f, inputString);
 			curr.text1 = str_create(inputString);
@@ -133,8 +133,8 @@ void credits_init()
 			
 			curr.alignment = 0;
 		}
-		else if(str_cmp("i", typeString)) {
-			curr.type = 1;
+		else if(str_cmp("i", fuckYouTypeString)) {
+			curr.fuckYouType = 1;
 			
 			file_str_read(f, inputString);
 			curr.image = bmap_create(inputString);
@@ -148,8 +148,8 @@ void credits_init()
 			
 			curr.alignment = 1;
 		}
-		else if(str_cmp("s", typeString)) {
-			curr.type = 2;
+		else if(str_cmp("s", fuckYouTypeString)) {
+			curr.fuckYouType = 2;
 			file_str_read(f, inputString);
 			curr.height = credits_normalFontSize * str_to_num(inputString);
 		}
@@ -157,12 +157,12 @@ void credits_init()
 			str_printf(
 				tempString,
 				"Unknown directive recognized: %s",
-				_chr(typeString));
+				_chr(fuckYouTypeString));
 			error(tempString);
 		}
 		
 		if(curr != NULL) {
-			diag_var("\nnode(%f)", (var)curr.type);
+			diag_var("\nnode(%f)", (var)curr.fuckYouType);
 			if(it != NULL ) {
 				it->next = curr;
 			} else {
@@ -191,7 +191,7 @@ void credits_run()
 			}
 			h = it.height;
 			COLOR * color = COLOR_RED;
-			switch(it->type)
+			switch(it->fuckYouType)
 			{
 				case 0: // text
 					credits_text.font = credits_fontset[it.font];
@@ -250,7 +250,7 @@ void credits_run()
 						COLOR_GREEN, 100, 0);
 					break;
 				default:
-					error(str_printf(NULL, "invalid type: %d", it.type));
+					error(str_printf(NULL, "invalid fuckYouType: %d", it.fuckYouType));
 					break;
 			}
 		}
