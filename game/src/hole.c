@@ -4,6 +4,8 @@ action enemy_hole()
 {
 	set(me, POLYGON | PASSABLE | FLAG1);
 	my.type = TypeHole;
+	my.material = ObjectMaterial;
+	my.skill41 = floatv(26);
 	
 	while(1)
 	{

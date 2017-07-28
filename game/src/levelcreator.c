@@ -339,7 +339,6 @@ VECTOR * stage_load(STAGE * stage)
 					*/
 				} else if(tile->flags & TILE_FLAG_TRAP_HOLE) {
 					ent = ent_create("tile-floor-hole.mdl", &center, enemy_hole);
-					ent->material = TurretMaterial;
 				}  else if(tile->flags & TILE_FLAG_TRAP_SPIKES) {
 					ent = ent_create("tile-floor-spikes.mdl", &center, enemy_spikes);
 					ent->material = TurretMaterial;
@@ -406,8 +405,7 @@ VECTOR * stage_load(STAGE * stage)
 		}
 	}
 	
-	ENTITY *ent = ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
-	ent->material = TeleporterEffectMaterial;
+	ent_create("teleporter-effect.mdl", stageGetExitPos(stage, NULL, NULL, NULL), teleporter_out);
 	
 	return stageGetEntrancePos(stage, NULL, NULL, NULL);
 }
