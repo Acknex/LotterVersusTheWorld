@@ -29,7 +29,7 @@ action enemy_hole()
 {
 	set(me, POLYGON | PASSABLE | FLAG1);
 	my.type = TypeHole;
-	my.material = ObjectMaterial;
+	my.material = TurretMaterial;
 	my.skill41 = floatv(26);
 	ent_animate(my, "idle", 0, 0);
 	my->holeState = HOLESLEEP;
