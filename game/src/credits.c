@@ -1,4 +1,5 @@
 #include "credits.h"
+#include "splash.h"
 
 /*
 	h1: 1 Text, Huge Font, Center
@@ -37,6 +38,8 @@ TEXT * credits_text =
 
 void credits_init()
 {
+	credits_imageMarginW = screen_size.x * (1/3);
+	
 	STRING * temp = "#100";
 	credits_fontset[0] = font_create(str_printf(temp,
 		"%s#%d%s",
@@ -337,5 +340,5 @@ void credits_cancel()
 {
 	level_load(NULL);
 	// TODO: Replace with "return-to-menu"!
-	sys_exit("Credits exit!");
+	SPLASH__init();
 }

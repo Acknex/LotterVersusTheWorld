@@ -10,6 +10,7 @@
 
 void SPLASH__init()
 {
+	SPLASH__inSplash = 1;
 	create_camera();
 	show_camera(); // Don't forget: Normal camera is still visible ^^
 	pp_bloom_start(2.0);
@@ -17,6 +18,10 @@ void SPLASH__init()
 	SPLASH__setupLevel();
 	// wait(1);
 	
+	while(key_any)
+	{
+		wait(1);
+	}
 	startMusic("media\\main_menu.mp3", 4, 0);
 	
 	SPLASH__animStart();
@@ -277,26 +282,26 @@ void SPLASH__housekeeping()
 	remove_camera();
 	ptr_remove(SPLASH__logoPanel);
 	ptr_remove(SPLASH__menuPanel);
-	ptr_remove(SPLASH__logoBmap);
-	ptr_remove(SPLASH__menuStartOffBmap);
-	ptr_remove(SPLASH__menuStartOnBmap);
-	ptr_remove(SPLASH__menuCreditsOffBmap);
-	ptr_remove(SPLASH__menuCreditsOnBmap);
-	ptr_remove(SPLASH__menuExitOffBmap);
-	ptr_remove(SPLASH__menuExitOnBmap);
+	//ptr_remove(SPLASH__logoBmap);
+	//ptr_remove(SPLASH__menuStartOffBmap);
+	//ptr_remove(SPLASH__menuStartOnBmap);
+	//ptr_remove(SPLASH__menuCreditsOffBmap);
+	//ptr_remove(SPLASH__menuCreditsOnBmap);
+	//ptr_remove(SPLASH__menuExitOffBmap);
+	//ptr_remove(SPLASH__menuExitOnBmap);
 	ent_remove(SPLASH__cube);
 	ent_remove(SPLASH__beam);
 	ent_remove(SPLASH__lotti);
 	
 	SPLASH__logoPanel = NULL;
 	SPLASH__menuPanel = NULL;	
-	SPLASH__logoBmap = NULL;
-	SPLASH__menuStartOffBmap = NULL;
-	SPLASH__menuStartOnBmap = NULL;
-	SPLASH__menuCreditsOffBmap = NULL;
-	SPLASH__menuCreditsOnBmap = NULL;
-	SPLASH__menuExitOffBmap = NULL;
-	SPLASH__menuExitOnBmap = NULL;
+	//SPLASH__logoBmap = NULL;
+	//SPLASH__menuStartOffBmap = NULL;
+	//SPLASH__menuStartOnBmap = NULL;
+	//SPLASH__menuCreditsOffBmap = NULL;
+	//SPLASH__menuCreditsOnBmap = NULL;
+	//SPLASH__menuExitOffBmap = NULL;
+	//SPLASH__menuExitOnBmap = NULL;
 	SPLASH__cube = NULL;
 	SPLASH__beam = NULL;
 	SPLASH__lotti = NULL;
