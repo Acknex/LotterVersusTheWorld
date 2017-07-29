@@ -211,13 +211,13 @@ void credits_run()
 					credits_text.flags &= ~(CENTER_X | ARIGHT);
 					switch(it.alignment) {
 						case 0:
-							credits_text.pos_x = 32;
+							credits_text.pos_x = credits_textMarginW;
 						case 1:
 							credits_text.pos_x = 0.5 * screen_size.x;
 							credits_text.flags |= CENTER_X;
 							break;
 						case 2:
-							credits_text.pos_x = screen_size.x - 32;
+							credits_text.pos_x = screen_size.x - credits_textMarginW;
 							credits_text.flags |= ARIGHT;
 							break;
 					}
@@ -228,7 +228,7 @@ void credits_run()
 					}
 					
 					if(it.text2) {
-						credits_text.pos_x = screen_size.x - 32;
+						credits_text.pos_x = screen_size.x - credits_textMarginW;
 						credits_text.flags |= ARIGHT;
 						(credits_text.pstring)[0] = it.text2;
 						draw_obj(credits_text);
@@ -259,28 +259,27 @@ void credits_run()
 					credits_text.font = credits_fontset[it.font];
 					credits_text.pos_y = y;
 					
-					
 					credits_text.flags &= ~(CENTER_X | ARIGHT);
 					credits_text.flags |= ARIGHT;
-					credits_text.pos_x = 0.5 * screen_size.x - 16;
+					credits_text.pos_x = 0.5 * screen_size.x - 0.5 * credits_filmicTextDist;
 					(credits_text.pstring)[0] = it.text1;
 					draw_obj(credits_text);
 					
 					draw_quad(
 						NULL,
 						vector(
-							0.5 * screen_size.x - 8,
+							0.5 * screen_size.x - 0.5 * credits_filmicSepW,
 							y + 0.5 * credits_text.font.dy,
 							0),
 						NULL,
-						vector(16, 1, 0),
+						vector(credits_filmicSepW, 1, 0),
 						NULL,
 						COLOR_WHITE,
 						100,
 						0);
 					
 					credits_text.flags &= ~(CENTER_X | ARIGHT);
-					credits_text.pos_x = 0.5 * screen_size.x + 16;
+					credits_text.pos_x = 0.5 * screen_size.x + 0.5 * credits_filmicTextDist;
 					(credits_text.pstring)[0] = it.text2;
 					draw_obj(credits_text);
 					
