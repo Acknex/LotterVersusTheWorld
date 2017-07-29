@@ -22,6 +22,7 @@ void SPHEREOD__turnOn();
 
 SOUND* snd_sphere_activate = "sphere_activate.wav";
 SOUND* snd_sphere_stomp = "sphere_stomp.wav";
+SOUND* snd_sphere_destroyed = "sphere_destroyed.wav";
 
 void sphere_stomp_effect()
 {
@@ -207,7 +208,7 @@ void SPHEREOD__loop()
 
 void SPHEREOD__die()
 {
-	snd_play(sndTurretDestroyed, 100, 0);
+	snd_play(snd_sphere_destroyed, 100, 0);
 	effect(p_sphere_explode,200,my.x,nullvector);
 	ptr_remove(me);
 	stats_addKill(STATENEMY_SPHEREOD);

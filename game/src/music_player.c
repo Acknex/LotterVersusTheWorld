@@ -13,6 +13,7 @@ void startMusic(STRING* file, var crossFadeTime, var loop)
 		if(str_cmp(currentMusic, file) == 1)
 			return;
 	}
+	//error(file);
 	currentMusic = NULL;
 	if(handle_current != 0)
 	{
@@ -56,6 +57,15 @@ void stopMusic()
 	}
 }
 
+var playingMusic()
+{
+	if(handle_current != 0 && media_playing(handle_current) != 0)
+		return 1;
+		if(handle_last != 0 && media_playing(handle_last) != 0)
+		return 1;
+	return 0;
+}
+
 void setMusicMasterVolume(var vol)
 {
 	maxVol = vol;
@@ -63,7 +73,7 @@ void setMusicMasterVolume(var vol)
 
 void updateMusic()
 {
-	if(media_playing(handle_current) == 0)
+	if(handle_current != 0 && media_playing(handle_current) == 0)
 	{
 		startMusic(NULL, 0, 0);
 	}

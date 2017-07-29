@@ -29,6 +29,8 @@ action enemy_hole()
 {
 	set(me, POLYGON | PASSABLE | FLAG1);
 	my.type = TypeHole;
+	my.material = ObjectMaterial;
+	my.skill41 = floatv(26);
 	ent_animate(my, "idle", 0, 0);
 	my->holeState = HOLESLEEP;
 	my->damage = 0;
@@ -135,7 +137,6 @@ void HOLE__active()
 		HOLE__shoot();
 		//toggle between 60 an 100, start with 60 (open state left with 60)
 		my->animCounter = 100 - (20 * cosv((total_ticks - my->entryTicks) * HOLE_ANIMACTIVESPEED) + 20);
-		DEBUG_VAR(my->animCounter, 200);
 		my->skill41 = floatv(0.01 * my->animCounter);
 		ent_animate(me, "activate", my->animCounter, 0);
 	}

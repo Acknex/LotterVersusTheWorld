@@ -1,4 +1,5 @@
 #define TURRET_ATTACKRANGE 500
+#define TURRET_ATTACK_STOP_RANGE 800
 #define TURRET_SHOOTDELAY 3
 #define TURRET_TURNSPEED 5
 #define TURRET_ANIMOPENSPEED 5
@@ -72,7 +73,7 @@ action enemy_turret_aim()
 void TURRET__init()
 {
 	ENEMY_init();
-	my->health = 10;
+	my->health = 15;
 	my->delayCounter = 0;
 	my->type = TypeTurret;
 	my->turretState = TURRETSLEEP;
@@ -119,6 +120,7 @@ void TURRET__loop()
 		}
 		wait(1);	
 	}
+	my.skill44 = floatv(0);
 	TURRET__die();
 }
 
@@ -160,7 +162,13 @@ void TURRET__active()
 {
 	MARKER_update(me);
 	my->delayCounter += time_step;
-	if (vec_dist(player->x, my->x) < TURRET_ATTACKRANGE)
+	if (vec_dist(player->x, my->x) > TURRET_ATTACK_STOP_RANGE)
+	{
+		snd_play(sndTurretDown, 100, 0);
+		my->turretState = TURRETCLOSE;
+		my->animCounter = 0;
+	}
+	else 
 	{
 		if (my->delayCounter >= TURRET_SHOOTDELAY)
 		{
@@ -214,12 +222,6 @@ void TURRET__active()
 
 		my->delayCounter = cycle(my->delayCounter, 0, TURRET_SHOOTDELAY);		
 	}
-	else
-	{
-		snd_play(sndTurretDown, 100, 0);
-		my->turretState = TURRETCLOSE;
-		my->animCounter = 0;
-	}
 }
 
 void TURRET__die()
@@ -229,7 +231,7 @@ void TURRET__die()
 	my->animCounter = 0;
 	my->type = TypeDestroyed;
 	
-	stats_addKill(STATENEMY_TURRET);	
+	stats_addKill(STATENEMY_TURRET);
 	
 	while (my->animCounter < 100)
 	{
@@ -241,7 +243,7 @@ void TURRET__die()
 		MARKER_update(me);
 		wait(1);
 	}
-
+	
 	set(my, PASSABLE);
 	while (1)
 	{

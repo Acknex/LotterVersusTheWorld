@@ -35,8 +35,9 @@ action teleporter_out()
 	teleporterSocket = ent_create("Teleport.mdl", my.x, NULL);
 	teleporterSocket.type = TypeTeleporterDisabled;
 	teleporterSocket.material = ObjectMaterial;
-	teleporterSocket.skill41 = floatv(36);
+	teleporterSocket.skill41 = floatv(29);
 	set(me,  PASSABLE | FLAG2 | INVISIBLE);
+	my.material = TeleporterEffectMaterial;
 	set(teleporterSocket, PASSABLE | FLAG2);
 	while(!player) wait(1);
 	
