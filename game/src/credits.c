@@ -38,7 +38,7 @@ TEXT * credits_text =
 
 void credits_init()
 {
-	credits_imageMarginW = screen_size.x * (1/3);
+	credits_imageMarginW = screen_size.x * 0.2;
 	
 	STRING * temp = "#100";
 	credits_fontset[0] = font_create(str_printf(temp,
