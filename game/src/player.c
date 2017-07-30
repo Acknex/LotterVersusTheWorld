@@ -364,15 +364,21 @@ void player_move() {
 			MARKER_setText(player, "RMB:\nGrenade");
 			if(mouse_right) {
 				tutorialStage = 3;
-				tutorialTimer = 8;
 			}
 			break;
 		case 3:
+			MARKER_setText(player, "Space:\nJump");
+			if(key_space) {
+				tutorialStage = 4;
+				tutorialTimer = 8;
+			}
+			break;
 		case 4:
 		case 5:
-			if(tutorialStage == 3)
+		case 6:
+			if(tutorialStage == 4)
 				MARKER_setText(player, "KILL");
-			else if(tutorialStage == 4)
+			else if(tutorialStage == 5)
 				MARKER_setText(player, "THEM");
 			else
 				MARKER_setText(player, "ALL");
