@@ -1,5 +1,8 @@
 #include "credits.h"
 #include "splash.h"
+#include "level_furniture.h"
+#include "camera.h"
+#include "materials.h"
 
 /*
 	h1: 1 Text, Huge Font, Center
@@ -34,6 +37,19 @@ TEXT * credits_text =
 {
 	strings = 1;
 	string ( "This is stupid!");
+}
+
+BMAP* credits_bmp_ff = "credits_ff.tga";
+
+PANEL* credits_pnl_ff =
+{
+	pos_x = 0;
+	pos_y = 0;
+	size_x = 32;
+	size_y = 16;
+	bmap = credits_bmp_ff;
+
+//	flags = SHOW;
 }
 
 void credits_init()
@@ -298,11 +314,33 @@ void credits_run()
 			break;
 		}
 		
-		var speedup = 1;
-		if(key_space) {
-			speedup = 10;
+		
+		if(key_space)
+		{
+			credits_speedup = credits_speedup_factor;
+
+			if ((total_ticks % 16) > 8)
+			{
+				credits_pnl_ff.flags |= SHOW;
+			}
+			else
+			{
+				credits_pnl_ff.flags &= ~SHOW;
+			}
 		}
-		timer += speedup * credits_scrollSpeed * time_step;
+		else
+		{
+			credits_speedup = 1;
+		}
+		timer += credits_speedup * credits_scrollSpeed * time_step;
+
+		// Rotate Camera during credits
+		VIEW* cam = get_camera();
+		cam.x =0; cam.y=0; cam.z=100;
+		cam->pan += time_step*0.2*credits_speedup;
+
+		speedupMusic(100*credits_speedup);
+		
 		wait(1);
 	}
 	
@@ -324,10 +362,24 @@ void credits_start()
 		error("Error in credits: failed to initialize credits!");
 		return;
 	}
+
+	credits_pnl_ff.scale_x = (screen_size.x/16)/32;
+	credits_pnl_ff.scale_y = (screen_size.y/16)/16;
+
+	//error(str_for_num(NULL, credits_pnl_ff.scale_x));
+
+	//credits_pnl_ff.scale_x = 10;
+	//credits_pnl_ff.scale_y = 10;
+
+	create_camera();
+	show_camera();
 	
 	// Kill all evil inthis world!
-	level_load(NULL);
+	level_load("credits.wmb");
+	credits_placeStuff();
 	
+	pp_bloom_start(2.5);
+
 	// Use normal entity for
 	// running the credits in the
 	// background
@@ -338,7 +390,51 @@ void credits_start()
 
 void credits_cancel()
 {
+	speedupMusic(100);
 	level_load(NULL);
+	remove_camera();
+	credits_pnl_ff.flags &= ~SHOW;
 	// TODO: Replace with "return-to-menu"!
 	SPLASH__init();
 }
+
+void credits_placeStuff()
+{
+	int i;
+	for (i = 0; i < 360; i+=30)
+	{
+		var posy=sinv(i)*450;
+		var posx=cosv(i)*450;
+		var r=random(100);
+		if ((r>=0) && (r<60))
+		{
+			ENTITY* desk = ent_create("desk.mdl", vector(posx, posy, 0), desk_buildup);
+			desk->skill1 = i+180;
+		}
+		else if ((r>=60) && (r<90))
+		{
+			ENTITY* screen = ent_create("screen.mdl", vector(posx, posy, 0), screenOnWall);
+			screen->pan = i+180;
+
+		}
+		else
+		{
+			ENTITY* rack = ent_create("rack_case.mdl", vector(posx, posy, 0), rack_buildup);
+			rack->skill1 = i+180;
+		}
+	}
+}
+
+action credits_warlock()
+{
+	ENTITY* keyboard = ent_create("rack_console_keyboard.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(-11, -3, 68), _vec(my->skill1, 0, 0))), 0);
+
+	while(me)
+	{
+		my->skill1 = (my->skill1 + time_step*6)%100;
+		ent_animate(me, "duck", my->skill1, ANM_CYCLE);
+		DEBUG_VAR(my->skill1,20);
+		wait(1);
+	}
+}
+

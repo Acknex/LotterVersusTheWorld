@@ -3,6 +3,8 @@
 
 STRING * credits_source = "credits.dat";
 var credits_scrollSpeed = 2.98; // 1 Pixel per quant
+var credits_speedup = 1;
+var credits_speedup_factor = 4;
 
 // Font configuration
 STRING * credits_fontName  = "Arial";
@@ -34,6 +36,10 @@ void credits_start();
 void credits_cancel();
 
 void credits_init();
+
+void credits_placeStuff();
+
+action credits_warlock();
 
 #include "credits.c"
 
