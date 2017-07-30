@@ -57,6 +57,14 @@ void stopMusic()
 	}
 }
 
+void speedupMusic(var speed)
+{
+	if (playingMusic())
+	{
+		media_tune(handle_current, 0, speed, 0);
+	}
+}
+
 var playingMusic()
 {
 	if(handle_current != 0 && media_playing(handle_current) != 0)
@@ -86,7 +94,7 @@ void updateMusic()
 	if(handle_current != 0 && volume_current < maxVol)
 	{
 		volume_current = minv(volume_current+crossfactor, maxVol);
-		media_tune(handle_current, volume_current, maxVol, 0);
+		media_tune(handle_current, volume_current, 0, 0);
 	}
 	
 	if(handle_last != 0)
@@ -98,7 +106,7 @@ void updateMusic()
 			handle_last = 0;
 		}
 		else {
-			media_tune(handle_last, volume_last, maxVol, 0);
+			media_tune(handle_last, volume_last, 0, 0);
 		}
 	}
 }

@@ -6,6 +6,9 @@
 // set loop to 1 to loop music
 void startMusic(STRING* file, var crossFadeTime, var loop);
 
+// Change music speed. 100 for normal
+void speedupMusic(var speed);
+
 // stops all music immediately
 void stopMusic();
 
