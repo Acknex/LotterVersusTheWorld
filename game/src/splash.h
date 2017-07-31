@@ -23,9 +23,11 @@ ENTITY* SPLASH__introEnt2 = NULL;
 ENTITY* SPLASH__introEnt3 = NULL;
 
 var SPLASH__inSplash = 1;
+var SPLASH__inIntro = 0;
 var SPLASH__logoY = 0;
-var SPLASH__camMoving = 0;
-var SPLASH__camTurning = 0;
+var SPLASH__blueBias = 0;
+var SPLASH__greenBias = 0;
+var SPLASH__redBias = 0;
 
 // Menu Stuff
 

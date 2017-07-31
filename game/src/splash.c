@@ -230,6 +230,48 @@ void SPLASH__startCredits()
 
 void SPLASH__introStart()
 {
+	stopMusic(); // need a stop with fade plox
+	
+	SPLASH__inIntro = 1;
+	
+	var panSpeed = 0.0;
+	
+	while(cam->pan < 180)
+	{
+		panSpeed = minv(3, panSpeed + 0.01);
+		cam.pan += panSpeed * time_step;
+		
+		SPLASH__logoPanel->alpha = 100 - ((cam->pan / 180) * 100);
+		SPLASH__menuPanel->alpha = 100 - ((cam->pan / 180) * 100);
+				
+		wait(1);
+	}
+	
+	cam->pan = 180; // just to make sure we are absolutely bang on
+	
+	startMusic("media\\intro.mp3", 4, 0);
+	wait(1);
+	
+	// Setup scene 1
+	SPLASH__introEnt1 = ent_create("tree02.mdl", vector(-20, -4, 0), NULL);
+	SPLASH__introEnt2 = ent_create("cbabe_male.mdl", vector(-300, 0, 0), NULL);
+	
+	set(SPLASH__introEnt1, TRANSLUCENT);
+	SPLASH__introEnt1->alpha = 0;
+//	SPLASH__introEnt1->material = LotterMaterial;
+	set(SPLASH__introEnt2, TRANSLUCENT);
+	SPLASH__introEnt2->alpha = 0;
+//	SPLASH__introEnt2->material = LotterMaterial;
+	ent_animate(SPLASH__introEnt2, "speak", 0, 0);
+	wait(1);
+	
+	while(SPLASH__introEnt1->alpha < 100)
+	{
+		SPLASH__introEnt1->alpha += 2 * time_step;
+		SPLASH__introEnt2->alpha += 2 * time_step;
+		wait(1);
+	}	
+	
 }
 
 void SPLASH__introEnd()
@@ -253,7 +295,7 @@ function SPLASH__act_smoke(ENTITY* p)
 	//part.size = 200;
 	//part.event = SPLASH__act_smoke_event;
 	//part.gravity = 0.01;
-	vec_set(p.blue, vector(60, 60, 60));
+	vec_set(p.blue, vector(random(30) + 50 + SPLASH__blueBias, random(30) + 50 + SPLASH__greenBias, random(30) + 50 + SPLASH__redBias));
 	p._SIZE = 20;
 	p._GRAVITY = 0.01;
 	p._FADE = 0.5;  // fade factor
@@ -267,8 +309,11 @@ action SPLASH__act_smokeGen()
 	set(me, INVISIBLE);
 	while(me)
 	{
-		vec_randomize(emitterTemp, my->x);
-		effect_sprite("smoke.tga", SPLASH__act_smoke, maxv(1,2*time_step), my->x, vector(0, 0, 1));
+		if(SPLASH__inIntro == 1)
+		{
+			vec_randomize(emitterTemp, my->x);
+			effect_sprite("smoke.tga", SPLASH__act_smoke, maxv(1, 2*time_step), my->x, vector(0, 0, 1));
+		}
 		wait(1);
 	}
 }
