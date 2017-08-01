@@ -9,6 +9,9 @@
 SOUND* sndBatDeath = "bat_destroyed.wav";
 SOUND* sndBatScream = "bat_scream.wav";
 
+SOUND* sndHexLaughing = "hex_laughing.wav";
+SOUND* sndHexLaser = "hex_laser.wav";
+
 
 action scream_sprite()
 {
@@ -176,17 +179,21 @@ action enemy_hex()
 	ENEMY_init();
 	hex_isDead = FALSE;
 	ENTITY* laser1 = ent_create("laser.tga", vector(0,0,-999), NULL);
-	set(laser1, PASSABLE);
+	set(laser1, PASSABLE | TRANSLUCENT | BRIGHT);
 	laser1->material = LaserMaterial;
 	laser1.scale_y = 0.5;
 	ENTITY* laser2 = ent_create("laser.tga", vector(0,0,-999), NULL);
-	set(laser2, PASSABLE);
+	set(laser2, PASSABLE | TRANSLUCENT | BRIGHT);
 	laser2.scale_y = 0.5;
 	laser2->material = LaserMaterial;
 	
 	my->material = HexMaterial;
 	
 	vec_scale(my.scale_x, 0.5);
+	var hndSndLaughing = 0;
+	var hndSndLaser = 0;
+	var sndVolume = 0;
+
 	while(my.health > 0 && !(cheats_enabled && key_k))
 	{
 		VECTOR dir;
@@ -216,6 +223,17 @@ action enemy_hex()
 		}
 		
 		if(player != NULL) {
+			if(player->health <= 0) {
+				if(hndSndLaughing != 0) {
+					snd_stop(hndSndLaughing);
+					hndSndLaughing = 0;
+				}
+				if(hndSndLaser != 0) {
+					snd_stop(hndSndLaser);
+					hndSndLaser = 0;
+				}
+			}
+			
 			VECTOR tmp;
 			tmp.x = player.x;
 			tmp.y = player.y;
@@ -228,16 +246,35 @@ action enemy_hex()
 				tmp.y = player.y;
 				tmp.z = my.z;
 				if(dist < 380) {
-					hex_loadingWeapon += time_step/16.0;
-					if(hex_loadingWeapon > 4)
+					hex_loadingWeapon = minv(4,hex_loadingWeapon + time_step/16.0);
+					if(hndSndLaughing == 0) {
+						hndSndLaughing = snd_loop(sndHexLaughing, hex_loadingWeapon/4*100, 0);
+					}
+					else {
+						snd_tune(hndSndLaughing, hex_loadingWeapon/4*100, 0, 0);
+					}
+					
+					if(hex_loadingWeapon >= 4)
 					{
-						hex_loadingWeapon = 0;
 						hex_state = 1;
+						hndSndLaser = snd_loop(sndHexLaser, 100, 0);
+						snd_tune(hndSndLaughing, hex_loadingWeapon/4*100, 0, 0);
 					}
 				}
 				else {
-					hex_loadingWeapon = 0;
+					hex_loadingWeapon = maxv(0, hex_loadingWeapon - time_step/16.0);
+					if(hndSndLaughing != 0) {
+						if(hex_loadingWeapon == 0)
+						{
+							snd_stop(hndSndLaughing);
+							hndSndLaughing = 0;
+						}
+						else {
+							snd_tune(hndSndLaughing, hex_loadingWeapon/4*100, 0, 0);
+						}
+					}
 				}
+				
 			}
 			else if(hex_state == 1)
 			{
@@ -245,6 +282,8 @@ action enemy_hex()
 					set(laser1, INVISIBLE);
 					set(laser2, INVISIBLE);
 					hex_state = 0;
+					snd_stop(hndSndLaser);
+					hndSndLaser = 0;
 				}
 				else {
 					hit_player(time_step);
@@ -313,8 +352,15 @@ action enemy_hex()
 	hex_isDead = TRUE;
 	show_dialog("Room clear!\nTeleporter is now free.");
 	
-	// effect(p_bat_explode,100,my.x,nullvector);
-	// snd_play(sndBatDeath, 100, 0);
+	if(hndSndLaughing != 0) {
+		snd_stop(hndSndLaughing);
+		hndSndLaughing = 0;
+	}
+	if(hndSndLaser != 0) {
+		snd_stop(hndSndLaser);
+		hndSndLaser = 0;
+	}
+	
 	ptr_remove(me);
 	
 	ptr_remove(laser1);

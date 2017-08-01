@@ -36,7 +36,7 @@ float4 ps(out_ps In): COLOR
 	float a2 = tex2D(sTexture, float2((In.uv.x - 0.4*vecTime.w)*vecSkill41.w, In.uv.y)).g;
 	float a3 = tex2D(sTexture, float2((In.uv.x - 0.2*vecTime.w)*vecSkill41.w, In.uv.y)).b;
 	float f = (a1 + a2 + a3)/3.0;
-	float g = saturate(f-0.9)/0.1;
+	float g = saturate(f-0.95)/0.05;
 	return float4(f, g, g, max(f,g));
 }
 
@@ -45,7 +45,7 @@ technique object
 {
 	pass one
 	{
-		ZWriteEnable = True;
+		ZWriteEnable = False;
 		AlphaBlendEnable = False;
 		
 		VertexShader = compile vs_2_0 vs();
