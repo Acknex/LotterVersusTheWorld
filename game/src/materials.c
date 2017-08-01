@@ -176,6 +176,12 @@ MATERIAL *HexMaterial =
 	flags = TRANSLUCENT;
 }
 
+MATERIAL *LaserMaterial = 
+{
+	effect = "Laser.fx";
+	flags = TRANSLUCENT;
+}
+
 function Materials_startup()
 {
 	on_p = ColorLUT_Bounce;

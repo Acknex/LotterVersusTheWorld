@@ -169,14 +169,24 @@ action enemy_bat()
 }
 
 BOOL hex_isDead = 0;
-
+var hex_state = 0;
+var hex_loadingWeapon = 0;
 action enemy_hex()
 {
 	ENEMY_init();
 	hex_isDead = FALSE;
+	ENTITY* laser1 = ent_create("laser.tga", vector(0,0,-999), NULL);
+	set(laser1, PASSABLE);
+	laser1->material = LaserMaterial;
+	laser1.scale_y = 0.5;
+	ENTITY* laser2 = ent_create("laser.tga", vector(0,0,-999), NULL);
+	set(laser2, PASSABLE);
+	laser2.scale_y = 0.5;
+	laser2->material = LaserMaterial;
 	
 	my->material = HexMaterial;
 	
+	vec_scale(my.scale_x, 0.5);
 	while(my.health > 0 && !(cheats_enabled && key_k))
 	{
 		VECTOR dir;
@@ -205,6 +215,97 @@ action enemy_hex()
 			break;
 		}
 		
+		if(player != NULL) {
+			VECTOR tmp;
+			tmp.x = player.x;
+			tmp.y = player.y;
+			tmp.z = my.z;
+			var dist = vec_dist(my.x, tmp.x);			
+			if(hex_state == 0)
+			{
+				VECTOR tmp;
+				tmp.x = player.x;
+				tmp.y = player.y;
+				tmp.z = my.z;
+				if(dist < 380) {
+					hex_loadingWeapon += time_step/16.0;
+					if(hex_loadingWeapon > 4)
+					{
+						hex_loadingWeapon = 0;
+						hex_state = 1;
+					}
+				}
+				else {
+					hex_loadingWeapon = 0;
+				}
+			}
+			else if(hex_state == 1)
+			{
+				if(dist > 450) {
+					set(laser1, INVISIBLE);
+					set(laser2, INVISIBLE);
+					hex_state = 0;
+				}
+				else {
+					hit_player(time_step);
+					reset(laser1, INVISIBLE);
+					reset(laser2, INVISIBLE);
+					VECTOR tmp;
+					VECTOR eyePos;
+					VECTOR targetPos;
+					CONTACT c;
+					
+					vec_set(targetPos.x, player.x);
+					targetPos.z -= 40;
+					
+					// laser 1
+					ent_getvertex(my, c, 1170);
+					vec_set(eyePos.x, c.x);
+					vec_rotate(eyePos.x, my.pan);
+					vec_scale(eyePos.x, 0.5);
+					vec_add(eyePos.x, my.x);
+					
+					
+					vec_set(tmp.x, eyePos.x);
+					var dist = vec_dist(tmp.x, targetPos.x);
+					vec_add(tmp.x, targetPos.x);
+					vec_scale(tmp.x, 0.5);
+					vec_set(laser1.x, tmp.x);
+					laser1.skill44 = floatv(dist/128);
+					laser1.scale_x = dist/128;
+					
+					vec_set(tmp.x, eyePos.x);
+					vec_sub(tmp.x, targetPos.x);
+					
+					laser1.pan = 90+atan2v(tmp.y, tmp.x);
+					laser1.roll = -atan2v(tmp.z, sqrt(tmp.x*tmp.x + tmp.y*tmp.y));
+					
+					
+					// laser 2
+					ent_getvertex(my, c, 718);
+					vec_set(eyePos.x, c.x);
+					vec_rotate(eyePos.x, my.pan);
+					vec_scale(eyePos.x, 0.5);
+					vec_add(eyePos.x, my.x);
+					
+					
+					vec_set(tmp.x, eyePos.x);
+					var dist = vec_dist(tmp.x, targetPos.x);
+					vec_add(tmp.x, targetPos.x);
+					vec_scale(tmp.x, 0.5);
+					vec_set(laser2.x, tmp.x);
+					laser2.skill44 = floatv(dist/128);
+					laser2.scale_x = dist/128;
+					
+					vec_set(tmp.x, eyePos.x);
+					vec_sub(tmp.x, targetPos.x);
+					
+					laser2.pan = 90+atan2v(tmp.y, tmp.x);
+					laser2.roll = -atan2v(tmp.z, sqrt(tmp.x*tmp.x + tmp.y*tmp.y));
+				}
+			}
+		}
+		
 		//FONT_big(100);
 		//DEBUG_VAR(count, 16);
 	}
@@ -215,6 +316,9 @@ action enemy_hex()
 	// effect(p_bat_explode,100,my.x,nullvector);
 	// snd_play(sndBatDeath, 100, 0);
 	ptr_remove(me);
+	
+	ptr_remove(laser1);
+	ptr_remove(laser2);
 }
 
 void enemy_spawn_hex()

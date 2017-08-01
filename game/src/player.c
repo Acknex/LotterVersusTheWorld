@@ -152,8 +152,12 @@ void hit_player(var dmg)
 	if(player != NULL && player->health > 0)
 	{
 		player->health -= dmg;
-		player_hit_sound();
-		desyncTimer = 0.4; // 0.4 second desync
+		// don't play sounds all the time
+		if(desyncTimer == 0) 
+		{
+			player_hit_sound();
+			desyncTimer = 0.4; // 0.4 second desync
+		}
 		if (player->health <= 0) 
 		{
 			pp_desync(0);
