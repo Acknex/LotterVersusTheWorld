@@ -2,7 +2,7 @@
 #define CREDITS_H
 
 STRING * credits_source = "credits.dat";
-var credits_scrollSpeed = 2.98; // 1 Pixel per quant
+var credits_scrollSpeed = 2.96; // 1 Pixel per quant
 var credits_speedup = 1;
 var credits_speedup_factor = 4;
 

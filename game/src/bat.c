@@ -178,12 +178,12 @@ action enemy_hex()
 {
 	ENEMY_init();
 	hex_isDead = FALSE;
-	ENTITY* laser1 = ent_create("laser.tga", vector(0,0,-999), NULL);
-	set(laser1, PASSABLE | TRANSLUCENT | BRIGHT);
+	ENTITY* laser1 = ent_create("laser.tga", vector(0,0,-9999), NULL);
+	set(laser1, PASSABLE | TRANSLUCENT | BRIGHT | INVISIBLE);
 	laser1->material = LaserMaterial;
 	laser1.scale_y = 0.5;
-	ENTITY* laser2 = ent_create("laser.tga", vector(0,0,-999), NULL);
-	set(laser2, PASSABLE | TRANSLUCENT | BRIGHT);
+	ENTITY* laser2 = ent_create("laser.tga", vector(0,0,-9999), NULL);
+	set(laser2, PASSABLE | TRANSLUCENT | BRIGHT | INVISIBLE);
 	laser2.scale_y = 0.5;
 	laser2->material = LaserMaterial;
 	
