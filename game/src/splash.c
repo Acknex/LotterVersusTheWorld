@@ -147,7 +147,7 @@ void SPLASH__setupLevel()
 	var logoWidth = bmap_width(SPLASH__logoBmap);
 	var logoHeight = bmap_height(SPLASH__logoBmap);
 	SPLASH__logoPanel = pan_create(NULL, 1);
-	pan_setwindow(SPLASH__logoPanel, 0, 0, 0, logoWidth, logoHeight, SPLASH__logoBmap, 0, 0);
+	pan_setwindow(SPLASH__logoPanel, 0, 0, 8000, logoWidth, logoHeight, SPLASH__logoBmap, 0, 0);
 	SPLASH__logoPanel->alpha = 0;
 	set(SPLASH__logoPanel, TRANSLUCENT);
 	set(SPLASH__logoPanel, SHOW);
