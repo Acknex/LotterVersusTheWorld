@@ -178,10 +178,16 @@ action enemy_hex()
 {
 	ENEMY_init();
 	hex_isDead = FALSE;
+	ENTITY* eye1 = ent_create("hex_eye.tga", vector(0,0,-9999), NULL);
+	eye1.roll = 2;
+	set(eye1, PASSABLE | TRANSLUCENT | BRIGHT | INVISIBLE);
 	ENTITY* laser1 = ent_create("laser.tga", vector(0,0,-9999), NULL);
 	set(laser1, PASSABLE | TRANSLUCENT | BRIGHT | INVISIBLE);
 	laser1->material = LaserMaterial;
 	laser1.scale_y = 0.5;
+	ENTITY* eye2 = ent_create("hex_eye.tga", vector(0,0,-9999), NULL);
+	eye2.roll = 2;
+	set(eye2, PASSABLE | TRANSLUCENT | BRIGHT | INVISIBLE);
 	ENTITY* laser2 = ent_create("laser.tga", vector(0,0,-9999), NULL);
 	set(laser2, PASSABLE | TRANSLUCENT | BRIGHT | INVISIBLE);
 	laser2.scale_y = 0.5;
@@ -246,7 +252,30 @@ action enemy_hex()
 				tmp.y = player.y;
 				tmp.z = my.z;
 				if(dist < 380) {
+					VECTOR eyePos;
+					CONTACT c;
+					// laser 1
+					ent_getvertex(my, c, 1170);
+					vec_set(eyePos.x, c.x);
+					vec_rotate(eyePos.x, my.pan);
+					vec_scale(eyePos.x, 0.5);
+					vec_add(eyePos.x, my.x);
+					vec_set(eye1.x, eyePos.x);
+					
+					// laser 2
+					ent_getvertex(my, c, 718);
+					vec_set(eyePos.x, c.x);
+					vec_rotate(eyePos.x, my.pan);
+					vec_scale(eyePos.x, 0.5);
+					vec_add(eyePos.x, my.x);
+					vec_set(eye2.x, eyePos.x);
+					
+					
+					reset(eye1, INVISIBLE);
+					reset(eye2, INVISIBLE);
 					hex_loadingWeapon = minv(4,hex_loadingWeapon + time_step/16.0);
+					eye1.alpha = sqrt(hex_loadingWeapon/4)*100;
+					eye2.alpha = sqrt(hex_loadingWeapon/4)*100;
 					if(hndSndLaughing == 0) {
 						hndSndLaughing = snd_loop(sndHexLaughing, hex_loadingWeapon/4*100, 0);
 					}
@@ -262,7 +291,11 @@ action enemy_hex()
 					}
 				}
 				else {
-					hex_loadingWeapon = maxv(0, hex_loadingWeapon - time_step/16.0);
+					set(eye1, INVISIBLE);
+					set(eye2, INVISIBLE);
+					eye1.alpha = 0;
+					eye2.alpha = 0;
+					hex_loadingWeapon = maxv(0, hex_loadingWeapon - 2*time_step/16.0);
 					if(hndSndLaughing != 0) {
 						if(hex_loadingWeapon == 0)
 						{
@@ -281,6 +314,8 @@ action enemy_hex()
 				if(dist > 450) {
 					set(laser1, INVISIBLE);
 					set(laser2, INVISIBLE);
+					set(eye1, INVISIBLE);
+					set(eye2, INVISIBLE);
 					hex_state = 0;
 					snd_stop(hndSndLaser);
 					hndSndLaser = 0;
@@ -303,6 +338,7 @@ action enemy_hex()
 					vec_rotate(eyePos.x, my.pan);
 					vec_scale(eyePos.x, 0.5);
 					vec_add(eyePos.x, my.x);
+					vec_set(eye1.x, eyePos.x);
 					
 					
 					vec_set(tmp.x, eyePos.x);
@@ -326,6 +362,7 @@ action enemy_hex()
 					vec_rotate(eyePos.x, my.pan);
 					vec_scale(eyePos.x, 0.5);
 					vec_add(eyePos.x, my.x);
+					vec_set(eye2.x, eyePos.x);
 					
 					
 					vec_set(tmp.x, eyePos.x);
@@ -365,6 +402,8 @@ action enemy_hex()
 	
 	ptr_remove(laser1);
 	ptr_remove(laser2);
+	ptr_remove(eye1);
+	ptr_remove(eye2);
 }
 
 void enemy_spawn_hex()
