@@ -157,6 +157,7 @@ void SPLASH__setupLevel()
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 0, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__startGame, NULL, NULL);
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 32, SPLASH__menuCreditsOnBmap, SPLASH__menuCreditsOffBmap, SPLASH__menuCreditsOnBmap, SPLASH__menuCreditsOffBmap, SPLASH__startCredits, NULL, NULL);
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 64, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__exitGame, NULL, NULL);
+	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 128, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__introStart, NULL, NULL);
 	SPLASH__menuPanel->alpha = 0;
 	set(SPLASH__menuPanel, TRANSLUCENT);
 	set(SPLASH__menuPanel, SHOW);	
@@ -244,6 +245,8 @@ void SPLASH__introStart()
 		SPLASH__logoPanel->alpha = 100 - ((cam->pan / 180) * 100);
 		SPLASH__menuPanel->alpha = 100 - ((cam->pan / 180) * 100);
 				
+		// TODO: remove this line
+		cam->pan = 180;
 		wait(1);
 	}
 	
@@ -253,6 +256,15 @@ void SPLASH__introStart()
 	wait(1);
 	
 	// Setup scene 1
+	SPLASH__introEnt1 = ent_create("intro01.tga", vector(-300, 0, 0), NULL);
+
+	var s = 0.1;
+	vec_set(SPLASH__introEnt1.scale_x, vector(s,s,s));
+	
+	while(key_any != 1) {
+		wait(1)	;
+	}
+	/*
 	SPLASH__introEnt1 = ent_create("tree02.mdl", vector(-20, -4, 0), NULL);
 	SPLASH__introEnt2 = ent_create("cbabe_male.mdl", vector(-300, 0, 0), NULL);
 	
@@ -271,6 +283,7 @@ void SPLASH__introStart()
 		SPLASH__introEnt2->alpha += 2 * time_step;
 		wait(1);
 	}	
+	*/
 	
 }
 
