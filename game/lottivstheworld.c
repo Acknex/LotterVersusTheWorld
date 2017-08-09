@@ -35,6 +35,7 @@ void main()
 	d3d_antialias = 0;
 	
 #ifdef WINDOWMODE
+	video_screen = 2;
 	video_mode = 10;
 #else
 	video_window(vector(0, 0, 0), nullvector, 1, "Lotter vs. the World");
