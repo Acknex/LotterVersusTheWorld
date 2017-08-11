@@ -103,8 +103,10 @@ void INIT_levelEnd(var isGameOver)
 	
 	if(stats_finalize())
 	{
-		// TODO: Display highscore here
-		error("You got a new highscore.\nAlso: Replace this error with something useful.");
+		show_dialog(str_printf(
+			NULL,
+			"You got a new highscore:\n%d",
+			(int)stats_current.score));
 	}
 	
 	if(isGameOver)
