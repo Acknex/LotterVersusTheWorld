@@ -7,6 +7,15 @@
 #include "stats.h"
 #include "credits.h"
 
+STRING * SPLASH__highscoreText = "#128";
+FONT * SPLASH__highscoreFont = "Arial#24b";
+
+TEXT * SPLASH__highscoreObject = 
+{
+	string (SPLASH__highscoreText);
+	font = SPLASH__highscoreFont;
+	flags = CENTER_X | OUTLINE | TRANSLUCENT;
+}
 
 void SPLASH__init()
 {
@@ -25,6 +34,16 @@ void SPLASH__init()
 	startMusic("media\\main_menu.mp3", 4, 0);
 	
 	SPLASH__animStart();
+	
+	proc_mode = PROC_LATE;
+	while(SPLASH__inSplash)
+	{
+		SPLASH__highscoreObject.alpha = clamp(
+			2 * SPLASH__menuPanel.alpha,
+			0,
+			100);
+		wait(1);
+	}
 }
 
 int SPLASH__animStart()
@@ -106,7 +125,7 @@ void SPLASH__animEnd()
 	if(SPLASH__inSplash == 1)
 	{
 		SPLASH__menuPanel->alpha = 50;
-	}	
+	}
 }
 
 void SPLASH__setupLevel()
@@ -152,6 +171,13 @@ void SPLASH__setupLevel()
 	set(SPLASH__logoPanel, TRANSLUCENT);
 	set(SPLASH__logoPanel, SHOW);
 	
+	str_printf(
+		SPLASH__highscoreText,
+		"Highscore: %d",
+		(int)stats_highscore.score);
+	set(SPLASH__highscoreObject, SHOW);
+	SPLASH__highscoreObject.alpha = 0;
+	
 	// Init Menu
 	SPLASH__menuPanel = pan_create(NULL, 2);
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 0, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__startGame, NULL, NULL);
@@ -196,6 +222,8 @@ void SPLASH__reposition()
 			SPLASH__menuPanel->pos_x = (screen_size.x / 2) - (64);
 			SPLASH__menuPanel->pos_y = SPLASH__logoY + logoHeight;
 			
+			SPLASH__highscoreObject.pos_x = (screen_size.x / 2);
+			SPLASH__highscoreObject.pos_y = SPLASH__menuPanel->pos_y + 96;
 		}
 	}
 }
@@ -342,6 +370,7 @@ void SPLASH__housekeeping()
 	remove_camera();
 	ptr_remove(SPLASH__logoPanel);
 	ptr_remove(SPLASH__menuPanel);
+	reset(SPLASH__highscoreObject, SHOW);
 	//ptr_remove(SPLASH__logoBmap);
 	//ptr_remove(SPLASH__menuStartOffBmap);
 	//ptr_remove(SPLASH__menuStartOnBmap);
