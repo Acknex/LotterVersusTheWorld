@@ -52,6 +52,8 @@ PANEL* credits_pnl_ff =
 //	flags = SHOW;
 }
 
+VIEW* credits_view = NULL;
+
 void credits_init()
 {
 	credits_imageMarginW = screen_size.x * 0.2;
@@ -387,6 +389,8 @@ void credits_start()
 	ent_create(NULL, vector(0,0,0), credits_run);
 	
 	startMusic("media\\credits.mp3", 0.5, 0);
+	
+	
 }
 
 void credits_cancel()
@@ -396,6 +400,7 @@ void credits_cancel()
 	remove_camera();
 	credits_pnl_ff.flags &= ~SHOW;
 	// TODO: Replace with "return-to-menu"!
+	safe_remove(credits_view);
 	SPLASH__init();
 }
 
@@ -411,11 +416,16 @@ void credits_placeStuff()
 		{
 			ENTITY* desk = ent_create("desk.mdl", vector(posx, posy, 0), desk_buildup);
 			desk->skill1 = i+180;
+			ENTITY* desk_overlay = ent_create("desk_screen_overlay.mdl", _vec(posx, posy, 0), 0);
+			vec_add(desk_overlay->x, vec_rotate(_vec(20, 10, 84), _vec(i+180, 0, 0)));
+			desk_overlay->pan = i+180-15;
 		}
 		else if ((r>=60) && (r<90))
 		{
 			ENTITY* screen = ent_create("screen.mdl", vector(posx, posy, 0), screenOnWall);
+			ENTITY* screen_overlay = ent_create("screen_overlay.mdl", vector(posx, posy, 0), 0);
 			screen->pan = i+180;
+			screen_overlay->pan = i+180;
 
 		}
 		else
@@ -424,13 +434,26 @@ void credits_placeStuff()
 			rack->skill1 = i+180;
 		}
 	}
+	
+	ent_create("warlock.mdl", _vec(0, 0, -500), credits_warlock);
+	ENTITY* bmapdummy = ent_create("screen_overlay.mdl", _vec(0,0,1000), 0);
+	ent_create("wald2.tga", _vec(100, 0, -500), 0);
+	ent_create("wald2_sky.tga", _vec(110, 0, -500), 0);
+	
+	credits_view = view_create(1);
+	credits_view->size_x = 256;
+	credits_view->size_y = 256;
+	credits_view-> x = -40;
+	credits_view-> z = -475;
+	credits_view->bmap = bmap_for_entity(bmapdummy, 0);
+	set(credits_view, SHOW);
 }
 
 action credits_warlock()
 {
-	ENTITY* keyboard = ent_create("rack_console_keyboard.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(-11, -3, 68), _vec(my->skill1, 0, 0))), 0);
-
-	while(me)
+	//ENTITY* keyboard = ent_create("rack_console_keyboard.mdl", vec_add(_vec(my->x, my->y, my->z), vec_rotate(_vec(-11, -3, 68), _vec(my->skill1, 0, 0))), 0);
+	my->pan = 180;
+	while(1)
 	{
 		my->skill1 = (my->skill1 + time_step*6)%100;
 		ent_animate(me, "duck", my->skill1, ANM_CYCLE);
