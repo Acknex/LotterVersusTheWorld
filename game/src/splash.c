@@ -7,6 +7,8 @@
 #include "stats.h"
 #include "credits.h"
 
+#define INTRO_NODE_FLY_TIME 4
+
 STRING * SPLASH__highscoreText = "#128";
 FONT * SPLASH__highscoreFont = "Arial#24b";
 
@@ -17,6 +19,53 @@ TEXT * SPLASH__highscoreObject =
 	flags = CENTER_X | OUTLINE | TRANSLUCENT;
 }
 
+
+typedef struct IntroNode
+{
+	var time;
+	var length;
+	var out;
+	STRING * img;
+} IntroNode;
+
+function introNodeFunc() {
+	set(my, TRANSLUCENT);
+	my.alpha = 0;
+	var t = 0;
+	var x = random(70)+50;
+	var y = random(70)+50;
+	if(random(2) > 1) {
+		x*=-1;
+	}
+	
+	if(random(2) > 1) {
+		y*= -1;
+	}
+	
+	while(t < INTRO_NODE_FLY_TIME) {
+		t = minv(t+time_step/16, INTRO_NODE_FLY_TIME);
+		my.pan = -x*(1-t/INTRO_NODE_FLY_TIME)*0.4;
+		my.tilt = -y*(1-t/INTRO_NODE_FLY_TIME)*0.4;
+		vec_set(my.x, vector(-1200 + 900*t/INTRO_NODE_FLY_TIME, x*(1-t/INTRO_NODE_FLY_TIME), y*(1-t/INTRO_NODE_FLY_TIME)));
+		my.alpha = 100*t/INTRO_NODE_FLY_TIME;
+		wait(1);
+	}
+	t = 0;
+	while(t < my.skill34) {
+		my.alpha = 100;
+		t = minv(t + time_step/16, my.skill34);
+		wait(1);
+	}
+	
+	t = 0;
+	while(t < my.skill35) {
+		t = minv(t + time_step/16, my.skill35);
+		vec_set(my.x, vector(-300 + 50*t/my.skill35, 0, 0));
+		my.alpha = 100 - maxv(0,minv(1,(t-my.skill35+0.3)/0.3))*100;
+		wait(1);
+	}
+	ptr_remove(my);	
+}
 
 void SPLASH__quitGame()
 {
@@ -269,7 +318,8 @@ void SPLASH__startCredits()
 
 void SPLASH__introStart()
 {
-	stopMusic(); // need a stop with fade plox
+	
+	startMusic(NULL, 7, 0); // fade out music
 	
 	SPLASH__inIntro = 1;
 	
@@ -284,23 +334,44 @@ void SPLASH__introStart()
 		SPLASH__menuPanel->alpha = 100 - ((cam->pan / 180) * 100);
 				
 		// TODO: remove this line
-		cam->pan = 180;
+		//cam->pan = 180;
 		wait(1);
 	}
 	
 	cam->pan = 180; // just to make sure we are absolutely bang on
 	
-	startMusic("media\\intro.mp3", 4, 0);
+	startMusic("media\\intro.mp3", 0.01, 0);
 	wait(1);
 	
-	// Setup scene 1
-	SPLASH__introEnt1 = ent_create("intro01.tga", vector(-300, 0, 0), NULL);
-
-	var s = 0.1;
-	vec_set(SPLASH__introEnt1.scale_x, vector(s,s,s));
 	
-	while(key_any != 1) {
-		wait(1)	;
+	var countNodes = 6;
+	IntroNode nodes[6];
+	nodes[0].time = 2.3; nodes[0].img = "intro04.tga"; nodes[0].length = 13; nodes[0].out = 3;
+	nodes[1].time = 22; nodes[1].img = "intro03.tga"; nodes[1].length = 7; nodes[1].out = 5.5;
+	nodes[2].time = 36.0; nodes[2].img = "intro07.tga"; nodes[2].length = 4; nodes[2].out = 2;
+	nodes[3].time = 44.0; nodes[3].img = "intro06.tga"; nodes[3].length = 2; nodes[3].out = 3;
+	nodes[4].time = 50.6; nodes[4].img = "intro01.tga"; nodes[4].length = 10; nodes[4].out = 5;
+	nodes[5].time = 67.0; nodes[5].img = "intro05.tga"; nodes[5].length = 10; nodes[5].out = 5;
+	
+	// Setup scene 1
+	//SPLASH__introEnt1 = ent_create("intro02.tga", vector(-300, 0, 0), NULL);
+
+	//var s = 0.1;
+	//vec_set(SPLASH__introEnt1.scale_x, vector(s,s,s));
+	
+	var currentNode = 0;
+	while(1) {
+		if(currentNode < countNodes) {
+			if(getMusicPosition() > nodes[currentNode].time-INTRO_NODE_FLY_TIME) {
+				ENTITY* a = ent_create(nodes[currentNode].img, vector(-900, 0, 0), introNodeFunc);
+				a.skill34 = nodes[currentNode].length;
+				a.skill35 = nodes[currentNode].out;
+				var s = 0.1;
+				vec_set(a.scale_x, vector(s,s,s));
+				currentNode += 1;
+			}
+		}
+		wait(1);
 	}
 	/*
 	SPLASH__introEnt1 = ent_create("tree02.mdl", vector(-20, -4, 0), NULL);

@@ -15,6 +15,9 @@ void stopMusic();
 // returns 1 if music is still played (even fading out)
 var playingMusic();
 
+// gets current play position
+var getMusicPosition();
+
 // updates volumes. run in main loop
 void updateMusic();
 

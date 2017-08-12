@@ -4,6 +4,7 @@ var volume_current = 0;
 var volume_last = 0;
 var crossTime = 0;
 var maxVol = 100;
+var musicCurrentPosition = 0;
 STRING* currentMusic = NULL;
 
 void startMusic(STRING* file, var crossFadeTime, var loop)
@@ -37,6 +38,7 @@ void startMusic(STRING* file, var crossFadeTime, var loop)
 		{
 			handle_current = media_play(file, NULL, 0);
 		}
+		musicCurrentPosition = 0;
 	}
 	else {
 		handle_current = 0;
@@ -79,8 +81,13 @@ void setMusicMasterVolume(var vol)
 	maxVol = vol;
 }
 
+var getMusicPosition() {
+	return musicCurrentPosition;
+}
+
 void updateMusic()
 {
+	musicCurrentPosition += time_frame/16;
 	if(handle_current != 0 && media_playing(handle_current) == 0)
 	{
 		startMusic(NULL, 0, 0);
