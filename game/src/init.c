@@ -13,7 +13,8 @@
 
 var INIT__levelRunning = 0;
 var INIT__currentHardness = 0;
-var INIT__prevendRestart = 0;
+var INIT__preventRestart = 0;
+var INIT__preventDoubleExit = 0;
 
 function INIT_levelRestartCheat()
 {
@@ -22,7 +23,7 @@ function INIT_levelRestartCheat()
 
 function INIT_returnToSplash()
 {
-	INIT__prevendRestart = 1;
+	INIT__preventRestart = 1;
 	INIT_levelEnd(1);
 }
 
@@ -90,12 +91,24 @@ void INIT_levelStart()
 
 void INIT_levelEnd(var isGameOver)
 {
+	// prevent a double call on levelEnd
+	if(INIT__preventDoubleExit) {
+		return;
+	}
+	INIT__preventDoubleExit = 1;
+	
+	on_esc = NULL; // we reset this here
+	// so we can't quit twice
+	
+	hud_ingame_hide();
+	
 	me = NULL; //decouple from any calling entity
 	INIT__levelRunning = 0;
 	
 	MARKER_detach();
 	
 	proc_kill2(MARKER_sprite, NULL); //is this still needed?
+	proc_kill2(teleporter_out, NULL);
 	
 	wait(1);
 	
@@ -143,10 +156,9 @@ void INIT_levelEnd(var isGameOver)
 	
 	wait(-1);
 	
-	if(INIT__prevendRestart)
+	if(INIT__preventRestart)
 	{
 		SPLASH__init();
-		hud_ingame_hide();
 	}
 	else
 	{
@@ -154,7 +166,8 @@ void INIT_levelEnd(var isGameOver)
 		INIT_levelStart();
 		INIT_levelLoop();
 	}
-	INIT__prevendRestart = 0;
+	INIT__preventRestart = 0;
+	INIT__preventDoubleExit = 0;
 }
 
 void INIT_levelLoop()
