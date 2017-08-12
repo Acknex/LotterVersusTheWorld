@@ -407,7 +407,7 @@ void credits_placeStuff()
 		var posy=sinv(i)*450;
 		var posx=cosv(i)*450;
 		var r=random(100);
-		if ((r>=0) && (r<60))
+		if (i == 0 || i == 90 || i == 180 || ((r>=0) && (r<60)))
 		{
 			ENTITY* desk = ent_create("desk.mdl", vector(posx, posy, 0), desk_buildup);
 			desk->skill1 = i+180;
