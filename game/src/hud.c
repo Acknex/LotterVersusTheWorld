@@ -56,7 +56,7 @@ void hud_ingame_init() {
 void show_death_screen(var alpha)
 {
 	panPlayerDead.alpha = alpha;
-	set(panPlayerDead, SHOW);	
+	set(panPlayerDead, SHOW);
 }
 void hide_death_screen()
 {

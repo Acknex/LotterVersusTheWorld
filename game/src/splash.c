@@ -17,8 +17,18 @@ TEXT * SPLASH__highscoreObject =
 	flags = CENTER_X | OUTLINE | TRANSLUCENT;
 }
 
+
+void SPLASH__quitGame()
+{
+	//do not add anything here - use INIT_exit in init.c!
+	sys_exit("");
+}
+
 void SPLASH__init()
 {
+	// Kill the game when pressing escape in main menu
+	on_esc = SPLASH__quitGame;
+	
 	SPLASH__inSplash = 1;
 	create_camera();
 	show_camera(); // Don't forget: Normal camera is still visible ^^

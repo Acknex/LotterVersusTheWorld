@@ -13,10 +13,17 @@
 
 var INIT__levelRunning = 0;
 var INIT__currentHardness = 0;
+var INIT__prevendRestart = 0;
 
 function INIT_levelRestartCheat()
 {
 	if(cheats_enabled) INIT_levelEnd(0);
+}
+
+function INIT_returnToSplash()
+{
+	INIT__prevendRestart = 1;
+	INIT_levelEnd(1);
 }
 
 //
@@ -62,7 +69,6 @@ void INIT_levelStart()
 	pp_bloom_start(2.5);
 	
 	mouse_init_game();
-	hud_ingame_init();
 	hud_ingame_show();
 	//skychange(); //because.
 	
@@ -71,6 +77,8 @@ void INIT_levelStart()
 
 	enemy_spawn_hex();
 	MARKER_attach();
+	
+	on_esc = INIT_returnToSplash;
 	
 	wait(-0.5);
 	
@@ -101,6 +109,22 @@ void INIT_levelEnd(var isGameOver)
 	
 	wait(1);
 	
+	// when game is over, show death screen
+	if(isGameOver)
+	{
+		var fade = 0;
+		show_death_screen(0);
+		while(1)
+		{
+			show_death_screen(fade);
+			fade = minv(fade+2*time_step, 100);
+			if(fade > 80 && key_any)
+				break;
+			wait(1);
+		}
+		hide_death_screen();
+	}
+	
 	if(stats_finalize())
 	{
 		show_dialog(str_printf(
@@ -119,9 +143,18 @@ void INIT_levelEnd(var isGameOver)
 	
 	wait(-1);
 	
-	//sky_active = 0;
-	INIT_levelStart();
-	INIT_levelLoop();
+	if(INIT__prevendRestart)
+	{
+		SPLASH__init();
+		hud_ingame_hide();
+	}
+	else
+	{
+		//sky_active = 0;
+		INIT_levelStart();
+		INIT_levelLoop();
+	}
+	INIT__prevendRestart = 0;
 }
 
 void INIT_levelLoop()
@@ -130,17 +163,6 @@ void INIT_levelLoop()
 	{
 		//updateMusic();
 		if(player) if(player->health <= 0) {
-			var fade = 0;
-			show_death_screen(0);
-			while(1)
-			{
-				show_death_screen(fade);
-				fade = minv(fade+2*time_step, 100);
-				if(fade > 80 && key_any)
-					break;
-				wait(1);
-			}
-			hide_death_screen();
 			INIT_levelEnd(1);
 			return;
 		}

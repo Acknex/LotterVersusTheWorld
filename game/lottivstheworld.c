@@ -23,12 +23,6 @@
 	#include <default.c>
 #endif
 
-void quitGame()
-{
-	//do not add anything here - use INIT_exit in init.c!
-	sys_exit("");
-}
-
 void main() 
 {
 	max_entities = 20000;
@@ -43,6 +37,8 @@ void main()
 #endif
 
 	credits_init();
+	
+	hud_ingame_init();
 	
 	on_resize = INIT_resize;
 	INIT_start();
@@ -60,9 +56,6 @@ void main()
 #endif
 	
 	on_exit = INIT_exit;
-	on_close = quitGame;
-
-	//temp - until menu is introduced
-	on_esc = quitGame;
+	on_close = SPLASH__quitGame;
 }
 
