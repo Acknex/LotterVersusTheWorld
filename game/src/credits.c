@@ -378,7 +378,12 @@ void credits_start()
 	show_camera();
 	
 	// Kill all evil inthis world!
-	level_load("credits.wmb");
+	//level_load("credits.wmb");
+	level_load("neo_credits.wmb");
+	//level_load(NULL);
+	//ENTITY* level = ent_create("credits.wmb", nullvector, 0);
+	//set(level, TRANSLUCENT);
+	
 	credits_placeStuff();
 	
 	pp_bloom_start(2.5);
@@ -390,7 +395,7 @@ void credits_start()
 	
 	startMusic("media\\credits.mp3", 0.5, 0);
 	
-	
+	sun_light = 0;
 }
 
 void credits_cancel()
@@ -426,7 +431,6 @@ void credits_placeStuff()
 			ENTITY* screen_overlay = ent_create("screen_overlay.mdl", vector(posx, posy, 0), 0);
 			screen->pan = i+180;
 			screen_overlay->pan = i+180;
-
 		}
 		else
 		{
@@ -435,10 +439,12 @@ void credits_placeStuff()
 		}
 	}
 	
-	ent_create("warlock.mdl", _vec(0, 0, -500), credits_warlock);
+	ENTITY* warlock = ent_create("warlock.mdl", _vec(0, 0, -500), credits_warlock);
 	ENTITY* bmapdummy = ent_create("screen_overlay.mdl", _vec(0,0,1000), 0);
 	ent_create("wald2.tga", _vec(100, 0, -500), 0);
 	ent_create("wald2_sky.tga", _vec(110, 0, -500), 0);
+	
+	warlock->ambient = 100;
 	
 	credits_view = view_create(1);
 	credits_view->size_x = 256;
@@ -457,7 +463,6 @@ action credits_warlock()
 	{
 		my->skill1 = (my->skill1 + time_step*6)%100;
 		ent_animate(me, "duck", my->skill1, ANM_CYCLE);
-		DEBUG_VAR(my->skill1,20);
 		wait(1);
 	}
 }
