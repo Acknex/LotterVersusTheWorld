@@ -36,7 +36,7 @@ void main()
 	
 #ifdef WINDOWMODE
 	video_screen = 2;
-	video_mode = 10;u
+	video_mode = 10;
 #else
 	video_window(vector(0, 0, 0), nullvector, 1, "Lotter vs. the World");
 	video_set(sys_metrics(0), sys_metrics(1), 0, 1);

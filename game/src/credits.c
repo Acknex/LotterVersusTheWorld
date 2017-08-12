@@ -331,6 +331,7 @@ void credits_run()
 		else
 		{
 			credits_speedup = 1;
+			credits_pnl_ff.flags &= ~SHOW;
 		}
 		timer += credits_speedup * credits_scrollSpeed * time_step;
 
