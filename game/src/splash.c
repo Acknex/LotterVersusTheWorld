@@ -344,15 +344,15 @@ void SPLASH__introStart()
 	wait(1);
 	
 	
-	var countNodes = 6;
-	IntroNode nodes[6];
+	var countNodes = 7;
+	IntroNode nodes[7];
 	nodes[0].time = 2.3; nodes[0].img = "intro04.tga"; nodes[0].length = 13; nodes[0].out = 3;
 	nodes[1].time = 22; nodes[1].img = "intro03.tga"; nodes[1].length = 7; nodes[1].out = 5.5;
 	nodes[2].time = 36.0; nodes[2].img = "intro07.tga"; nodes[2].length = 4; nodes[2].out = 2;
 	nodes[3].time = 44.0; nodes[3].img = "intro06.tga"; nodes[3].length = 2; nodes[3].out = 3;
 	nodes[4].time = 50.6; nodes[4].img = "intro01.tga"; nodes[4].length = 10; nodes[4].out = 5;
-	nodes[5].time = 67.0; nodes[5].img = "intro05.tga"; nodes[5].length = 10; nodes[5].out = 5;
-	
+	nodes[5].time = 67.0; nodes[5].img = "intro05.tga"; nodes[5].length = 10; nodes[5].out = 8;
+	nodes[6].time = 100.0; nodes[6].img = "intro02.tga"; nodes[6].length = 1; nodes[6].out = 3;
 	// Setup scene 1
 	//SPLASH__introEnt1 = ent_create("intro02.tga", vector(-300, 0, 0), NULL);
 
