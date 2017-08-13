@@ -4,7 +4,9 @@
 STRING * dialogMessage = "#500";
 SOUND* sndDialog = "dialog.wav";
 
-FONT* fontDialog = "Arial#30b";
+FONT* fontDialog = "monoid#30b";
+
+var HUD__refScale = 2;
 
 PANEL * panDialog = 
 {
@@ -31,7 +33,7 @@ void hud_ingame_init() {
 		pan_setdigits(panEmoHealth, 0, bmap_width(bmapHealthHud) / 2, bmap_height(bmapHealthHud) - 37, "%02.f", fontHud, 1, vPlayerHealth);
 		pan_setcolor(panEmoHealth, 1, 1, COLOR_RED);
 		panEmoHealth.alpha = 80;
-		set(panEmoHealth, OUTLINE | TRANSLUCENT | CENTER_X);
+		set(panEmoHealth, OUTLINE | TRANSLUCENT | CENTER_X | FILTER);
 	}
 	
 	if (!panDialog) {
@@ -40,14 +42,14 @@ void hud_ingame_init() {
 		panDialog.scale_y = 0.01;
 		pan_setdigits(panDialog, 0, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, &dialogMessage);
 		panDialog.alpha = 80;
-		set(panDialog, OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y);
+		set(panDialog, OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y | FILTER);
 	}
 	
 	if(!panPlayerDead) {
 		panPlayerDead = pan_create(NULL, 3);
 		panPlayerDead.bmap = bmapPlayerDead;
 		panPlayerDead.alpha = 0;
-		set(panPlayerDead,  TRANSLUCENT | CENTER_X | CENTER_Y);
+		set(panPlayerDead,  TRANSLUCENT | CENTER_X | CENTER_Y | FILTER);
 	}
 	
 	hud_ingame_align();
@@ -73,11 +75,11 @@ void show_dialog(char * _text) {
 		panDialog.scale_y = 0.01;
 		set(panDialog, SHOW);
 		snd_play(sndDialog,100,0);
-		while(panDialog.scale_y < 1) 
+		while(panDialog.scale_y < HUD__refScale) 
 		{
 			wait(1);
 		//	panDialog.scale_y += 0.1 * time_step;
-			panDialog.scale_y = minv(panDialog.scale_y + 0.1 * time_step, 100);
+			panDialog.scale_y = minv(panDialog.scale_y + 0.1 * time_step * HUD__refScale, HUD__refScale);
 		}
 		//panDialog.scale_y = 1;
 		// pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, dialogMessage);
@@ -88,7 +90,7 @@ void show_dialog(char * _text) {
 		{
 			wait(1);
 			//panDialog.scale_y -= 0.1 * time_step;
-			panDialog.scale_y = maxv(0.01, panDialog.scale_y - 0.1 * time_step);
+			panDialog.scale_y = maxv(0.01, panDialog.scale_y - 0.1 * time_step * HUD__refScale);
 			
 		}
 		//panDialog.scale_y = 0;
@@ -104,22 +106,42 @@ void hide_dialog() {
 }
 
 void hud_ingame_align() {
+	//HUD scaling disabled
+	HUD__refScale = 1;//1.5 * screen_size.y / 1200;
+	STRING* strTemp = "#64";
+	
+	/* fonts */
+	str_printf(strTemp, "monoid#%i", (int)(20 * HUD__refScale));
+	ptr_remove(fontHud);
+	fontHud = font_create(strTemp);
+	str_printf(strTemp, "monoid#%i", (int)(30 * HUD__refScale));
+	ptr_remove(fontDialog);
+	fontDialog = font_create(strTemp);
+	ptr_remove(strTemp);
+
 	if (panEmoHealth) {
 		panEmoHealth.pos_x = 10;
-		panEmoHealth.pos_y = screen_size.y - bmap_height(bmapHealthHud);
+		panEmoHealth.pos_y = screen_size.y - bmap_height(bmapHealthHud) * HUD__refScale;
 		
 		
 		PPRingOfImpendingDoom.skill1 = floatv(
-			  (panEmoHealth.pos_x + 0.5 * bmap_width(bmapHealthHud))
+			  (panEmoHealth.pos_x + 0.5 * bmap_width(bmapHealthHud) * HUD__refScale)
 			/ screen_size.x);
 		PPRingOfImpendingDoom.skill2 = floatv(
-			  (panEmoHealth.pos_y + 0.5 * bmap_height(bmapHealthHud))
+			  (panEmoHealth.pos_y + 0.5 * bmap_height(bmapHealthHud) * HUD__refScale)
 			/ screen_size.y);
+			
+		panEmoHealth.scale_x = HUD__refScale;
+		panEmoHealth.scale_y = HUD__refScale;
+		pan_setdigits(panEmoHealth, 1, bmap_width(bmapHealthHud) / 2, bmap_height(bmapHealthHud) - 37, "%02.f", fontHud, 1, vPlayerHealth);
 		
 	}
 	if (panDialog) {
-		panDialog.pos_x = 0.5 * screen_size.x - bmap_width(panDialog.bmap) / 2;
+		panDialog.pos_x = 0.5 * screen_size.x - bmap_width(panDialog.bmap) * HUD__refScale / 2;
 		panDialog.pos_y = 0.2 * screen_size.y - panDialog.scale_y * bmap_height(panDialog.bmap) / 2;
+		//this shit crashes for no fucking reason!
+		//pan_setdigits(panDialog, 1, bmap_width(bmapDialog) / 2, bmap_height(bmapDialog) / 2, "%s", fontDialog, 1, dialogMessage);
+		panDialog.scale_x = HUD__refScale;
 	}
 	if (panPlayerDead) {
 		//panPlayerDead.pos_x = screen_size.x / 2 - bmap_width(panPlayerDead.bmap) / 2;
