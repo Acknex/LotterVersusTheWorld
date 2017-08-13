@@ -7,6 +7,8 @@
 #define PRAGMA_PATH "shaders"
 #define PRAGMA_PATH "graphics"
 
+#define PRAGMA_LEVEL "credits.wmp"
+
 #include "cheats.h"
 #include "mouse.h"
 #include "player.h"

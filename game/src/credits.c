@@ -37,6 +37,7 @@ TEXT * credits_text =
 {
 	strings = 1;
 	string ( "This is stupid!");
+	flags = OUTLINE;
 }
 
 BMAP* credits_bmp_ff = "credits_ff.tga";
@@ -48,7 +49,7 @@ PANEL* credits_pnl_ff =
 	size_x = 32;
 	size_y = 16;
 	bmap = credits_bmp_ff;
-
+	flags = FILTER;
 //	flags = SHOW;
 }
 

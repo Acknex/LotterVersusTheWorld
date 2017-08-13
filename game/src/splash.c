@@ -446,7 +446,7 @@ action SPLASH__act_smokeGen()
 		if(SPLASH__inIntro == 1)
 		{
 			vec_randomize(emitterTemp, my->x);
-			effect_sprite("smoke.tga", SPLASH__act_smoke, maxv(1, 2*time_step), my->x, vector(0, 0, 1));
+			effect_sprite("smokex.tga", SPLASH__act_smoke, maxv(1, 2*time_step), my->x, vector(0, 0, 1));
 		}
 		wait(1);
 	}
