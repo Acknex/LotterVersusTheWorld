@@ -243,8 +243,19 @@ MATERIAL *TeleporterEffectMaterial =
 MATERIAL *WallMainMaterial =
 {
 	effect = "WallMain.fx";
+	technique = "foreground";
 	skin1 = WallMainAtlas;
 	skin2 = WallMainTextImage;
+	flags = PASS_SOLID;
+}
+
+MATERIAL *WallBackMaterial =
+{
+	effect = "WallMain.fx";
+	technique = "background";
+	skin1 = WallMainAtlas;
+	skin2 = WallMainTextImage;
+	flags = TRANSLUCENT;
 }
 
 MATERIAL *WallOutlineMaterial =

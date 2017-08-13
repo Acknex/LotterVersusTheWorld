@@ -104,14 +104,18 @@ float4 ps_translucent(out_ps In): COLOR
 }
 
 
-technique object
+technique foreground
 {
 	pass one
 	{
 		VertexShader = compile vs_3_0 vs();
 		PixelShader = compile ps_3_0 ps();
 	}
-	
+}
+
+
+technique background
+{
 	pass second
 	{
 		CullMode = CW;

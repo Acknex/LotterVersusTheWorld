@@ -298,6 +298,17 @@ VECTOR * stage_load(STAGE * stage)
 	
 	entOutlines->flags |= PASSABLE;
 	
+	ENTITY * entUpperWallBack = ent_create("level_stub.mdl", vector(0,0,0), NULL);
+	ent_clone(entUpperWallBack);
+	ent_setmesh(entUpperWallBack, ent_getmesh(entUpperWall, 0, 0), 0, 0);
+	ent_setskin(entUpperWallBack, stage_bmpBlackSkin, 1);
+	ent_clone(entUpperWallBack);
+	set(entUpperWallBack, FLAG2);
+	set(entUpperWallBack, PASSABLE);
+	entUpperWallBack->material = WallBackMaterial;
+	entUpperWallBack->type = TypeWall;
+	c_updatehull(entUpperWallBack, 0);
+	
 	{
 		int i, j;
 		for(i = 1; i < (stage->size[0] - 1); i++) {
