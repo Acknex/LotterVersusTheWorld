@@ -67,7 +67,7 @@ action teleporter_out()
 		{
 			if(sndHandle == 0) 
 			{
-				sndHandle = snd_loop(sndTeleport, 0, 0);
+				sndHandle = ent_playloop2(me, sndTeleport, 0, 100000);
 			}
 			else if(sndVolume < 100)
 			{
