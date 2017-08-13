@@ -136,18 +136,16 @@ void INIT_levelEnd(var isGameOver)
 			wait(1);
 		}
 		hide_death_screen();
-	}
 	
-	if(stats_finalize())
-	{
-		show_dialog(str_printf(
-			NULL,
-			"You got a new highscore:\n%d",
-			(int)stats_current.score));
-	}
-	
-	if(isGameOver)
-	{
+		// Only finalize stats when game is over...
+		if(stats_finalize())
+		{
+			show_dialog(str_printf(
+				NULL,
+				"You got a new highscore:\n%d",
+				(int)stats_current.score));
+		}
+		
 		INIT__currentHardness = 0; //reset difficulty level after death
 		stats_reset();
 	}
