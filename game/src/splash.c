@@ -242,10 +242,10 @@ void SPLASH__setupLevel()
 	
 	// Init Menu
 	SPLASH__menuPanel = pan_create(NULL, 2);
-	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 0, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__startGame, NULL, NULL);
+	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 0, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__menuStartOnBmap, SPLASH__menuStartOffBmap, SPLASH__introStart, NULL, NULL);
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 32, SPLASH__menuCreditsOnBmap, SPLASH__menuCreditsOffBmap, SPLASH__menuCreditsOnBmap, SPLASH__menuCreditsOffBmap, SPLASH__startCredits, NULL, NULL);
 	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 64, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__exitGame, NULL, NULL);
-	pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 128, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__introStart, NULL, NULL);
+	// pan_setbutton(SPLASH__menuPanel, 0, 0, 0, 128, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__menuExitOnBmap, SPLASH__menuExitOffBmap, SPLASH__introStart, NULL, NULL);
 	SPLASH__menuPanel->alpha = 0;
 	set(SPLASH__menuPanel, TRANSLUCENT);
 	set(SPLASH__menuPanel, SHOW);	
