@@ -8,14 +8,15 @@ Set "AckPath2=c:\Program Files (x86)\gstudio"
 
 Set "path=%path%;%AckPath%;%AckPath2%"
 
-del lottivstheworld.cd\*
+rd lottivstheworld.cd /S /Q
 ren media media_renamed_by_buildscript
 timeout /t 1 /nobreak > NUL
 wed -r lottivstheworld.c > build.log
 ren media_renamed_by_buildscript media
 
-xcopy media lottivstheworld.cd\media /Y
+xcopy media lottivstheworld.cd\media\ /Y
 xcopy level\template*.dat lottivstheworld.cd\level\ /Y
+xcopy readme.txt lottivstheworld.cd /Y
 del lottivstheworld.exe
 
 pause
