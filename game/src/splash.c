@@ -28,6 +28,8 @@ typedef struct IntroNode
 	STRING * img;
 } IntroNode;
 
+int INTRO__nodesDone = 0;
+
 function introNodeFunc() {
 	set(my, TRANSLUCENT);
 	my.alpha = 0;
@@ -64,7 +66,8 @@ function introNodeFunc() {
 		my.alpha = 100 - maxv(0,minv(1,(t-my.skill35+0.3)/0.3))*100;
 		wait(1);
 	}
-	ptr_remove(my);	
+	ptr_remove(my);
+	INTRO__nodesDone++;
 }
 
 void SPLASH__quitGame()
@@ -172,7 +175,7 @@ void SPLASH__animEnd()
 		wait(1);
 	}
 	
-	mouse_init_game();	
+	mouse_init_game();
 	
 	while(SPLASH__menuPanel->alpha < 50 && SPLASH__inSplash == 1)
 	{
@@ -318,7 +321,8 @@ void SPLASH__startCredits()
 
 void SPLASH__introStart()
 {
-	
+	on_esc = SPLASH__introCancel;
+	on_anykey = SPLASH__introCancel;
 	startMusic(NULL, 7, 0); // fade out music
 	
 	SPLASH__inIntro = 1;
@@ -343,7 +347,6 @@ void SPLASH__introStart()
 	startMusic("media\\intro.mp3", 0.01, 0);
 	wait(1);
 	
-	
 	var countNodes = 7;
 	IntroNode nodes[7];
 	nodes[0].time = 2.3; nodes[0].img = "intro04.tga"; nodes[0].length = 13; nodes[0].out = 3;
@@ -359,9 +362,12 @@ void SPLASH__introStart()
 	//var s = 0.1;
 	//vec_set(SPLASH__introEnt1.scale_x, vector(s,s,s));
 	
+	INTRO__nodesDone = 0;
 	var currentNode = 0;
-	while(1) {
-		if(currentNode < countNodes) {
+	while(INTRO__nodesDone < countNodes && SPLASH__inIntro)
+	{
+		if(currentNode < countNodes)
+		{
 			if(getMusicPosition() > nodes[currentNode].time-INTRO_NODE_FLY_TIME) {
 				ENTITY* a = ent_create(nodes[currentNode].img, vector(-900, 0, 0), introNodeFunc);
 				a.skill34 = nodes[currentNode].length;
@@ -373,6 +379,8 @@ void SPLASH__introStart()
 		}
 		wait(1);
 	}
+	
+	SPLASH__introEnd();
 	/*
 	SPLASH__introEnt1 = ent_create("tree02.mdl", vector(-20, -4, 0), NULL);
 	SPLASH__introEnt2 = ent_create("cbabe_male.mdl", vector(-300, 0, 0), NULL);
@@ -398,10 +406,14 @@ void SPLASH__introStart()
 
 void SPLASH__introEnd()
 {
+	on_anykey = NULL;
+	on_esc    = NULL;
+	SPLASH__startGame();
 }
 
 void SPLASH__introCancel()
 {
+	SPLASH__inIntro = 0;
 }
 
 function SPLASH__act_smoke(ENTITY* p)
