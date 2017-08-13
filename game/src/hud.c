@@ -13,7 +13,7 @@ PANEL * panDialog =
 	digits(200,50, "%s", fontDialog, 1, dialogMessage));
 	bmap = bmapDialog;
 	alpha = 80;
-	flags = OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y;
+	flags = OUTLINE | TRANSLUCENT | CENTER_X | CENTER_Y | FILTER;
 	layer = 10;
 	scale_y = 0.01;
 }
