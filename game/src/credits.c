@@ -378,11 +378,7 @@ void credits_start()
 	show_camera();
 	
 	// Kill all evil inthis world!
-	//level_load("credits.wmb");
-	level_load("neo_credits.wmb");
-	//level_load(NULL);
-	//ENTITY* level = ent_create("credits.wmb", nullvector, 0);
-	//set(level, TRANSLUCENT);
+	level_load("credits.wmb");
 	
 	credits_placeStuff();
 	
@@ -439,19 +435,25 @@ void credits_placeStuff()
 		}
 	}
 	
-	ENTITY* warlock = ent_create("warlock.mdl", _vec(0, 0, -500), credits_warlock);
 	ENTITY* bmapdummy = ent_create("screen_overlay.mdl", _vec(0,0,1000), 0);
-	ent_create("wald2.tga", _vec(100, 0, -500), 0);
-	ent_create("wald2_sky.tga", _vec(110, 0, -500), 0);
+
+	ENTITY* warlock = ent_create("warlock.mdl", _vec(0, 0, 282), credits_warlock);
+	ENTITY* wald = ent_create("wald2.tga", _vec(43, 0, 270), 0);
+	ENTITY* waldsky = ent_create("wald2_sky.tga", _vec(45, 0, 270), 0);
+	
+	vec_fill(warlock->scale_x, 0.5);
+	vec_fill(wald->scale_x, 0.5);
+	vec_fill(waldsky->scale_x, 0.5);
 	
 	warlock->ambient = 100;
 	
 	credits_view = view_create(1);
 	credits_view->size_x = 256;
 	credits_view->size_y = 256;
-	credits_view-> x = -40;
-	credits_view-> z = -475;
+	credits_view-> x = -20;
+	credits_view-> z = 295;
 	credits_view->bmap = bmap_for_entity(bmapdummy, 0);
+	credits_view->clip_near = 1;
 	set(credits_view, SHOW);
 }
 
