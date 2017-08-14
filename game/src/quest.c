@@ -19,8 +19,8 @@ void QUEST__droptofloor();
 #include "marker.h"
 #include "util.h"
 
-SOUND* sndQuestStarted = "turret_up.wav";
-SOUND* sndQuestDone = "turret_down.wav";
+SOUND* sndQuestStarted = "quest_received.wav";
+SOUND* sndQuestDone = "quest_completed.wav";
 
 TEXT* txtQuestTasks = 
 {

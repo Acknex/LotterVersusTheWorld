@@ -339,7 +339,7 @@ void SPLASH__introStart()
 	
 	var panSpeed = 0.0;
 	
-	while(cam->pan < 180)
+	while(cam->pan < 180 && SPLASH__inIntro)
 	{
 		panSpeed = minv(3, panSpeed + 0.05 * time_step);
 		cam.pan += panSpeed * time_step;
@@ -354,6 +354,12 @@ void SPLASH__introStart()
 		// TODO: remove this line
 		//cam->pan = 180;
 		wait(1);
+	}
+	
+	if(SPLASH__inIntro != 1) 
+	{
+		SPLASH__introEnd();
+		return;
 	}
 	
 	cam->pan = 180; // just to make sure we are absolutely bang on

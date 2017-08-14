@@ -130,7 +130,7 @@ void INIT_levelEnd(var isGameOver)
 		while(1)
 		{
 			show_death_screen(fade);
-			fade = minv(fade+2*time_step, 100);
+			fade = minv(fade+5*time_step, 100);
 			if(fade > 80 && key_any)
 				break;
 			wait(1);
