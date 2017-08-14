@@ -1,16 +1,5 @@
-/***
- * 
- *  _           _   _                          _____ _            _    _            _     _ 
- * | |         | | | |                        |_   _| |          | |  | |          | |   | |
- * | |     ___ | |_| |_ ___ _ __  __   _____    | | | |__   ___  | |  | | ___  _ __| | __| |
- * | |    / _ \| __| __/ _ \ '__| \ \ / / __|   | | | '_ \ / _ \ | |/\| |/ _ \| '__| |/ _` |
- * | |___| (_) | |_| ||  __/ |     \ V /\__ \   | | | | | |  __/ \  /\  / (_) | |  | | (_| |
- * \_____/\___/ \__|\__\___|_|      \_/ |___/   \_/ |_| |_|\___|  \/  \/ \___/|_|  |_|\__,_|
- *                                                                                          
- *                                                                                          
- * 
- *                                           v1.0 sweat and tears release
- */
+# Lotter vs The World
+## v1.0 sweat and tears release
 
 Millions of cycles ago, the subroutines of Acknex lived together in harmony. 
 Working to create games and aid new developers on their path...
@@ -41,12 +30,11 @@ He is our only hope. It's him or them.
 It's Lotter versus the world.
 
 
-Controls
-========
-AWSD/Cursor Keys   - movement
-SPACE              - jump
-Left mouse button  - shoot
-Right mouse button - grenade
+## Controls
+* AWSD/Cursor Keys   - movement
+* SPACE              - jump
+* Left mouse button  - shoot
+* Right mouse button - grenade
 
 Remember: If it moves, shoot it!
 
@@ -55,13 +43,23 @@ Remember: If it moves, shoot it!
 Copyright (c) 2017 - AckCon'17 Team, as follows (in alphabetic order)
 
 Andreas "lemming" Holm
+
 Felix "superku" Pohl
+
 Felix "MasterQ32" Queißner
+
 Henrik "hen-woll" Wollmann
+
 Jonas "padmalcom" Freiknecht
+
 Marius "mk1" Kappes
+
 Michael "xwcg" Schwarz
+
 Nils "slin" Daumann
+
 Patrick "jengs" Jendral
+
 Robert "firoball" Jäger
+
 Simon "simonschreibt" Trümpler
