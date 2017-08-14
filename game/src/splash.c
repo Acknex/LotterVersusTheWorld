@@ -319,8 +319,18 @@ void SPLASH__startCredits()
 	credits_start();
 }
 
+var _smoothstep(var x, var edge0, var edge1)
+{
+	var t = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
+	return t * t * (3.0 - 2.0 * t);
+}
+
 void SPLASH__introStart()
 {
+	// prevent double-start
+	if(SPLASH__inIntro) {
+		return;
+	}
 	on_esc = SPLASH__introCancel;
 	on_anykey = SPLASH__introCancel;
 	startMusic(NULL, 7, 0); // fade out music
@@ -331,12 +341,16 @@ void SPLASH__introStart()
 	
 	while(cam->pan < 180)
 	{
-		panSpeed = minv(3, panSpeed + 0.01);
+		panSpeed = minv(3, panSpeed + 0.05 * time_step);
 		cam.pan += panSpeed * time_step;
 		
 		SPLASH__logoPanel->alpha = 100 - ((cam->pan / 180) * 100);
-		SPLASH__menuPanel->alpha = 100 - ((cam->pan / 180) * 100);
-				
+		
+		SPLASH__menuPanel->alpha = maxv(0, SPLASH__menuPanel->alpha - 25 * time_step);
+		if(SPLASH__menuPanel->alpha <= 0) {
+			reset(SPLASH__menuPanel, SHOW);
+		}
+		
 		// TODO: remove this line
 		//cam->pan = 180;
 		wait(1);
