@@ -333,7 +333,7 @@ void SPLASH__introStart()
 	}
 	on_esc = SPLASH__introCancel;
 	on_anykey = SPLASH__introCancel;
-	startMusic(NULL, 7, 0); // fade out music
+	startMusic(NULL, 4, 0); // fade out music
 	
 	SPLASH__inIntro = 1;
 	

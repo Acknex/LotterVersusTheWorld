@@ -27,11 +27,11 @@ TEXT* txtQuestTasks =
 	strings = 5;
 		
 	string(	
-	/* 0 */ "Grab a jetpack",
-	/* 1 */ "Compile with Acknex3",
+	/* 0 */ "Find the McGuffin",
+	/* 1 */ "Locate nexus module",
 	/* 2 */ "Obtain Acknex2 sources",
-	/* 3 */ "Retrieve a racecar",
-	/* 4 */ "A wild Lottifant appeared"
+	/* 3 */ "Retreive malware kit",
+	/* 4 */ "Pick up Stuxnet remains"
 	);
 }
 
