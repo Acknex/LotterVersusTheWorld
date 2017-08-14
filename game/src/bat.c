@@ -277,7 +277,7 @@ action enemy_hex()
 					eye1.alpha = sqrt(hex_loadingWeapon/4)*100;
 					eye2.alpha = sqrt(hex_loadingWeapon/4)*100;
 					if(hndSndLaughing == 0) {
-						hndSndLaughing = snd_loop(sndHexLaughing, hex_loadingWeapon/4*100, 0);
+						hndSndLaughing = ent_playloop2(me, sndHexLaughing, hex_loadingWeapon/4*100, 100000);
 					}
 					else {
 						snd_tune(hndSndLaughing, hex_loadingWeapon/4*100, 0, 0);
@@ -286,7 +286,7 @@ action enemy_hex()
 					if(hex_loadingWeapon >= 4)
 					{
 						hex_state = 1;
-						hndSndLaser = snd_loop(sndHexLaser, 100, 0);
+						hndSndLaser = ent_playloop2(me, sndHexLaser, 100, 100000);
 						snd_tune(hndSndLaughing, hex_loadingWeapon/4*100, 0, 0);
 					}
 				}
