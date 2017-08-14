@@ -316,7 +316,7 @@ void player_move() {
 	{
 		if(shootingHandle == 0)
 		{
-			shootingHandle = snd_loop(sndPlayerShot, 50, 0);
+			shootingHandle = ent_playloop2(player, sndPlayerShot, 50, 100000);
 		}
 		shoot(1);
 	}
@@ -438,8 +438,8 @@ void player_init() {
 	player.event = player_event;
 	player->type = TypePlayer;
 	
-	handleSndEngineIdle = snd_loop(snd_engine_idle, 100, 0);
-	handleSndEngineThrust = snd_loop(snd_engine_thrust, 0, 0);
+	handleSndEngineIdle = ent_playloop2(player, snd_engine_idle, 100, 100000);
+	handleSndEngineThrust = ent_playloop2(player, snd_engine_thrust, 0, 100000);
 }
 
 void player_event() {
