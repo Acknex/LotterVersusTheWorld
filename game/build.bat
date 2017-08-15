@@ -1,5 +1,7 @@
 @echo off
-echo in case of error adjust path to your acknex8 installation
+echo In case of error when accessing WED, adjust path to your Acknex8 installation
+echo In case of access violation most likely "media" folder cannot be renamed.
+echo This can happen if the game crashed unexpectedly. Restart PC and rerun build.bat
 
 rem adjust path to engine
 Set "AckPath=d:\apps\acknex8" 

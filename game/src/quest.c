@@ -28,9 +28,9 @@ TEXT* txtQuestTasks =
 		
 	string(	
 	/* 0 */ "Find the McGuffin",
-	/* 1 */ "Locate nexus module",
+	/* 1 */ "Locate Nexus module",
 	/* 2 */ "Obtain Acknex2 sources",
-	/* 3 */ "Retreive malware kit",
+	/* 3 */ "Retrieve malware kit",
 	/* 4 */ "Pick up Stuxnet remains"
 	);
 }
