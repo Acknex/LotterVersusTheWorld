@@ -21,6 +21,8 @@ xcopy media lottivstheworld.cd\media\ /Y
 xcopy level\template*.dat lottivstheworld.cd\level\ /Y
 xcopy readme.txt lottivstheworld.cd /Y
 xcopy credits.dat lottivstheworld.cd /Y
+xcopy acknex.wdf lottivstheworld.cd /Y
+ 
 
 rem cleanup
 del lottivstheworld.exe
